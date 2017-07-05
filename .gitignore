@@ -1,0 +1,7 @@
+.DS_Store
+node_modules
+ignore
+src/css/foundation/_sprite.scss
+dst/**/*
+build/**/*
+.sass-cache

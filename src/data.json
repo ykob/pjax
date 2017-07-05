@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "domain": "http://www.tplh.net",
+    "websiteName": "",
+    "keywords": "",
+    "themeColor": "#ffffff"
+  },
+  "pages": {
+    "index": {
+      "id": "index",
+      "title": "",
+      "keywords": "",
+      "description": "",
+      "path": "/",
+      "ogpImg": "ogp.jpg"
+    }
+  }
+}
