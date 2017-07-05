@@ -24,7 +24,7 @@ const pugMiddleWare = (req, res, next) => {
   }
   let pugPath = slash(requestPath.replace('.html', '.pug'));
   if (DIR.PATH.length > 0) {
-    pugPath = pugPath.replace(DIR.PATH, '/');
+    pugPath = pugPath.replace(`/src/html${DIR.PATH}`, '/src/html/');
   }
   console.log("[BS] try to file "+ pugPath);
   const content = pug.renderFile(pugPath, {
