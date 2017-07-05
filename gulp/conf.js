@@ -3,7 +3,7 @@
 
 const DOMAIN = module.exports.DOMAIN = 'http://www.xxx.com';
 const DIR = module.exports.DIR =  {
-  PATH: '',
+  PATH: '/pjax/',
   SRC: 'src',
   DEST: 'dst',
   BUILD: 'build'
