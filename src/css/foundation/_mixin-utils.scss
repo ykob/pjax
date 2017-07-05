@@ -15,11 +15,14 @@
   @include l-pc-l {
     font-size: $break-point-pc-s / 100 * $vw;
   }
-  @include l-pc-and-tablet {
+  @include l-pc-s {
+    font-size: $vw * 1vw;
+  }
+  @include l-tablet {
     font-size: $vw * 1vw;
   }
   @include l-mobile {
-    font-size: $break-point-mobile / 100 * $vw;
+    font-size: $break-point-tablet-p / 100 * $vw;
   }
 }
 @mixin clearfix {
