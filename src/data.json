@@ -13,6 +13,30 @@
       "description": "",
       "path": "/",
       "ogpImg": "ogp.jpg"
+    },
+    "page01": {
+      "id": "page01",
+      "title": "PAGE01",
+      "keywords": "",
+      "description": "",
+      "path": "/page01.html",
+      "ogpImg": "ogp.jpg"
+    },
+    "page02": {
+      "id": "page02",
+      "title": "PAGE02",
+      "keywords": "",
+      "description": "",
+      "path": "/page02.html",
+      "ogpImg": "ogp.jpg"
+    },
+    "page03": {
+      "id": "page03",
+      "title": "PAGE03",
+      "keywords": "",
+      "description": "",
+      "path": "/page03.html",
+      "ogpImg": "ogp.jpg"
     }
   }
 }
