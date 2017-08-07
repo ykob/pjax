@@ -1,15 +1,11 @@
-import initCommon from './init/common.js'
-import initIndex from './init/index.js'
+import Hover from 'js-util/Hover.js';
+import ScrollManager from './modules/SmoothScrollManager';
+import Pjax from './modules/Pjax';
 
-const pageId = document.getElementsByClassName('l-page')[0].getAttribute('data-page-id');
+const scrollManager = new ScrollManager();
+const pjax = new Pjax(scrollManager);
 
 const init = () => {
-  initCommon();
-  switch (pageId) {
-    case 'index':
-      initIndex();
-      break;
-    default:
-  }
+
 }
 init();
