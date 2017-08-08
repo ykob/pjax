@@ -2,10 +2,8 @@
   line-height: 1.1;
   position: fixed;
   top: 40px; right: 0; left: 0;
-  @include fontSizeAll(48, 36 , 21);
+  @include fontSizeAll(42, 32, 24);
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
   a {
     display: inline-block;
     color: $color-text-black;
