@@ -11,6 +11,17 @@
     font-size: $size / 320 * 414px;
   }
 }
+@mixin fontSizeAll($sizePc, $sizeTab, $sizeSp) {
+  @include l-pc {
+    @include fontSize($sizePc);
+  }
+  @include l-tablet {
+    @include fontSize($sizeTab);
+  }
+  @include l-mobile {
+    @include fontSizeMobile($sizeSp);
+  }
+}
 @mixin flexFontSize($vw) {
   @include l-pc-l {
     font-size: $break-point-pc-s / 100 * $vw;
