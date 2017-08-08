@@ -1,3 +1,16 @@
 .l-contents {
   overflow: hidden;
+  position: relative;
+  z-index: 10;
+  @include fontSizeAll(14, 14, 12);
+  &.is-fixed {
+    position: fixed;
+    top: 0; right: 0; left: 0;
+  }
+  &__in {
+    margin-right: 10%;
+    margin-bottom: (200 / 1366) * 100%;
+    margin-left: 10%;
+    background-color: #fff;
+  }
 }
