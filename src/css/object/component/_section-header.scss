@@ -1,0 +1,6 @@
+.c-section-header {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  @include fontSizeAll(36, 28, 21);
+  font-weight: 400;
+}
