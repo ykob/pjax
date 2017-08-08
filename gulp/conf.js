@@ -1,38 +1,38 @@
 // 設定ファイル
 // 対象パスやオプションを指定
 
-const DOMAIN = module.exports.DOMAIN = 'http://www.xxx.com';
+const DOMAIN = module.exports.DOMAIN = 'http://ykob.github.io';
 const DIR = module.exports.DIR =  {
-  PATH: '/pjax/',
+  PATH: '/pjax',
   SRC: 'src',
   DEST: 'dst',
-  BUILD: 'build'
+  BUILD: 'docs'
 };
 
 module.exports.serve = {
   dest: {
     //tunnel: 'test',
     notify: false,
-    startPath: DIR.PATH,
+    startPath: `${DIR.PATH}/`,
     ghostMode: false,
     server: {
       baseDir: DIR.DEST,
       index: 'index.html',
       routes: {
-        [DIR.PATH]: `${DIR.DEST}${DIR.PATH}/`
+        [DIR.PATH]: `${DIR.DEST}/`
       }
     }
   },
   build: {
     //tunnel: 'test',
     notify: false,
-    startPath: DIR.PATH,
+    startPath: `${DIR.PATH}/`,
     ghostMode: false,
     server: {
       baseDir: DIR.BUILD,
       index: 'index.html',
       routes: {
-        [DIR.PATH]: `${DIR.BUILD}${DIR.PATH}/`
+        [DIR.PATH]: `${DIR.BUILD}/`
       }
     }
   }
@@ -52,7 +52,7 @@ module.exports.scripts = {
       'envify'
     ]
   },
-  dest: `${DIR.DEST}${DIR.PATH}/js`
+  dest: `${DIR.DEST}/js`
 };
 
 module.exports.pug = {
@@ -61,11 +61,13 @@ module.exports.pug = {
     `!${DIR.SRC}/**/_**/*.pug`,
     `!${DIR.SRC}/**/_*.pug`
   ],
-  dest: `${DIR.DEST}${DIR.PATH}`,
-  json: `${DIR.SRC}/data.json`,
+  dest: `${DIR.DEST}`,
   opts: {
     pretty: true
-  }
+  },
+  json: `${DIR.SRC}/data.json`,
+  domain: `${DOMAIN}`,
+  path: `${DIR.PATH}`,
 };
 
 module.exports.sass = {
@@ -74,7 +76,7 @@ module.exports.sass = {
     `!${DIR.SRC}/**/_**/*.{sass,scss}`,
     `!${DIR.SRC}/**/_*.{sass,scss}`
   ],
-  dest: `${DIR.DEST}${DIR.PATH}/css`,
+  dest: `${DIR.DEST}/css`,
   browsers: [
     'last 2 versions',
     'ie >= 11',
@@ -86,24 +88,43 @@ module.exports.sass = {
 module.exports.replace = {
   html: {
     src: [
-      `${DIR.DEST}${DIR.PATH}/**/*.html`
+      `${DIR.DEST}/**/*.html`
     ],
-    dest: `${DIR.BUILD}${DIR.PATH}`,
+    dest: `${DIR.BUILD}`,
     path: `${DIR.PATH}`
   }
 };
 
+module.exports.sprite = {
+  src: [
+    `${DIR.SRC}/img/sprite/**/*.png`
+  ],
+  dest: {
+    img: `${DIR.DEST}${DIR.PATH}/img/common`,
+    css: `${DIR.SRC}/css/foundation`
+  },
+  opts: {
+    imgName: 'sprite.png',
+    cssName: '_sprite.scss',
+    imgPath: '../img/common/sprite.png',
+    padding: 10,
+    cssOpts: {
+      functions: false
+    }
+  }
+};
+
 module.exports.cleanCss = {
-  src: `${DIR.DEST}${DIR.PATH}/css/main.css`,
-  dest: `${DIR.BUILD}${DIR.PATH}/css`
+  src: `${DIR.DEST}/css/main.css`,
+  dest: `${DIR.BUILD}/css`
 };
 
 module.exports.uglify = {
   src: [
-    `./${DIR.DEST}${DIR.PATH}/js/vendor.js`,
-    `./${DIR.DEST}${DIR.PATH}/js/main.js`,
+    `./${DIR.DEST}/js/vendor.js`,
+    `./${DIR.DEST}/js/main.js`,
   ],
-  dest: `${DIR.BUILD}${DIR.PATH}/js`,
+  dest: `${DIR.BUILD}/js`,
   opts: {
     preserveComments: 'some'
   }
@@ -116,26 +137,28 @@ module.exports.copy = {
       `!${DIR.SRC}/img/sprite/*.*`,
       `${DIR.SRC}/font/**/*.*`,
     ],
-    dest: `${DIR.DEST}${DIR.PATH}`,
+    dest: `${DIR.DEST}`,
     opts: {
       base: `${DIR.SRC}`
     }
   },
   build: {
     src: [
-      `${DIR.DEST}${DIR.PATH}/img/**/*.ico`,
-      `${DIR.DEST}${DIR.PATH}/font/**/*.*`,
+      `${DIR.DEST}/img/**/*.ico`,
+      `${DIR.DEST}/font/**/*.*`,
     ],
     dest: `${DIR.BUILD}`,
-    opts: {}
+    opts: {
+      base: `${DIR.DEST}`
+    }
   }
 };
 
 module.exports.imagemin = {
   src: [
-    `${DIR.DEST}${DIR.PATH}/**/*.{jpg,jpeg,png,gif,svg}`
+    `${DIR.DEST}/**/*.{jpg,jpeg,png,gif,svg}`
   ],
-  dest: `${DIR.BUILD}${DIR.PATH}/img`
+  dest: `${DIR.BUILD}/img`
 };
 
 module.exports.clean = {
