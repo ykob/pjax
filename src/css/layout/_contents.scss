@@ -1,4 +1,5 @@
 .l-contents {
+  line-height: 2;
   overflow: hidden;
   position: relative;
   z-index: 10;
@@ -11,6 +12,11 @@
     margin-right: 10%;
     margin-bottom: (200 / 1366) * 100%;
     margin-left: 10%;
+    padding-top: (100 / 1366) * 100%;
+    padding-bottom: (100 / 1366) * 100%;
     background-color: #fff;
+    &--index {
+      margin-top: -50px;
+    }
   }
 }
