@@ -6,6 +6,6 @@ const scrollManager = new ScrollManager();
 const pjax = new Pjax(scrollManager);
 
 const init = () => {
-
+  scrollManager.start();
 }
 init();
