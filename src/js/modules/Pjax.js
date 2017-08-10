@@ -1,5 +1,3 @@
-import Hover from 'js-util/Hover.js';
-
 const CLASSNAME_LINK = '.js-pjax-link';
 const CLASSNAME_CONTENTS = '.js-pjax-contents';
 
@@ -22,12 +20,14 @@ export default class Pjax {
   }
   replaceContent() {
     // 次のページを取得
-    const page = document.createElement('div');
-    page.innerHTML = this.xhr.responseText;
-    const contents = page.querySelector(CLASSNAME_CONTENTS);
+    const responseHtml = document.createElement('div');
+    responseHtml.innerHTML = this.xhr.responseText;
+    const responsePage = responseHtml.querySelector('.l-page');
+    const responseContents = responsePage.querySelector(CLASSNAME_CONTENTS);
+    const pageId = responsePage.dataset.pageId;
 
     // ページの中身を差し替え
-    this.contents.innerHTML = contents.innerHTML;
+    this.contents.innerHTML = responseContents.innerHTML;
 
     // Pjax遷移イベント設定
     this.onPjaxLinks(this.contents);
