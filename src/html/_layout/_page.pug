@@ -9,11 +9,6 @@ html(lang="ja")
     include ./_head.pug
   body
     .l-page(data-page-id=page.id)
-      .p-global-head
-        a(
-          href = `${data.meta.path}/`
-          )
-          |Pjax
       block contentFixedBefore
       .l-contents
         .js-pjax-contents

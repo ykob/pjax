@@ -2,11 +2,13 @@
   line-height: 1.1;
   position: fixed;
   top: 40px; right: 0; left: 0;
+  z-index: 100;
   @include fontSizeAll(42, 32, 24);
   text-align: center;
+  mix-blend-mode: difference;
   a {
     display: inline-block;
-    color: $color-text-black;
+    color: #fff;
     text-decoration: none;
   }
 }
