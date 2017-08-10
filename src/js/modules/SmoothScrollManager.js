@@ -29,6 +29,7 @@ export default class SmoothScrollManager {
     this.isWorkingSmooth = (opt && opt.isWorkingSmooth !== undefined) ? opt.isWorkingSmooth : false;
     this.isScrollOnLoad = false;
     this.init();
+    this.on();
   }
   start() {
     this.isWorking = true;
@@ -40,13 +41,16 @@ export default class SmoothScrollManager {
       this.scroll();
     });
   }
+  stop() {
+    this.isWorking = false;
+    this.isWorkingSmooth = false;
+  }
   init() {
     if (!isSmartphone()) this.elmContents.classList.add('is-fixed');
     this.resize();
     this.initDummyScroll();
     this.initScrollItems();
     this.initHookes();
-    this.on();
   }
   initDummyScroll() {
     if (!isSmartphone()) this.elmDummyScroll.style.height = `${this.elmContents.clientHeight}px`;
@@ -82,10 +86,10 @@ export default class SmoothScrollManager {
     for (var i = 0; i < this.scrollItems.length; i++) {
       this.scrollItems[i].show(this.scrollTop + this.resolution.y, this.scrollTop);
     }
-    if (this.hookesContents) this.hookesContents.anchor[1] = this.scrollTop * -1;
-    if (this.hookesElements1) this.hookesElements1.velocity[1] += this.scrollFrame * 0.05;
-    if (this.hookesElements2) this.hookesElements2.velocity[1] += this.scrollFrame * 0.1;
-    if (this.hookesElementsR) this.hookesElementsR.velocity[1] += this.scrollFrame * -0.01;
+    this.hookesContents.anchor[1] = this.scrollTop * -1;
+    this.hookesElements1.velocity[1] += this.scrollFrame * 0.05;
+    this.hookesElements2.velocity[1] += this.scrollFrame * 0.1;
+    this.hookesElementsR.velocity[1] += this.scrollFrame * -0.01;
   }
   scroll(event) {
     const pageYOffset = window.pageYOffset;
