@@ -1,3 +1,3 @@
 module.exports = function(scrollManager) {
-  console.log('index');
+  console.log('page02');
 };

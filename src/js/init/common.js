@@ -1,5 +1,2 @@
-// import Preloader from '../modules/preloader.js';
-
-export default function() {
-
+export default function(scrollManager) {
 };

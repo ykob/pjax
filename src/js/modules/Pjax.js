@@ -2,16 +2,31 @@ const CLASSNAME_LINK = '.js-pjax-link';
 const CLASSNAME_CONTENTS = '.js-pjax-contents';
 
 const init = {
-  common: require('../init/common.js')
+  common: require('../init/common.js'),
+  index: require('../init/index.js'),
+  page01: require('../init/page01.js'),
+  page02: require('../init/page02.js'),
+  page03: require('../init/page03.js'),
 };
 
 export default class Pjax {
   constructor(scrollManager) {
     this.scrollManager = scrollManager;
     this.xhr = new XMLHttpRequest();
+    this.page = document.querySelector('.l-page');
     this.contents = document.querySelector(CLASSNAME_CONTENTS);
     this.isPopState = false;
+    this.init();
     this.on();
+  }
+  init() {
+    switch (this.page.dataset.pageId) {
+      case 'index': init.index(this.scrollManager); break;
+      case 'page01': init.page01(this.scrollManager); break;
+      case 'page02': init.page02(this.scrollManager); break;
+      case 'page03': init.page03(this.scrollManager); break;
+      default:
+    }
   }
   send(href) {
     this.scrollManager.stop();
@@ -23,14 +38,15 @@ export default class Pjax {
     const responseHtml = document.createElement('div');
     responseHtml.innerHTML = this.xhr.responseText;
     const responsePage = responseHtml.querySelector('.l-page');
-    const responseContents = responsePage.querySelector(CLASSNAME_CONTENTS);
-    const pageId = responsePage.dataset.pageId;
+    const responseContents = responseHtml.querySelector(CLASSNAME_CONTENTS);
 
     // ページの中身を差し替え
+    this.page.dataset.pageId = responsePage.dataset.pageId;
     this.contents.innerHTML = responseContents.innerHTML;
 
     // Pjax遷移イベント設定
     this.onPjaxLinks(this.contents);
+    this.init();
 
     // ページの初期スクロール値を設定
     window.scrollTo(0, 0);
