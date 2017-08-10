@@ -2,7 +2,12 @@
   margin-top: 100 / (20 / 26 * 1366) * 100%;
   margin-right: (3 / 26) * 100%;
   margin-left: (3 / 26) * 100%;
+  text-align: justify;
   &:first-of-type {
     margin-top: 0;
+  }
+  p {
+    margin-top: 2em;
+    margin-bottom: 2em;
   }
 }
