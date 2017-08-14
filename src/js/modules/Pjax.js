@@ -20,11 +20,12 @@ export default class Pjax {
     this.on();
   }
   init() {
+    init.common(this.contents, this.scrollManager, this.isPageLoaded);
     switch (this.page.dataset.pageId) {
-      case 'index': init.index(this.scrollManager); break;
-      case 'page01': init.page01(this.scrollManager); break;
-      case 'page02': init.page02(this.scrollManager); break;
-      case 'page03': init.page03(this.scrollManager); break;
+      case 'index': init.index(this.contents, this.scrollManager); break;
+      case 'page01': init.page01(this.contents, this.scrollManager); break;
+      case 'page02': init.page02(this.contents, this.scrollManager); break;
+      case 'page03': init.page03(this.contents, this.scrollManager); break;
       default:
     }
   }
