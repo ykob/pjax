@@ -44,6 +44,7 @@ export default class Pjax {
     // ページの中身を差し替え
     this.page.dataset.pageId = responsePage.dataset.pageId;
     this.contents.innerHTML = responseContents.innerHTML;
+    document.title = responseHtml.querySelector('title').innerHTML;
 
     // Pjax遷移イベント設定
     this.onPjaxLinks(this.contents);
