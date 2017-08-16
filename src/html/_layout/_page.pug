@@ -10,8 +10,9 @@ html(lang="ja")
   body
     .l-page(data-page-id=page.id)
       block contentFixedBefore
-      .l-contents.js-pjax-contents
-        block contentStatic
+      .l-contents
+        .js-pjax-contents
+          block contentStatic
       .l-dummy-scroll
       block contentFixedAfter
       include ./_gf.pug

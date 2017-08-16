@@ -1,4 +1,3 @@
-import Hover from 'js-util/Hover.js';
 import ScrollManager from './modules/SmoothScrollManager';
 import Pjax from './modules/Pjax';
 
