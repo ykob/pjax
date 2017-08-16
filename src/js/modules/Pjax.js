@@ -1,5 +1,6 @@
 const CLASSNAME_LINK = '.js-pjax-link';
 const CLASSNAME_CONTENTS = '.js-pjax-contents';
+const CLASSNAME_OVERLAY = '.js-pjax-overlay';
 
 const init = {
   common: require('../init/common.js'),
@@ -15,6 +16,7 @@ export default class Pjax {
     this.xhr = new XMLHttpRequest();
     this.page = document.querySelector('.l-page');
     this.contents = document.querySelector(CLASSNAME_CONTENTS);
+    this.overlay = document.querySelector(CLASSNAME_OVERLAY);
     this.href = location.pathname;
     this.isAnimate = false;
     this.isPopState = false;
