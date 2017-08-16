@@ -15,6 +15,8 @@ export default class Pjax {
     this.xhr = new XMLHttpRequest();
     this.page = document.querySelector('.l-page');
     this.contents = document.querySelector(CLASSNAME_CONTENTS);
+    this.href = location.pathname;
+    this.isAnimate = false;
     this.isPopState = false;
     this.init();
     this.on();
@@ -28,9 +30,9 @@ export default class Pjax {
       default:
     }
   }
-  send(href) {
+  send() {
     this.scrollManager.stop();
-    this.xhr.open('GET', href, true);
+    this.xhr.open('GET', this.href, true);
     this.xhr.send();
   }
   replaceContent() {
@@ -55,13 +57,23 @@ export default class Pjax {
     setTimeout(() => {
       this.scrollManager.init();
       this.scrollManager.start();
+      this.transitEnd();
     }, 100);
   }
   transitStart() {
-
+    // ページ切り替え前の演出
+    if (this.isAnimate) return;
+    this.isAnimate = true;
+    this.scrollManager.isWorking = false;
+    this.overlay.classList.remove('is-shrink');
+    this.overlay.classList.add('is-expand');
   }
   transitEnd() {
-
+    // ページ切り替え後の演出
+    setTimeout(() => {
+      this.overlay.classList.remove('is-expand');
+      this.overlay.classList.add('is-shrink');
+    }, 100);
   }
   on() {
     this.xhr.onreadystatechange = () => {
@@ -86,7 +98,22 @@ export default class Pjax {
 
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
-      this.send(event.target.location.pathname);
+      this.transitStart();
+    });
+
+    this.overlay.addEventListener('transitionend', () => {
+      if (this.overlay.classList.contains('is-expand')) {
+        // オーバーレイが展開したあとの処理
+        this.href = location.pathname;
+        this.send();
+      } else {
+        // オーバーレイが収縮したあとの処理
+        this.isAnimate = false;
+        // history.back連打によって、読み込まれた本文とlocation.pathnameが異なる場合、自動的に再度読み込みを行う。
+        if (this.href !== location.pathname) {
+          this.transitStart();
+        }
+      }
     });
 
     this.onPjaxLinks(document);
@@ -98,8 +125,9 @@ export default class Pjax {
       const href = elm.getAttribute('href');
       elm.addEventListener('click', (event) => {
         event.preventDefault();
+        if (href == location.pathname) return;
         window.history.pushState(null, null, href);
-        this.send(href);
+        this.transitStart();
       });
     }
   }
