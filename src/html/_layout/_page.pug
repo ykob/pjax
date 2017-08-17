@@ -9,13 +9,15 @@ html(lang="ja")
     include ./_head.pug
   body
     .l-page(data-page-id=page.id)
-      block contentFixedBefore
+      .js-pjax-fixed-before
+        block contentFixedBefore
       .l-contents
         .js-pjax-contents
           block contentStatic
       .p-contents-overlay.js-pjax-overlay
       .l-dummy-scroll
-      block contentFixedAfter
+      .js-pjax-fixed-after
+        block contentFixedAfter
       include ./_gf.pug
     block script
     script(src="/js/main.js")

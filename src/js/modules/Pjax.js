@@ -1,5 +1,7 @@
 const CLASSNAME_LINK = '.js-pjax-link';
 const CLASSNAME_CONTENTS = '.js-pjax-contents';
+const CLASSNAME_FIXED_BEFORE = '.js-pjax-fixed-before';
+const CLASSNAME_FIXED_AFTER = '.js-pjax-fixed-after';
 const CLASSNAME_OVERLAY = '.js-pjax-overlay';
 
 const init = {
@@ -16,6 +18,8 @@ export default class Pjax {
     this.xhr = new XMLHttpRequest();
     this.page = document.querySelector('.l-page');
     this.contents = document.querySelector(CLASSNAME_CONTENTS);
+    this.fixedBefore = document.querySelector(CLASSNAME_FIXED_BEFORE);
+    this.fixedAfter = document.querySelector(CLASSNAME_FIXED_AFTER);
     this.overlay = document.querySelector(CLASSNAME_OVERLAY);
     this.href = location.pathname;
     this.isAnimate = false;
@@ -44,6 +48,8 @@ export default class Pjax {
     responseHtml.innerHTML = this.xhr.responseText;
     const responsePage = responseHtml.querySelector('.l-page');
     const responseContents = responseHtml.querySelector(CLASSNAME_CONTENTS);
+    const responseFixedBefore = responseHtml.querySelector(CLASSNAME_FIXED_BEFORE);
+    const responseFixedAfter = responseHtml.querySelector(CLASSNAME_FIXED_AFTER);
 
     // ページの中身を差し替え
     this.page.dataset.pageId = responsePage.dataset.pageId;
