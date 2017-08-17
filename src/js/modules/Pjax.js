@@ -136,7 +136,7 @@ export default class Pjax {
       elm.addEventListener('click', (event) => {
         event.preventDefault();
         if (href == location.pathname) return;
-        window.history.pushState(null, null, href);
+        history.pushState(null, null, href);
         this.transitStart();
       });
     }
