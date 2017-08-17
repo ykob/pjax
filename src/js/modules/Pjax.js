@@ -38,7 +38,7 @@ export default class Pjax {
     }
   }
   send() {
-    this.scrollManager.stop();
+    this.scrollManager.isWorkingSmooth = false;
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
   }
@@ -65,7 +65,8 @@ export default class Pjax {
 
     // Scroll Managerの初期化
     setTimeout(() => {
-      this.scrollManager.init();
+      this.scrollManager.initScrollItems();
+      this.scrollManager.initHookes();
       this.scrollManager.start();
       this.transitEnd();
     }, 100);
