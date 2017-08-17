@@ -111,6 +111,7 @@ export default class Pjax {
 
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
+      history.scrollRestoration = 'manual';
       this.transitStart();
     });
 
