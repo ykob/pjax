@@ -142,9 +142,14 @@
   }
   &.is-over & {
     &__label {
-      color: #111;
+      color: #fff;
       transition-duration: 0.3s;
       transition-delay: 0s;
+    }
+  }
+  &--white.is-over & {
+    &__label {
+      color: #111;
     }
   }
   &.is-over {
