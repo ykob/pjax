@@ -1,0 +1,40 @@
+@keyframes animateProgress {
+  0% {
+    transform: rotate(45deg);
+  }
+  100% {
+    transform: rotate(225deg);
+  }
+}
+
+.p-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  &__marker {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #fff;
+    animation-name: animateProgress;
+    animation-duration: 0.6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  //
+  // Interaction
+  //
+  &__marker {
+    opacity: 0;
+    transition-duration: 0.2s;
+  }
+  &.is-shown & {
+    &__marker {
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
+  }
+}

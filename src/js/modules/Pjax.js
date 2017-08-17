@@ -2,7 +2,6 @@ const CLASSNAME_LINK = '.js-pjax-link';
 const CLASSNAME_CONTENTS = '.js-pjax-contents';
 const CLASSNAME_FIXED_BEFORE = '.js-pjax-fixed-before';
 const CLASSNAME_FIXED_AFTER = '.js-pjax-fixed-after';
-const CLASSNAME_OVERLAY = '.js-pjax-overlay';
 
 const init = {
   common: require('../init/common.js'),
@@ -20,7 +19,8 @@ export default class Pjax {
     this.contents = document.querySelector(CLASSNAME_CONTENTS);
     this.fixedBefore = document.querySelector(CLASSNAME_FIXED_BEFORE);
     this.fixedAfter = document.querySelector(CLASSNAME_FIXED_AFTER);
-    this.overlay = document.querySelector(CLASSNAME_OVERLAY);
+    this.overlay = document.querySelector('.js-pjax-overlay');
+    this.progress = document.querySelector('.js-pjax-progress');
     this.href = location.pathname;
     this.isAnimate = false;
     this.isPopState = false;
@@ -78,12 +78,14 @@ export default class Pjax {
     this.scrollManager.isWorking = false;
     this.overlay.classList.remove('is-shrink');
     this.overlay.classList.add('is-expand');
+    this.progress.classList.add('is-shown');
   }
   transitEnd() {
     // ページ切り替え後の演出
     setTimeout(() => {
       this.overlay.classList.remove('is-expand');
       this.overlay.classList.add('is-shrink');
+      this.progress.classList.remove('is-shown');
     }, 100);
   }
   on() {
