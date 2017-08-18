@@ -16,4 +16,30 @@
   &__excerpt {
     margin: 0;
   }
+  //
+  // interaction
+  //
+  &__title {
+    opacity: 0;
+    transform: translateY(20px);
+    transition-duration: 1.2s;
+    transition-timing-function: $easeOutCirc;
+    transition-property: opacity, transform;
+    &.is-shown {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  &__excerpt {
+    opacity: 0;
+    transform: translateY(20px);
+    transition-duration: 1.2s;
+    transition-delay: 0.1s;
+    transition-timing-function: $easeOutCirc;
+    transition-property: opacity, transform;
+    &.is-shown {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }

@@ -56,10 +56,6 @@ export default class Pjax {
     this.contents.innerHTML = responseContents.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
-    // Pjax遷移イベント設定
-    this.onPjaxLinks(this.contents);
-    this.init();
-
     // ページの初期スクロール値を設定
     window.scrollTo(0, 0);
 
@@ -128,7 +124,11 @@ export default class Pjax {
         // history.back連打によって、読み込まれた本文とlocation.pathnameが異なる場合、自動的に再度読み込みを行う。
         if (this.href !== location.pathname) {
           this.transitStart();
+          return;
         }
+        // Pjax遷移イベント設定
+        this.onPjaxLinks(this.contents);
+        this.init();
       }
     });
 
