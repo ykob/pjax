@@ -5,6 +5,7 @@ const CLASSNAME_FIXED_AFTER = '.js-pjax-fixed-after';
 
 const page = {
   common: require('../init/common.js'),
+  blank: require('../init/blank.js'),
   index: require('../init/index.js'),
   page01: require('../init/page01.js'),
   page02: require('../init/page02.js'),
@@ -36,16 +37,12 @@ export default class Pjax {
       case 'page02': this.page = page.page02; break;
       case 'page03': this.page = page.page03; break;
       default:
-        this.page = {
-          preload: function(callback) {
-            callback();
-          }
-        }
+        this.page = page.blank;
     }
   }
   init() {
     page.common(this.elmContents, this.scrollManager, this.isPageLoaded);
-    if (this.page) this.page.init(this.elmContents, this.scrollManager);
+    this.page.init(this.elmContents, this.scrollManager);
   }
   send() {
     this.scrollManager.isWorkingSmooth = false;
