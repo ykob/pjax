@@ -1,3 +1,8 @@
-module.exports = function(contents, scrollManager) {
-  console.log('index');
+module.exports = {
+  preload: function(callback) {
+    callback();
+  },
+  init: function(contents, scrollManager) {
+    console.log('index');
+  }
 };

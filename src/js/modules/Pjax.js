@@ -3,7 +3,7 @@ const CLASSNAME_CONTENTS = '.js-pjax-contents';
 const CLASSNAME_FIXED_BEFORE = '.js-pjax-fixed-before';
 const CLASSNAME_FIXED_AFTER = '.js-pjax-fixed-after';
 
-const init = {
+const page = {
   common: require('../init/common.js'),
   index: require('../init/index.js'),
   page01: require('../init/page01.js'),
@@ -15,27 +15,33 @@ export default class Pjax {
   constructor(scrollManager) {
     this.scrollManager = scrollManager;
     this.xhr = new XMLHttpRequest();
-    this.page = document.querySelector('.l-page');
-    this.contents = document.querySelector(CLASSNAME_CONTENTS);
-    this.fixedBefore = document.querySelector(CLASSNAME_FIXED_BEFORE);
-    this.fixedAfter = document.querySelector(CLASSNAME_FIXED_AFTER);
-    this.overlay = document.querySelector('.js-pjax-overlay');
-    this.progress = document.querySelector('.js-pjax-progress');
+    this.elmPage = document.querySelector('.l-page');
+    this.elmContents = document.querySelector(CLASSNAME_CONTENTS);
+    this.elmFixedBefore = document.querySelector(CLASSNAME_FIXED_BEFORE);
+    this.elmFixedAfter = document.querySelector(CLASSNAME_FIXED_AFTER);
+    this.elmOverlay = document.querySelector('.js-pjax-overlay');
+    this.elmProgress = document.querySelector('.js-pjax-progress');
     this.href = location.pathname;
+    this.page = null;
     this.isAnimate = false;
     this.isPopState = false;
+    this.selectPageFunc();
     this.init();
     this.on();
   }
-  init() {
-    init.common(this.contents, this.scrollManager, this.isPageLoaded);
-    switch (this.page.dataset.pageId) {
-      case 'index': init.index(this.contents, this.scrollManager); break;
-      case 'page01': init.page01(this.contents, this.scrollManager); break;
-      case 'page02': init.page02(this.contents, this.scrollManager); break;
-      case 'page03': init.page03(this.contents, this.scrollManager); break;
+  selectPageFunc() {
+    switch (this.elmPage.dataset.pageId) {
+      case 'index':  this.page = page.index; break;
+      case 'page01': this.page = page.page01; break;
+      case 'page02': this.page = page.page02; break;
+      case 'page03': this.page = page.page03; break;
       default:
+        this.page = null
     }
+  }
+  init() {
+    page.common(this.elmContents, this.scrollManager, this.isPageLoaded);
+    if (this.page) this.page.init(this.elmContents, this.scrollManager);
   }
   send() {
     this.scrollManager.isWorkingSmooth = false;
@@ -52,9 +58,12 @@ export default class Pjax {
     const responseFixedAfter = responseHtml.querySelector(CLASSNAME_FIXED_AFTER);
 
     // ページの中身を差し替え
-    this.page.dataset.pageId = responsePage.dataset.pageId;
-    this.contents.innerHTML = responseContents.innerHTML;
+    this.elmPage.dataset.pageId = responsePage.dataset.pageId;
+    this.elmContents.innerHTML = responseContents.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
+
+    // ページの初期化関数オブジェクトを選択
+    this.selectPageFunc();
 
     // ページの初期スクロール値を設定
     window.scrollTo(0, 0);
@@ -72,16 +81,16 @@ export default class Pjax {
     if (this.isAnimate) return;
     this.isAnimate = true;
     this.scrollManager.isWorking = false;
-    this.overlay.classList.remove('is-shrink');
-    this.overlay.classList.add('is-expand');
-    this.progress.classList.add('is-shown');
+    this.elmOverlay.classList.remove('is-shrink');
+    this.elmOverlay.classList.add('is-expand');
+    this.elmProgress.classList.add('is-shown');
   }
   transitEnd() {
     // ページ切り替え後の演出
     setTimeout(() => {
-      this.overlay.classList.remove('is-expand');
-      this.overlay.classList.add('is-shrink');
-      this.progress.classList.add('is-hidden');
+      this.elmOverlay.classList.remove('is-expand');
+      this.elmOverlay.classList.add('is-shrink');
+      this.elmProgress.classList.add('is-hidden');
     }, 100);
   }
   on() {
@@ -111,23 +120,23 @@ export default class Pjax {
       this.transitStart();
     });
 
-    this.overlay.addEventListener('transitionend', () => {
-      if (this.overlay.classList.contains('is-expand')) {
+    this.elmOverlay.addEventListener('transitionend', () => {
+      if (this.elmOverlay.classList.contains('is-expand')) {
         // オーバーレイが展開したあとの処理
         this.href = location.pathname;
         this.send();
       } else {
         // オーバーレイが収縮したあとの処理
         this.isAnimate = false;
-        this.progress.classList.remove('is-shown');
-        this.progress.classList.remove('is-hidden');
+        this.elmProgress.classList.remove('is-shown');
+        this.elmProgress.classList.remove('is-hidden');
         // history.back連打によって、読み込まれた本文とlocation.pathnameが異なる場合、自動的に再度読み込みを行う。
         if (this.href !== location.pathname) {
           this.transitStart();
           return;
         }
         // Pjax遷移イベント設定
-        this.onPjaxLinks(this.contents);
+        this.onPjaxLinks(this.elmContents);
         this.init();
       }
     });
