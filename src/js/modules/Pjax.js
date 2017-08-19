@@ -36,7 +36,11 @@ export default class Pjax {
       case 'page02': this.page = page.page02; break;
       case 'page03': this.page = page.page03; break;
       default:
-        this.page = null
+        this.page = {
+          preload: function(callback) {
+            callback();
+          }
+        }
     }
   }
   init() {
@@ -69,12 +73,14 @@ export default class Pjax {
     window.scrollTo(0, 0);
 
     // Scroll Managerの初期化
-    setTimeout(() => {
-      this.scrollManager.initScrollItems();
-      this.scrollManager.initHookes();
-      this.scrollManager.start();
-      this.transitEnd();
-    }, 100);
+    this.page.preload(() => {
+      setTimeout(() => {
+        this.scrollManager.initScrollItems();
+        this.scrollManager.initHookes();
+        this.scrollManager.start();
+        this.transitEnd();
+      }, 100);
+    })
   }
   transitStart() {
     // ページ切り替え前の演出
