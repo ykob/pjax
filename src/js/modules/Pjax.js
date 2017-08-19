@@ -26,9 +26,13 @@ export default class Pjax {
     this.page = null;
     this.isAnimate = false;
     this.isPopState = false;
-    this.selectPageFunc();
-    this.init();
     this.on();
+  }
+  onLoad() {
+    this.selectPageFunc();
+    this.page.preload(() => {
+      this.transitEnd();
+    });
   }
   selectPageFunc() {
     switch (this.elmPage.dataset.pageId) {
@@ -40,7 +44,7 @@ export default class Pjax {
         this.page = page.blank;
     }
   }
-  init() {
+  initPage() {
     page.common(this.elmContents, this.scrollManager, this.isPageLoaded);
     this.page.init(this.elmContents, this.scrollManager);
   }
@@ -69,7 +73,7 @@ export default class Pjax {
     // ページの初期スクロール値を設定
     window.scrollTo(0, 0);
 
-    // Scroll Managerの初期化
+    // ページごとのプリロード処理とScroll Managerの初期化
     this.page.preload(() => {
       setTimeout(() => {
         this.scrollManager.initScrollItems();
@@ -77,7 +81,7 @@ export default class Pjax {
         this.scrollManager.start();
         this.transitEnd();
       }, 100);
-    })
+    });
   }
   transitStart() {
     // ページ切り替え前の演出
@@ -140,7 +144,7 @@ export default class Pjax {
         }
         // Pjax遷移イベント設定
         this.onPjaxLinks(this.elmContents);
-        this.init();
+        this.initPage();
       }
     });
 

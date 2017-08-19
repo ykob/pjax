@@ -5,6 +5,11 @@ const scrollManager = new ScrollManager();
 const pjax = new Pjax(scrollManager);
 
 const init = () => {
-  scrollManager.start();
+  pjax.elmProgress.classList.add('is-shown');
+  setTimeout(() => {
+    scrollManager.start(() => {
+      pjax.onLoad();
+    });
+  }, 500);
 }
 init();
