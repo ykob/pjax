@@ -65,6 +65,8 @@ export default class Pjax {
     // ページの中身を差し替え
     this.elmPage.dataset.pageId = responsePage.dataset.pageId;
     this.elmContents.innerHTML = responseContents.innerHTML;
+    this.elmFixedBefore.innerHTML = responseFixedBefore.innerHTML;
+    this.elmFixedAfter.innerHTML = responseFixedAfter.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
     // ページの初期化関数オブジェクトを選択
