@@ -29,12 +29,14 @@ export default class Pjax {
     this.on();
   }
   onLoad() {
+    // ページが最初に読み込まれた際の処理
     this.selectPageFunc();
     this.page.preload(() => {
       this.transitEnd();
     });
   }
   selectPageFunc() {
+    // ページごと個別に実行する関数の選択
     switch (this.elmPage.dataset.pageId) {
       case 'index':  this.page = page.index; break;
       case 'page01': this.page = page.page01; break;
@@ -49,6 +51,7 @@ export default class Pjax {
     this.page.init(this.elmContents, this.scrollManager);
   }
   send() {
+    // XMLHttpRequestの通信開始
     this.scrollManager.isWorkingSmooth = false;
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
@@ -103,6 +106,8 @@ export default class Pjax {
     }, 100);
   }
   on() {
+    // 各イベントの設定
+    // 非同期通信に関する処理
     this.xhr.onreadystatechange = () => {
       switch (this.xhr.readyState) {
         case 0: // UNSENT
@@ -123,12 +128,14 @@ export default class Pjax {
       }
     }
 
+    // History API 関連の処理
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
       history.scrollRestoration = 'manual';
       this.transitStart();
     });
 
+    // 遷移演出の途中または終了時の処理
     this.elmOverlay.addEventListener('transitionend', () => {
       if (this.elmOverlay.classList.contains('is-expand')) {
         // オーバーレイが展開したあとの処理
@@ -144,15 +151,17 @@ export default class Pjax {
           this.transitStart();
           return;
         }
-        // Pjax遷移イベント設定
+        // ページ遷移後の本文に対しての非同期遷移のイベント設定
         this.onPjaxLinks(this.elmContents);
         this.initPage();
       }
     });
 
+    // 初期ロード後の非同期遷移のイベント設定
     this.onPjaxLinks(document);
   }
   onPjaxLinks(content) {
+    // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
     const elms = content.querySelectorAll(CLASSNAME_LINK);
     for (var i = 0; i < elms.length; i++) {
       const elm = elms[i];
