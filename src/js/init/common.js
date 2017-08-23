@@ -12,7 +12,6 @@ module.exports = function(contents, scrollManager, isPageLoaded) {
 
   // 背景画像の演出
   const elmBg = document.querySelector('.js-background');
-  console.log(elmBg)
   elmBg.classList.add('is-scale')
 
   // ページロード直後とページ遷移後の初期化を区別

@@ -3,6 +3,5 @@ module.exports = {
     callback();
   },
   init: function(contents, scrollManager) {
-    console.log('index');
   }
 };

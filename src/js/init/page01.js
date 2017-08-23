@@ -3,8 +3,6 @@ module.exports = {
     callback();
   },
   init: function(contents, scrollManager) {
-    console.log('page01');
-
     const title = contents.querySelector('.p-lower-header__title');
     const excerpt = contents.querySelector('.p-lower-header__excerpt');
 
