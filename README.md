@@ -1,3 +1,3 @@
 # pjax
 
-My original class for pjax (Ajax + pushState).
+it is utility class for asynchronous transition. 
