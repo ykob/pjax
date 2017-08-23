@@ -1,18 +1,18 @@
 import debounce from 'js-util/debounce';
 import isiOS from 'js-util/isiOS';
 import isAndroid from 'js-util/isAndroid';
-import ScrollItem from './ScrollItem';
 import Hookes from './Hookes';
+import ScrollItems from './ScrollItems';
 
 const X_SWITCH_SMOOTH = 768;
 const contents = document.querySelector('.l-contents');
 const dummyScroll = document.querySelector('.js-dummy-scroll');
 
 export default class SmoothScrollManager {
-  constructor(opt) {
-    this.elmScrollItems = null;
-    this.scrollItems = [];
-    this.scrollTop = window.pageYOffset;
+  constructor() {
+    this.scrollItems = new ScrollItems(this);
+    this.scrollTop = 0;
+    this.scrollTopOnResize = 0;
     this.scrollFrame = 0;
     this.resolution = {
       x: 0,
@@ -22,25 +22,29 @@ export default class SmoothScrollManager {
       x: 0,
       y: 0
     };
+    this.hookes = {};
     this.scrollPrev = null;
     this.scrollNext = null;
     this.resizePrev = null;
     this.resizeNext = null;
     this.renderPrev = null;
     this.renderNext = null;
-    this.isWorking = (opt && opt.isWorking !== undefined) ? opt.isWorking : false;
-    this.isWorkingSmooth = (opt && opt.isWorkingSmooth !== undefined) ? opt.isWorkingSmooth : false;
-    this.isScrollOnLoad = false;
-    this.initScrollItems();
+    this.isWorking = false;
+    this.isWorkingSmooth = false;
+
+    this.scrollItems.init(document);
     this.initHookes();
     this.on();
   }
-  start() {
-    this.isWorking = true;
-    this.isWorkingSmooth = true;
-    this.renderLoop();
+  start(callback) {
     this.resize(() => {
+      this.scrollTop = this.scrollTopOnResize;
+      window.scrollTo(0, this.scrollTopOnResize);
+      this.isWorking = true;
+      this.isWorkingSmooth = true;
+      this.renderLoop();
       this.scroll();
+      if (callback) callback();
     });
   }
   initDummyScroll() {
@@ -49,89 +53,77 @@ export default class SmoothScrollManager {
       contents.classList.remove('is-fixed');
       dummyScroll.style.height = `0`;
     } else {
+      this.scrollTopOnResize = window.pageYOffset;
+      this.hookes.contents.velocity[1] = this.hookes.contents.anchor[1] = -this.scrollTopOnResize;
+      this.hookes.forParallax.velocity[1] = this.hookes.forParallax.anchor[1] = this.scrollTopOnResize;
       contents.classList.add('is-fixed');
       dummyScroll.style.height = `${contents.clientHeight}px`;
     }
   }
-  initScrollItems() {
-    this.scrollItems = [];
-    this.elmScrollItems = contents.getElementsByClassName('js-scroll-item');
-    if (this.elmScrollItems.length > 0) {
-      for (var i = 0; i < this.elmScrollItems.length; i++) {
-        this.scrollItems[i] = new ScrollItem(this.elmScrollItems[i]);
-      }
-    }
-  }
   initHookes() {
-    this.hookesContents = new Hookes(
-      [contents]
-    );
-    this.hookesElements1 = new Hookes(
-      contents.getElementsByClassName('js-parallax-1'),
-      { k: 0.07, d: 0.7 }
-    );
-    this.hookesElements2 = new Hookes(
-      contents.getElementsByClassName('js-parallax-2'),
-      { k: 0.07, d: 0.7 }
-    );
-    this.hookesElements3 = new Hookes(
-      contents.getElementsByClassName('js-parallax-3'),
-      { k: 0.07, d: 0.7 }
-    );
-    this.hookesElementsR1 = new Hookes(
-      contents.getElementsByClassName('js-parallax-r1'),
-      { k: 0.07, d: 0.7 }
-    );
-    this.hookesElementsR2 = new Hookes(
-      contents.getElementsByClassName('js-parallax-r2'),
-      { k: 0.07, d: 0.7 }
-    );
-    this.hookesElementsR10p = new Hookes(
-      contents.getElementsByClassName('js-parallax-r10p'),
-      { k: 0.07, d: 0.7, unit: '%', min: -10, max: 10 }
-    );
+    this.hookes = {
+      contents: new Hookes([contents]),
+      forParallax: new Hookes(null, { k: 0.07, d: 0.7 }),
+      elements1: new Hookes(
+        contents.querySelectorAll('.js-smooth-item-1'),
+        { k: 0.07, d: 0.7 }
+      ),
+      elements2: new Hookes(
+        contents.querySelectorAll('.js-smooth-item-2'),
+        { k: 0.07, d: 0.7 }
+      ),
+      elements3: new Hookes(
+        contents.querySelectorAll('.js-smooth-item-3'),
+        { k: 0.07, d: 0.7 }
+      ),
+      elementsR1: new Hookes(
+        contents.querySelectorAll('.js-smooth-item-r1'),
+        { k: 0.07, d: 0.7 }
+      ),
+      elementsR2: new Hookes(
+        contents.querySelectorAll('.js-smooth-item-r2'),
+        { k: 0.07, d: 0.7 }
+      ),
+      elementsR3: new Hookes(
+        contents.querySelectorAll('.js-smooth-item-r3'),
+        { k: 0.07, d: 0.7 }
+      ),
+    }
   }
   scrollBasis() {
-    for (var i = 0; i < this.scrollItems.length; i++) {
-      this.scrollItems[i].show(this.scrollTop + this.resolution.y, this.scrollTop);
-    }
     if (this.resolution.x > X_SWITCH_SMOOTH) {
-      this.hookesContents.anchor[1] = this.scrollTop * -1;
-      this.hookesElements1.velocity[1] += this.scrollFrame * 0.05;
-      this.hookesElements2.velocity[1] += this.scrollFrame * 0.1;
-      this.hookesElements3.velocity[1] += this.scrollFrame * 0.15;
-      this.hookesElementsR1.velocity[1] += this.scrollFrame * 0.05;
-      this.hookesElementsR2.velocity[1] += this.scrollFrame * 0.1;
-      this.hookesElementsR10p.velocity[1] += this.scrollFrame * -0.01;
+      this.hookes.contents.anchor[1] = this.scrollTop * -1;
+      this.hookes.forParallax.anchor[1] = this.scrollTop;
+      this.hookes.elements1.velocity[1] += this.scrollFrame * 0.05;
+      this.hookes.elements2.velocity[1] += this.scrollFrame * 0.1;
+      this.hookes.elements3.velocity[1] += this.scrollFrame * 0.15;
+      this.hookes.elementsR1.velocity[1] += this.scrollFrame * -0.05;
+      this.hookes.elementsR2.velocity[1] += this.scrollFrame * -0.1;
+      this.hookes.elementsR3.velocity[1] += this.scrollFrame * -0.15;
     }
   }
   scroll(event) {
+    if (this.isWorking === false) return;
     const pageYOffset = window.pageYOffset;
     this.scrollFrame = pageYOffset - this.scrollTop;
     this.scrollTop = pageYOffset;
-    if (!this.isScrollOnLoad) {
-      this.hookesContents.velocity[1] = (this.resolution.x > X_SWITCH_SMOOTH) ? -this.scrollTop : 0;
-      this.hookesContents.anchor[1] = (this.resolution.x > X_SWITCH_SMOOTH) ? -this.scrollTop : 0;
-      this.isScrollOnLoad = true;
-    }
-    if (this.isWorking === false) return;
     if (this.scrollPrev) this.scrollPrev();
     this.scrollBasis();
+    this.scrollItems.scroll();
     if (this.scrollNext) this.scrollNext();
   }
   resizeBasis() {
-    for (var i = 0; i < this.scrollItems.length; i++) {
-      this.scrollItems[i].init(this.scrollTop, this.resolution);
-    }
     if (this.resolution.x <= X_SWITCH_SMOOTH) {
-      this.hookesContents.anchor[1] = 0;
-      this.hookesContents.velocity[1] = 0;
-      this.hookesElements1.velocity[1] = 0;
-      this.hookesElements2.velocity[1] = 0;
-      this.hookesElements3.velocity[1] = 0;
-      this.hookesElementsR1.velocity[1] = 0;
-      this.hookesElementsR2.velocity[1] = 0;
-      this.hookesElementsR10p.velocity[1] = 0;
+      for (var key in this.hookes) {
+        switch (key) {
+          case 'contents':
+          case 'forParallax':
+            this.hookes[key].anchor[1] = this.hookes[key].velocity[1] = 0;
+            break;
+          default:
+            this.hookes[key].velocity[1] = 0;
+        }
+      }
     }
     this.initDummyScroll();
   }
@@ -142,21 +134,18 @@ export default class SmoothScrollManager {
     this.bodyResolution.y = document.body.clientHeight;
     if (this.resizePrev) this.resizePrev();
     setTimeout(() => {
-      this.scrollTop = window.pageYOffset;
       this.resizeBasis();
+      this.scrollItems.resize();
       if (this.resizeNext) this.resizeNext();
       if (callback) callback();
     }, 100);
   }
   render() {
     if (this.renderPrev) this.renderPrev();
-    this.hookesContents.render();
-    this.hookesElements1.render();
-    this.hookesElements2.render();
-    this.hookesElements3.render();
-    this.hookesElementsR1.render();
-    this.hookesElementsR2.render();
-    this.hookesElementsR10p.render();
+    for (var key in this.hookes) {
+      this.hookes[key].render();
+    }
+    this.scrollItems.render();
     if (this.renderNext) this.renderNext();
   }
   renderLoop() {
@@ -175,7 +164,6 @@ export default class SmoothScrollManager {
     }, false);
     window.addEventListener(hookEventForResize, debounce((event) => {
       this.resize();
-      this.scroll(event);
     }, 400), false);
   }
 }

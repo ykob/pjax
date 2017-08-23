@@ -81,7 +81,7 @@ export default class Pjax {
     // ページごとのプリロード処理とScroll Managerの初期化
     this.page.preload(() => {
       setTimeout(() => {
-        this.scrollManager.initScrollItems();
+        this.scrollManager.scrollItems.init(this.elmContents);
         this.scrollManager.initHookes();
         this.scrollManager.start();
         this.transitEnd();
