@@ -10,12 +10,15 @@ module.exports = function(contents, scrollManager, isPageLoaded) {
     new Hover(elmHover[i]);
   }
 
+  // 背景画像の演出
+  const elmBg = document.querySelector('.js-background');
+  console.log(elmBg)
+  elmBg.classList.add('is-scale')
+
   // ページロード直後とページ遷移後の初期化を区別
   if (!isPageLoaded) {
     // ページロード直後の初期化
-
   } else {
     // ページ遷移後の初期化
-
   }
 };

@@ -1,0 +1,29 @@
+.p-background-image {
+  position: fixed;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background-size: cover;
+  &--00 { background-image: url('../img/bg00.jpg'); }
+  &--01 { background-image: url('../img/bg01.jpg'); }
+  &--02 { background-image: url('../img/bg02.jpg'); }
+  &--03 { background-image: url('../img/bg03.jpg'); }
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  //
+  // Interaction
+  //
+  opacity: 0;
+  transform: scale(1.1);
+  transition-duration: 1s;
+  transition-timing-function: $easeOutCubic;
+  transition-property: transform, opacity;
+  &.is-scale {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
