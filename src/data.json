@@ -1,7 +1,7 @@
 {
   "meta": {
     "websiteName": "Pjax",
-    "keywords": "it is utility class for asynchronous transition.",
+    "keywords": "",
     "themeColor": "#111111"
   },
   "pages": {
@@ -9,7 +9,7 @@
       "id": "index",
       "title": "",
       "keywords": "",
-      "description": "",
+      "description": "it is utility class for asynchronous transition.",
       "path": "/",
       "ogpImg": "ogp.jpg"
     },
@@ -17,7 +17,7 @@
       "id": "page01",
       "title": "Page01",
       "keywords": "",
-      "description": "",
+      "description": "it is utility class for asynchronous transition.",
       "path": "/page01.html",
       "ogpImg": "ogp.jpg"
     },
@@ -25,7 +25,7 @@
       "id": "page02",
       "title": "Page02",
       "keywords": "",
-      "description": "",
+      "description": "it is utility class for asynchronous transition.",
       "path": "/page02.html",
       "ogpImg": "ogp.jpg"
     },
@@ -33,7 +33,7 @@
       "id": "page03",
       "title": "Page03",
       "keywords": "",
-      "description": "",
+      "description": "it is utility class for asynchronous transition.",
       "path": "/page03.html",
       "ogpImg": "ogp.jpg"
     }
