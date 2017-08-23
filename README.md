@@ -1,4 +1,4 @@
 # pjax
 
 it is utility class for asynchronous transition.   
-http://ykob.github.io/pjax/
+https://ykob.github.io/pjax/

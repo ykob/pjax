@@ -1,7 +1,7 @@
 // 設定ファイル
 // 対象パスやオプションを指定
 
-const DOMAIN = module.exports.DOMAIN = 'http://ykob.github.io';
+const DOMAIN = module.exports.DOMAIN = 'https://ykob.github.io';
 const DIR = module.exports.DIR =  {
   PATH: '/pjax',
   SRC: 'src',
