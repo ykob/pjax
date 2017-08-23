@@ -9,7 +9,7 @@
       "id": "index",
       "title": "",
       "keywords": "",
-      "description": "it is utility class for asynchronous transition.",
+      "description": "it is utility class that manage asynchronous transition on website.",
       "path": "/",
       "ogpImg": "ogp.jpg"
     },
@@ -17,7 +17,7 @@
       "id": "page01",
       "title": "Page01",
       "keywords": "",
-      "description": "it is utility class for asynchronous transition.",
+      "description": "it is utility class that manage asynchronous transition on website.",
       "path": "/page01.html",
       "ogpImg": "ogp.jpg"
     },
@@ -25,7 +25,7 @@
       "id": "page02",
       "title": "Page02",
       "keywords": "",
-      "description": "it is utility class for asynchronous transition.",
+      "description": "it is utility class that manage asynchronous transition on website.",
       "path": "/page02.html",
       "ogpImg": "ogp.jpg"
     },
@@ -33,7 +33,7 @@
       "id": "page03",
       "title": "Page03",
       "keywords": "",
-      "description": "it is utility class for asynchronous transition.",
+      "description": "it is utility class that manage asynchronous transition on website.",
       "path": "/page03.html",
       "ogpImg": "ogp.jpg"
     }
