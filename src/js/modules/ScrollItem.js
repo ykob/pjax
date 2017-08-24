@@ -1,11 +1,11 @@
 export default class ScrollItem {
   constructor(elm) {
     this.elm = elm;
-    this.elmChildren = elm.getElementsByClassName('js-scroll-item-child');
+    this.elmChildren = elm.querySelectorAll('js-scroll-item-child');
     this.top = 0;
     this.bottom = 0;
   }
-  init(scrollTop, resolution) {
+  init(scrollTop) {
     const rect = this.elm.getBoundingClientRect();
     this.top = scrollTop + rect.top;
     this.bottom = this.top + rect.height;

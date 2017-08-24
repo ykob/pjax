@@ -12,7 +12,7 @@ export default class ScrollItems {
     this.elmScrollItems = contents.querySelectorAll('.js-scroll-item');
     this.scrollItems = [];
     for (var i = 0; i < this.elmScrollItems.length; i++) {
-      this.scrollItems[i] = new ScrollItem(this.elmScrollItems[i], this.scrollManager);
+      this.scrollItems[i] = new ScrollItem(this.elmScrollItems[i]);
     }
   }
   scroll() {
@@ -24,8 +24,9 @@ export default class ScrollItems {
     }
   }
   resize() {
+    const scrollTop = window.pageYOffset;
     for (var i = 0; i < this.scrollItems.length; i++) {
-      this.scrollItems[i].init(this.scrollManager.scrollTop, this.scrollManager.resolution);
+      this.scrollItems[i].init(scrollTop);
     }
   }
   render() {

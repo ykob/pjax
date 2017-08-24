@@ -38,12 +38,9 @@ export default class SmoothScrollManager {
   }
   start(callback) {
     this.resize(() => {
-      this.scrollTop = this.scrollTopOnResize;
-      window.scrollTo(0, this.scrollTopOnResize);
-      this.isWorking = true;
+      this.scroll();
       this.isWorkingSmooth = true;
       this.renderLoop();
-      this.scroll();
       if (callback) callback();
     });
   }
@@ -53,12 +50,10 @@ export default class SmoothScrollManager {
       contents.classList.remove('is-fixed');
       dummyScroll.style.height = `0`;
     } else {
-      this.scrollTopOnResize = window.pageYOffset;
-      this.hookes.contents.velocity[1] = this.hookes.contents.anchor[1] = -this.scrollTopOnResize;
-      this.hookes.forParallax.velocity[1] = this.hookes.forParallax.anchor[1] = this.scrollTopOnResize;
       contents.classList.add('is-fixed');
       dummyScroll.style.height = `${contents.clientHeight}px`;
     }
+    this.render();
   }
   initHookes() {
     this.hookes = {
@@ -124,19 +119,26 @@ export default class SmoothScrollManager {
             this.hookes[key].velocity[1] = 0;
         }
       }
+    } else {
+      this.hookes.contents.velocity[1] = this.hookes.contents.anchor[1] = -this.scrollTop;
+      this.hookes.forParallax.velocity[1] = this.hookes.forParallax.anchor[1] = this.scrollTop;
     }
     this.initDummyScroll();
   }
   resize(callback) {
+    this.isWorking = false;
     this.resolution.x = window.innerWidth;
     this.resolution.y = window.innerHeight;
     this.bodyResolution.x = document.body.clientWidth;
     this.bodyResolution.y = document.body.clientHeight;
+    this.scrollTop = window.pageYOffset;
     if (this.resizePrev) this.resizePrev();
     setTimeout(() => {
       this.resizeBasis();
       this.scrollItems.resize();
       if (this.resizeNext) this.resizeNext();
+      window.scrollTo(0, this.scrollTop);
+      this.isWorking = true;
       if (callback) callback();
     }, 100);
   }
@@ -145,7 +147,7 @@ export default class SmoothScrollManager {
     for (var key in this.hookes) {
       this.hookes[key].render();
     }
-    this.scrollItems.render();
+    this.scrollItems.render(this.resolution.x > X_SWITCH_SMOOTH);
     if (this.renderNext) this.renderNext();
   }
   renderLoop() {
