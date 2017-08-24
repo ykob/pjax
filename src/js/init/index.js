@@ -1,6 +1,10 @@
+import loadImage from '../modules/loadImage';
+
 module.exports = {
   preload: function(callback) {
-    callback();
+    loadImage([
+      '/pjax/img/index/bg.jpg'
+    ], callback);
   },
   init: function(contents, scrollManager) {
   }

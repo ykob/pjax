@@ -1,6 +1,10 @@
+import loadImage from '../modules/loadImage';
+
 module.exports = {
   preload: function(callback) {
-    callback();
+    loadImage([
+      '/pjax/img/page03/bg.jpg'
+    ], callback);
   },
   init: function(contents, scrollManager) {
     const title = contents.querySelector('.p-lower-header__title');
