@@ -1,13 +1,25 @@
 .c-section {
-  margin-top: 100 / (20 / 26 * 1366) * 100%;
-  margin-right: (3 / 26) * 100%;
-  margin-left: (3 / 26) * 100%;
-  text-align: justify;
+  @include l-pc {
+    margin-top: 100 / (20 / 26 * 1366) * 100%;
+    margin-right: (3 / 26) * 100%;
+    margin-left: (3 / 26) * 100%;
+    text-align: justify;
+  }
+  @include l-tablet {
+    margin-top: 100px;
+    margin-right: 40px;
+    margin-left: 40px;
+  }
+  @include l-mobile {
+    margin-top: 50px;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
   &:first-of-type {
     margin-top: 0;
   }
   p {
-    margin-top: 2em;
+    margin-top: 0;
     margin-bottom: 2em;
   }
 }

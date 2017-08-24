@@ -3,7 +3,5 @@
   margin-bottom: 0.5em;
   @include fontSizeAll(36, 28, 21);
   font-weight: 400;
-  @include l-more-than-mobile {
-    text-align: center;
-  }
+  text-align: center;
 }

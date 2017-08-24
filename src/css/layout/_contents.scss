@@ -9,12 +9,28 @@
     top: 0; right: 0; left: 0;
   }
   &__in {
-    margin-right: 10%;
-    margin-bottom: (200 / 1366) * 100%;
-    margin-left: 10%;
-    padding-top: (100 / 1366) * 100%;
-    padding-bottom: (100 / 1366) * 100%;
     background-color: #fff;
+    @include l-pc {
+      margin-right: 10%;
+      margin-bottom: (200 / 1366) * 100%;
+      margin-left: 10%;
+      padding-top: (100 / 1366) * 100%;
+      padding-bottom: (100 / 1366) * 100%;
+    }
+    @include l-tablet {
+      margin-right: 30px;
+      margin-bottom: 200px;
+      margin-left: 30px;
+      padding-top: 100px;
+      padding-bottom: 100px;
+    }
+    @include l-mobile {
+      margin-right: 15px;
+      margin-bottom: 100px;
+      margin-left: 15px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
     &--index {
       margin-top: -50px;
     }
