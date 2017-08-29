@@ -2,7 +2,8 @@ module.exports = {
   preload: function(callback) {
     callback();
   },
-  init: function() {
-    console.log('blank');
-  }
+  init: function(contents, scrollManager) {
+  },
+  initAfterTransit: function(contents, scrollManager) {
+  },
 }

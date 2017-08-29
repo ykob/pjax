@@ -32,6 +32,10 @@ export default class Pjax {
     // ページが最初に読み込まれた際の処理
     this.selectPageFunc();
     this.page.preload(() => {
+      // ページごとの、遷移演出終了前に実行する初期化処理
+      page.common(this.elmContents, this.scrollManager, this.isPageLoaded);
+      this.page.init(this.elmContents, this.scrollManager);
+      // 遷移演出の終了
       this.transitEnd();
     });
   }
@@ -45,10 +49,6 @@ export default class Pjax {
       default:
         this.page = page.blank;
     }
-  }
-  initPage() {
-    page.common(this.elmContents, this.scrollManager, this.isPageLoaded);
-    this.page.init(this.elmContents, this.scrollManager);
   }
   send() {
     // XMLHttpRequestの通信開始
@@ -78,6 +78,10 @@ export default class Pjax {
 
     // ページの初期スクロール値を設定
     window.scrollTo(0, 0);
+
+    // ページごとの、遷移演出終了前に実行する初期化処理
+    page.common(this.elmContents, this.scrollManager, this.isPageLoaded);
+    this.page.init(this.elmContents, this.scrollManager);
 
     // ページごとのプリロード処理とScroll Managerの初期化
     this.page.preload(() => {
@@ -154,7 +158,8 @@ export default class Pjax {
         }
         // ページ遷移後の本文に対しての非同期遷移のイベント設定
         this.onPjaxLinks(this.elmContents);
-        this.initPage();
+        // ページごとの、遷移演出終了後に実行する初期化処理
+        this.page.initAfterTransit(this.elmContents, this.scrollManager);
       }
     });
 

@@ -7,5 +7,10 @@ module.exports = {
     ], callback);
   },
   init: function(contents, scrollManager) {
-  }
-};
+  },
+  initAfterTransit: function(contents, scrollManager) {
+    const elmBg = document.querySelector('.js-background');
+
+    elmBg.classList.add('is-scale')
+  },
+}
