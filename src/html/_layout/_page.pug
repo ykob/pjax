@@ -8,7 +8,7 @@ html(lang="ja")
   head
     include ./_head.pug
   body
-    .l-page(data-page-id=page.id)
+    .l-page.js-pjax-page(data-page-id=page.id)
       .js-pjax-fixed-before
         block contentFixedBefore
       .l-contents

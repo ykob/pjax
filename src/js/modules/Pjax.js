@@ -1,4 +1,5 @@
 const CLASSNAME_LINK = '.js-pjax-link';
+const CLASSNAME_PAGE = '.js-pjax-page';
 const CLASSNAME_CONTENTS = '.js-pjax-contents';
 const CLASSNAME_FIXED_BEFORE = '.js-pjax-fixed-before';
 const CLASSNAME_FIXED_AFTER = '.js-pjax-fixed-after';
@@ -16,7 +17,7 @@ export default class Pjax {
   constructor(scrollManager) {
     this.scrollManager = scrollManager;
     this.xhr = new XMLHttpRequest();
-    this.elmPage = document.querySelector('.l-page');
+    this.elmPage = document.querySelector(CLASSNAME_PAGE);
     this.elmContents = document.querySelector(CLASSNAME_CONTENTS);
     this.elmFixedBefore = document.querySelector(CLASSNAME_FIXED_BEFORE);
     this.elmFixedAfter = document.querySelector(CLASSNAME_FIXED_AFTER);
@@ -60,7 +61,7 @@ export default class Pjax {
     // 次のページを取得
     const responseHtml = document.createElement('div');
     responseHtml.innerHTML = this.xhr.responseText;
-    const responsePage = responseHtml.querySelector('.l-page');
+    const responsePage = responseHtml.querySelector(CLASSNAME_PAGE);
     const responseContents = responseHtml.querySelector(CLASSNAME_CONTENTS);
     const responseFixedBefore = responseHtml.querySelector(CLASSNAME_FIXED_BEFORE);
     const responseFixedAfter = responseHtml.querySelector(CLASSNAME_FIXED_AFTER);
