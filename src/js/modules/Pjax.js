@@ -25,7 +25,6 @@ export default class Pjax {
     this.href = location.pathname;
     this.page = null;
     this.isAnimate = false;
-    this.isPopState = false;
     this.on();
   }
   onLoad() {
