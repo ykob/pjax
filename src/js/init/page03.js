@@ -6,12 +6,12 @@ module.exports = {
       '/pjax/img/page03/bg.jpg'
     ], callback);
   },
-  init: function(contents, scrollManager) {
+  init: function(contents, fixedBefore, fixedAfter, scrollManager) {
   },
-  initAfterTransit: function(contents, scrollManager) {
+  initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
     const title = contents.querySelector('.p-lower-header__title');
     const excerpt = contents.querySelector('.p-lower-header__excerpt');
-    const elmBg = document.querySelector('.js-background');
+    const elmBg = fixedAfter.querySelector('.js-background');
 
     title.classList.add('is-shown');
     excerpt.classList.add('is-shown');

@@ -6,10 +6,10 @@ module.exports = {
       '/pjax/img/index/bg.jpg'
     ], callback);
   },
-  init: function(contents, scrollManager) {
+  init: function(contents, fixedBefore, fixedAfter, scrollManager) {
   },
-  initAfterTransit: function(contents, scrollManager) {
-    const elmBg = document.querySelector('.js-background');
+  initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
+    const elmBg = fixedAfter.querySelector('.js-background');
 
     elmBg.classList.add('is-scale')
   },
