@@ -126,7 +126,8 @@ export default class Pjax {
         case 4: // DONE
           if (this.xhr.status == 200) {
             this.replaceContent();
-          } else {
+          } else if (this.xhr.status == 404) {
+            this.replaceContent();
           }
           break;
         default:
