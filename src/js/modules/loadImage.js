@@ -4,10 +4,10 @@ export default function(imageArray, callback) {
 
   for (var i = 0; i < length; i++) {
     const img = new Image();
-    img.addEventListener('load', () => {
+    img.onload = () => {
       count++;
       if (count >= length) callback();
-    })
+    };
     img.src = imageArray[i];
   }
 }
