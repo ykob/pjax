@@ -7,9 +7,7 @@ const pjax = new Pjax(scrollManager);
 const init = () => {
   pjax.elmProgress.classList.add('is-shown');
   setTimeout(() => {
-    scrollManager.start(() => {
-      pjax.onLoad();
-    });
+    pjax.onLoad();
   }, 500);
 }
 init();

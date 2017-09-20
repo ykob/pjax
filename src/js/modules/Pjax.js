@@ -39,11 +39,14 @@ export default class Pjax {
       page.common.init(document, null, null, this.scrollManager, this.isPageLoaded);
       this.page.init(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
 
-      // 遷移演出の終了
-      this.transitEnd();
+      // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
+      this.scrollManager.start(() => {
+        // 遷移演出の終了
+        this.transitEnd();
 
-      // ロード完了のフラグを立てる
-      this.isPageLoaded = true;
+        // ロード完了のフラグを立てる
+        this.isPageLoaded = true;
+      });
     });
   }
   selectPageFunc() {
