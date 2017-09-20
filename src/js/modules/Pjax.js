@@ -26,6 +26,7 @@ export default class Pjax {
     this.href = location.pathname;
     this.page = null;
     this.isAnimate = false;
+    this.isPageLoaded = false;
     this.on();
   }
   onLoad() {
@@ -40,6 +41,9 @@ export default class Pjax {
 
       // 遷移演出の終了
       this.transitEnd();
+
+      // ロード完了のフラグを立てる
+      this.isPageLoaded = true;
     });
   }
   selectPageFunc() {
