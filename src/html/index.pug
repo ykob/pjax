@@ -11,9 +11,11 @@ block contentStatic
     .p-index-header__in
       h1.p-index-header__title
         |Pjax
-      p.p-index-header__excerpt.js-parallax-1
+      p.p-index-header__excerpt.js-smooth-item
         |it is utility class that manage asynchronous transition on website.
-      .p-index-header__btn.js-parallax-2
+      .p-index-header__btn.js-smooth-item(
+        data-ratio = 0.1
+        )
         a.c-button-border.c-button-border--white.js-scroll-item.js-hover(
           href = 'https://github.com/ykob/pjax',
           target = '_blank'
