@@ -84,9 +84,6 @@ export default class Pjax {
     this.elmFixedAfter.innerHTML = responseFixedAfter.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
-    // 差し替えたページの本文に対しての非同期遷移のイベント設定
-    this.onPjaxLinks(this.elmContents, this.elmFixedBefore, this.elmFixedAfter);
-
     // ページの初期化関数オブジェクトを選択
     this.selectPageFunc();
 
@@ -98,6 +95,9 @@ export default class Pjax {
       // ページごとの、遷移演出終了前に実行する初期化処理
       page.common.init(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager, this.isPageLoaded);
       this.page.init(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
+
+      // 差し替えたページの本文に対しての非同期遷移のイベント設定
+      this.onPjaxLinks(this.elmContents, this.elmFixedBefore, this.elmFixedAfter);
 
       // Scroll Managerの初期化
       this.scrollManager.initHookes();
