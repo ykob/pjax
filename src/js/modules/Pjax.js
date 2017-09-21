@@ -1,4 +1,5 @@
 const CLASSNAME_LINK = '.js-pjax-link';
+const CLASSNAME_LINK_MOMENT = '.js-pjax-link-moment';
 const CLASSNAME_PAGE = '.js-pjax-page';
 const CLASSNAME_CONTENTS = '.js-pjax-contents';
 const CLASSNAME_FIXED_BEFORE = '.js-pjax-fixed-before';
@@ -83,6 +84,9 @@ export default class Pjax {
     this.elmFixedAfter.innerHTML = responseFixedAfter.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
+    // 差し替えたページの本文に対しての非同期遷移のイベント設定
+    this.onPjaxLinks(this.elmContents, this.elmFixedBefore, this.elmFixedAfter);
+
     // ページの初期化関数オブジェクトを選択
     this.selectPageFunc();
 
@@ -104,14 +108,23 @@ export default class Pjax {
       this.transitEnd();
     });
   }
-  transitStart() {
+  transitStart(withAnime) {
     // ページ切り替え前の演出
     if (this.isAnimate) return;
     this.isAnimate = true;
     this.scrollManager.isWorking = false;
     this.elmOverlay.classList.remove('is-shrink');
-    this.elmOverlay.classList.add('is-expand');
-    this.elmProgress.classList.add('is-shown');
+
+    // オーバーレイのアニメを省略するか否かの判定
+    if (withAnime) {
+      this.elmOverlay.classList.add('is-expand');
+      this.elmProgress.classList.add('is-shown');
+    } else {
+      this.elmOverlay.classList.add('is-expand-moment');
+      this.elmProgress.classList.add('is-shown-moment');
+      this.href = this.gNavPc.currentPath = this.gNavSp.currentPath = location.pathname;
+      this.send();
+    }
   }
   transitEnd() {
     // ページ切り替え後の演出
@@ -168,8 +181,6 @@ export default class Pjax {
           this.transitStart();
           return;
         }
-        // ページ遷移後の本文に対しての非同期遷移のイベント設定
-        this.onPjaxLinks(this.elmContents);
         // ページごとの、遷移演出終了後に実行する初期化処理
         page.common.initAfterTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
         this.page.initAfterTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
@@ -179,18 +190,48 @@ export default class Pjax {
     // 初期ロード後の非同期遷移のイベント設定
     this.onPjaxLinks(document);
   }
-  onPjaxLinks(content) {
+  onPjaxLinks(content, fixedBefore, fixedAfter) {
     // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
-    const elms = content.querySelectorAll(CLASSNAME_LINK);
+    const elms = [
+      content.querySelectorAll(CLASSNAME_LINK),
+      (fixedBefore) ? fixedBefore.querySelectorAll(CLASSNAME_LINK) : [],
+      (fixedAfter) ? fixedAfter.querySelectorAll(CLASSNAME_LINK) : [],
+    ];
+    const elmsMoment = [
+      content.querySelectorAll(CLASSNAME_LINK_MOMENT),
+      (fixedBefore) ? fixedBefore.querySelectorAll(CLASSNAME_LINK_MOMENT) : [],
+      (fixedAfter) ? fixedAfter.querySelectorAll(CLASSNAME_LINK_MOMENT) : [],
+    ];
+
+    const transit = (href, withAnime) => {
+      if (href == location.pathname) {
+        this.gNavSp.closeNavi();
+        return;
+      }
+      history.pushState(null, null, href);
+      this.transitStart(withAnime);
+      this.gNavPc.hideChildren();
+    };
+
     for (var i = 0; i < elms.length; i++) {
-      const elm = elms[i];
-      const href = elm.getAttribute('href');
-      elm.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (href == location.pathname) return;
-        history.pushState(null, null, href);
-        this.transitStart();
-      });
+      for (var j = 0; j < elms[i].length; j++) {
+        const elm = elms[i][j];
+        const href = elm.getAttribute('href');
+        elm.addEventListener('click', (event) => {
+          event.preventDefault();
+          transit(href, true);
+        });
+      }
+    }
+    for (var i = 0; i < elms.length; i++) {
+      for (var j = 0; j < elmsMoment[i].length; j++) {
+        const elm = elmsMoment[i][j];
+        const href = elm.getAttribute('href');
+        elm.addEventListener('click', (event) => {
+          event.preventDefault();
+          transit(href, false);
+        });
+      }
     }
   }
 }
