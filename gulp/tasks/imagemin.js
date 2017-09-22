@@ -1,4 +1,3 @@
-// imagemin with pngquant
 const gulp = require('gulp');
 const pngquant = require('imagemin-pngquant');
 const mozjpeg = require('imagemin-mozjpeg');
