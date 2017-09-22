@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="https://ykob.github.io/pjax/img/common/ogp.jpg">
   </head>
   <body>
-    <div class="l-page" data-page-id="index">
+    <div class="l-page js-pjax-page" data-page-id="index">
       <div class="js-pjax-fixed-before">
       </div>
       <div class="l-contents">
@@ -33,8 +33,8 @@
           <div class="p-index-header">
             <div class="p-index-header__in">
               <h1 class="p-index-header__title">Pjax</h1>
-              <p class="p-index-header__excerpt js-parallax-1">it is utility class that manage asynchronous transition on website.</p>
-              <div class="p-index-header__btn js-parallax-2"><a class="c-button-border c-button-border--white js-scroll-item js-hover" href="https://github.com/ykob/pjax" target="_blank"><span class="c-button-border__label">view source</span><span class="c-button-border__line-v"></span><span class="c-button-border__line-h"></span></a></div>
+              <p class="p-index-header__excerpt js-smooth-item">it is utility class that manage asynchronous transition on website.</p>
+              <div class="p-index-header__btn js-smooth-item" data-ratio="0.1"><a class="c-button-border c-button-border--white js-scroll-item js-hover" href="https://github.com/ykob/pjax" target="_blank"><span class="c-button-border__label">view source</span><span class="c-button-border__line-v"></span><span class="c-button-border__line-h"></span></a></div>
             </div>
           </div>
           <div class="l-contents__in l-contents__in--index">
@@ -69,6 +69,6 @@
       </div>
       <div class="l-gf"></div>
     </div>
-    <script src="/pjax/js/main.min.js"></script>
+    <script src="/pjax/js/main.min.js" async></script>
   </body>
 </html>
