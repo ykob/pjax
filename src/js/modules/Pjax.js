@@ -122,7 +122,7 @@ export default class Pjax {
     } else {
       this.elmOverlay.classList.add('is-expand-moment');
       this.elmProgress.classList.add('is-shown-moment');
-      this.href = this.gNavPc.currentPath = this.gNavSp.currentPath = location.pathname;
+      this.href = location.pathname;
       this.send();
     }
   }
@@ -205,12 +205,10 @@ export default class Pjax {
 
     const transit = (href, withAnime) => {
       if (href == location.pathname) {
-        this.gNavSp.closeNavi();
         return;
       }
       history.pushState(null, null, href);
       this.transitStart(withAnime);
-      this.gNavPc.hideChildren();
     };
 
     for (var i = 0; i < elms.length; i++) {
