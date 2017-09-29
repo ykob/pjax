@@ -162,7 +162,7 @@ export default class Pjax {
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
       history.scrollRestoration = 'manual';
-      this.transitStart();
+      this.transitStart(true);
     });
 
     // 遷移演出の途中または終了時の処理
@@ -178,7 +178,7 @@ export default class Pjax {
         this.elmProgress.classList.remove('is-hidden');
         // history.back連打によって、読み込まれた本文とlocation.pathnameが異なる場合、自動的に再度読み込みを行う。
         if (this.href !== location.pathname) {
-          this.transitStart();
+          this.transitStart(true);
           return;
         }
         // ページごとの、遷移演出終了後に実行する初期化処理
