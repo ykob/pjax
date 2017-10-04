@@ -1,7 +1,7 @@
 import loadImage from '../modules/loadImage';
 
 module.exports = {
-  preload: function(callback) {
+  preload: function(contents, fixedBefore, fixedAfter, scrollManager, callback) {
     loadImage([
       '/pjax/img/page01/bg.jpg'
     ], callback);

@@ -2,7 +2,7 @@ import loadImage from '../modules/loadImage';
 
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.
-  preload: function(callback) {
+  preload: function(contents, fixedBefore, fixedAfter, scrollManager, callback) {
     loadImage([
       '/pjax/img/index/bg.jpg'
     ], callback);

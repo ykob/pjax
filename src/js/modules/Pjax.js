@@ -35,7 +35,7 @@ export default class Pjax {
     this.selectPageFunc();
 
     // ページごとのプリロード処理
-    this.page.preload(() => {
+    this.page.preload(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager, () => {
       // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
       this.scrollManager.start(() => {
         // ページごとの、遷移演出終了前に実行する初期化処理
@@ -91,7 +91,7 @@ export default class Pjax {
     window.scrollTo(0, 0);
 
     // ページごとのプリロード処理
-    this.page.preload(() => {
+    this.page.preload(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager, () => {
       // 差し替えたページの本文に対しての非同期遷移のイベント設定
       this.onPjaxLinks(this.elmContents, this.elmFixedBefore, this.elmFixedAfter);
 
