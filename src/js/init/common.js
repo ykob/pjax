@@ -1,7 +1,7 @@
 import Hover from 'js-util/Hover.js';
 
 module.exports = {
-  init: function(contents, fixedBefore, fixedAfter, scrollManager, isPageLoaded) {
+  initBeforeTransit: function(contents, fixedBefore, fixedAfter, scrollManager, isPageLoaded) {
     // hover演出のためのclassをjsで付与
     const elmHover = contents.querySelectorAll('.js-hover');
     for (var i = 0; i < elmHover.length; i++) {

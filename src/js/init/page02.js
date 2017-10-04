@@ -1,13 +1,16 @@
 import loadImage from '../modules/loadImage';
 
 module.exports = {
+  // preload method: after content is replaced. / before scrollManager.resize run.
   preload: function(callback) {
     loadImage([
       '/pjax/img/page02/bg.jpg'
     ], callback);
   },
-  init: function(contents, fixedBefore, fixedAfter, scrollManager) {
+  // initBeforeTransit method: after scrollManager.resize run. / before page transition.
+  initBeforeTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
   },
+  // initAfterTransit method: after page transition.
   initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
     const title = contents.querySelector('.p-lower-header__title');
     const excerpt = contents.querySelector('.p-lower-header__excerpt');

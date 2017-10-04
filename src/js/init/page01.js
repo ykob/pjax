@@ -6,8 +6,10 @@ module.exports = {
       '/pjax/img/page01/bg.jpg'
     ], callback);
   },
-  init: function(contents, fixedBefore, fixedAfter, scrollManager) {
+  // initBeforeTransit method: after scrollManager.resize run. / before page transition.
+  initBeforeTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
   },
+  // initAfterTransit method: after page transition.
   initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
     const title = contents.querySelector('.p-lower-header__title');
     const excerpt = contents.querySelector('.p-lower-header__excerpt');
