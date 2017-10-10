@@ -149,7 +149,11 @@ export default class Pjax {
           if (this.xhr.status == 200) {
             this.replaceContent();
           } else if (this.xhr.status == 404) {
+            console.error('Async request by Pjax has error, 404 not found.');
             this.replaceContent();
+          } else if (this.xhr.status == 500) {
+            console.error('Async request by Pjax has error, 500 Internal Server Error.');
+            return;
           }
           break;
         default:
