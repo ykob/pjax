@@ -1,4 +1,4 @@
-import ScrollManager from './modules/SmoothScrollManager';
+import ScrollManager from './modules/smooth_scroll_manager/SmoothScrollManager';
 import Pjax from './modules/Pjax';
 
 const scrollManager = new ScrollManager();
