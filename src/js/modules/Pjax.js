@@ -42,6 +42,9 @@ export default class Pjax {
         page.common.initBeforeTransit(document, null, null, this.scrollManager, this.isPageLoaded);
         this.page.initBeforeTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
 
+        // 初期ロード後の非同期遷移のイベント設定
+        this.onPjaxLinks(document);
+
         // 遷移演出の終了
         this.transitEnd();
 
@@ -188,9 +191,6 @@ export default class Pjax {
         this.page.initAfterTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
       }
     });
-
-    // 初期ロード後の非同期遷移のイベント設定
-    this.onPjaxLinks(document);
   }
   onPjaxLinks(content, fixedBefore, fixedAfter) {
     // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
