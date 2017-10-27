@@ -4,7 +4,7 @@ import isAndroid from 'js-util/isAndroid';
 import Hookes from './Hookes';
 import ScrollItems from './ScrollItems';
 
-const X_SWITCH_SMOOTH = 768;
+const X_SWITCH_SMOOTH = 1024;
 const contents = document.querySelector('.l-contents');
 const dummyScroll = document.querySelector('.js-dummy-scroll');
 
@@ -24,6 +24,7 @@ export default class SmoothScrollManager {
     this.hookes = {};
     this.scrollPrev = null;
     this.scrollNext = null;
+    this.resizeReset = null;
     this.resizePrev = null;
     this.resizeNext = null;
     this.renderPrev = null;
@@ -74,6 +75,8 @@ export default class SmoothScrollManager {
       this.hookes.smooth.velocity[1] += this.scrollFrame;
       this.hookes.parallax.anchor[1] = this.scrollTop + this.resolution.y * 0.5;
     }
+    // ScrollItems のスクロールメソッドを実行
+    this.scrollItems.scroll();
   }
   scroll(event) {
     // スクロールイベントの一連の流れ
@@ -86,16 +89,19 @@ export default class SmoothScrollManager {
     // 個別のスクロールイベントを実行
     if (this.scrollPrev) this.scrollPrev();
     this.scrollBasis();
-    this.scrollItems.scroll();
     if (this.scrollNext) this.scrollNext();
   }
   resizeBasis() {
     // 基礎的なリサイズイベントはここに記述する。
+    // ScrollItems のリサイズメソッドを実行
+    this.scrollItems.resize();
   }
   resize(callback) {
     // リサイズイベントの一連の流れ
     // リサイズ中にスクロールイベントが勝手に叩かれるのをキャンセル
     this.isWorking = false;
+    // リサイズイベントに関する要素の一時リセット
+    if (this.resizeReset) this.resizeReset();
     // 各値を取得
     this.scrollTop = window.pageYOffset;
     this.resolution.x = window.innerWidth;
@@ -106,7 +112,7 @@ export default class SmoothScrollManager {
     if (this.resolution.x > X_SWITCH_SMOOTH) {
       // PCの場合
       this.hookes.contents.velocity[1] = this.hookes.contents.anchor[1] = -this.scrollTop;
-      this.hookes.parallax.velocity[1] = this.hookes.parallax.anchor[1] = this.scrollTop;
+      this.hookes.parallax.velocity[1] = this.hookes.parallax.anchor[1] = this.scrollTop + this.resolution.y * 0.5;
     } else {
       // スマホの場合
       for (var key in this.hookes) {
@@ -127,7 +133,6 @@ export default class SmoothScrollManager {
     // 個別のリサイズイベントを実行
     if (this.resizePrev) this.resizePrev();
     this.resizeBasis();
-    this.scrollItems.resize();
     if (this.resizeNext) this.resizeNext();
     // スクロールイベントを再開
     this.isWorking = true;
@@ -136,7 +141,8 @@ export default class SmoothScrollManager {
   render() {
     if (this.renderPrev) this.renderPrev();
     // 本文全体のラッパー(contents)をレンダリング
-    contents.style.transform = `translate3D(0, ${this.hookes.contents.velocity[1]}px, 0)`;
+    const y = Math.floor(this.hookes.contents.velocity[1] * 1000) / 1000;
+    contents.style.transform = `translate3D(0, ${y}px, 0)`;
     // Hookesオブジェクトをレンダリング
     for (var key in this.hookes) {
       this.hookes[key].render();
@@ -166,6 +172,7 @@ export default class SmoothScrollManager {
   off() {
     this.scrollPrev = null;
     this.scrollNext = null;
+    this.resizeReset = null;
     this.resizePrev = null;
     this.resizeNext = null;
     this.renderPrev = null;
