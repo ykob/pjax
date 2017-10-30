@@ -20,4 +20,7 @@ module.exports = {
     excerpt.classList.add('is-shown');
     elmBg.classList.add('is-scale')
   },
+  // clear any variables.
+  clear: function() {
+  },
 }

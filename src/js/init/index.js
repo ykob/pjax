@@ -1,5 +1,7 @@
 import loadImage from '../modules/loadImage';
 
+let elmBg = null;
+
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.
   preload: function(contents, fixedBefore, fixedAfter, scrollManager, callback) {
@@ -12,8 +14,11 @@ module.exports = {
   },
   // initAfterTransit method: after page transition.
   initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
-    const elmBg = fixedAfter.querySelector('.js-background');
-
+    elmBg = fixedAfter.querySelector('.js-background');
     elmBg.classList.add('is-scale')
+  },
+  // clear any variables.
+  clear: function() {
+    elmBg = null;
   },
 }

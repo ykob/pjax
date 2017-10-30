@@ -9,4 +9,7 @@ module.exports = {
   // initAfterTransit method: after page transition.
   initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
   },
+  // clear any variables.
+  clear: function() {
+  },
 }

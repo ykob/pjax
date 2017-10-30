@@ -72,6 +72,9 @@ export default class Pjax {
     this.xhr.send();
   }
   replaceContent() {
+    // 前ページの変数を空にするclear関数を実行
+    this.page.clear();
+
     // 次のページを取得
     const responseHtml = document.createElement('div');
     responseHtml.innerHTML = this.xhr.responseText;
