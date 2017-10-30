@@ -87,6 +87,9 @@ export default class Pjax {
     this.elmFixedAfter.innerHTML = responseFixedAfter.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
+    // Google Analytics の集計処理。
+    if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
+
     // ページの初期化関数オブジェクトを選択
     this.selectPageFunc();
 
