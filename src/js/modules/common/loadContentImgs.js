@@ -1,4 +1,4 @@
-import loadImage from './loadImage';
+const loadImage = require('./loadImage').default;
 
 export default function(contents, callback) {
   const imgs = contents.querySelectorAll('img');

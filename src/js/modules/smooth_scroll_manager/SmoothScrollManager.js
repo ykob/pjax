@@ -1,8 +1,8 @@
-import debounce from 'js-util/debounce';
-import isiOS from 'js-util/isiOS';
-import isAndroid from 'js-util/isAndroid';
-import Hookes from './Hookes';
-import ScrollItems from './ScrollItems';
+const debounce = require('js-util/debounce');
+const isiOS = require('js-util/isiOS');
+const isAndroid = require('js-util/isAndroid');
+const Hookes = require('./Hookes').default;
+const ScrollItems = require('./ScrollItems').default;
 
 const X_SWITCH_SMOOTH = 1024;
 const contents = document.querySelector('.l-contents');
@@ -62,9 +62,9 @@ export default class SmoothScrollManager {
   initHookes() {
     // Hookesオブジェクトの初期化
     this.hookes = {
-      contents: new Hookes(),
-      smooth:   new Hookes({ k: 0.07, d: 0.7 }),
-      parallax: new Hookes({ k: 0.07, d: 0.7 }),
+      contents: new Hookes({ k: 0.25, d: 0.7 }),
+      smooth:   new Hookes({ k: 0.2, d: 0.8 }),
+      parallax: new Hookes({ k: 0.2, d: 0.8 }),
     }
   }
   scrollBasis() {

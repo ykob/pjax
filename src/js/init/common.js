@@ -1,4 +1,4 @@
-import Hover from 'js-util/Hover.js';
+const Hover = require('js-util/Hover');
 
 module.exports = {
   initBeforeTransit: function(contents, fixedBefore, fixedAfter, scrollManager, isPageLoaded) {

@@ -1,4 +1,4 @@
-import loadImage from '../modules/common/loadImage';
+const loadImage = require('../modules/common/loadImage').default;
 
 let elmBg = null;
 
