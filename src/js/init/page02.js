@@ -1,4 +1,4 @@
-import loadImage from '../modules/loadImage';
+import loadImage from '../modules/common/loadImage';
 
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.

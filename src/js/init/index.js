@@ -1,4 +1,4 @@
-import loadImage from '../modules/loadImage';
+import loadImage from '../modules/common/loadImage';
 
 let elmBg = null;
 
