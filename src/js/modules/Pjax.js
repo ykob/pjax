@@ -137,6 +137,7 @@ export default class Pjax {
     // ページ切り替え後の演出
     setTimeout(() => {
       this.elmOverlay.classList.remove('is-expand');
+      this.elmOverlay.classList.remove('is-expand-moment');
       this.elmOverlay.classList.add('is-shrink');
       this.elmProgress.classList.add('is-hidden');
     }, 100);
@@ -186,6 +187,7 @@ export default class Pjax {
         // オーバーレイが収縮したあとの処理
         this.isAnimate = false;
         this.elmProgress.classList.remove('is-shown');
+        this.elmProgress.classList.remove('is-shown-moment');
         this.elmProgress.classList.remove('is-hidden');
         // history.back連打によって、読み込まれた本文とlocation.pathnameが異なる場合、自動的に再度読み込みを行う。
         if (this.href !== location.pathname) {
