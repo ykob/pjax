@@ -119,7 +119,7 @@ export default class Pjax {
     // ページ切り替え前の演出
     if (this.isAnimate) return;
     this.isAnimate = true;
-    this.scrollManager.isWorking = false;
+    this.scrollManager.pause();
     this.elmOverlay.classList.remove('is-shrink');
 
     // オーバーレイのアニメを省略するか否かの判定
