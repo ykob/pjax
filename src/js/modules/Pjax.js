@@ -96,9 +96,6 @@ export default class Pjax {
     // ページの初期化関数オブジェクトを選択
     this.selectPageFunc();
 
-    // ページの初期スクロール値を設定
-    window.scrollTo(0, 0);
-
     // ページごとのプリロード処理
     this.page.preload(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager, () => {
       // 差し替えたページの本文に対しての非同期遷移のイベント設定
