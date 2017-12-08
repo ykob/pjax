@@ -34,6 +34,7 @@ export default class SmoothScrollManager {
     this.renderNext = null;
     this.isWorking = false;
     this.isWorkingSmooth = false;
+    this.isAlreadyAddEvent = false;
   }
   start(callback) {
     setTimeout(() => {
@@ -170,12 +171,13 @@ export default class SmoothScrollManager {
         }
       }
     }
+    // 個別のリサイズイベントを実行（ページの高さ変更前）
+    if (this.resizePrev) this.resizePrev();
     // 本文やダミースクロールのレイアウトを再設定
     this.initDummyScroll();
     this.render();
     window.scrollTo(0, this.scrollTop);
-    // 個別のリサイズイベントを実行
-    if (this.resizePrev) this.resizePrev();
+    // 個別のリサイズイベントを実行（ページの高さ変更後）
     this.resizeBasis();
     if (this.resizeNext) this.resizeNext();
     // スクロールイベントを再開
@@ -192,7 +194,7 @@ export default class SmoothScrollManager {
       this.hookes[key].render();
     }
     // スクロールイベント連動オブジェクトをレンダリング
-    this.scrollItems.render(this.isWorkingSmooth && this.resolution.x > this.X_SWITCH_SMOOTH);
+    this.scrollItems.render(this.isValidSmooth());
     if (this.renderNext) this.renderNext();
   }
   renderLoop() {
@@ -204,6 +206,8 @@ export default class SmoothScrollManager {
     }
   }
   on() {
+    if (this.isAlreadyAddEvent) return;
+
     const hookEventForResize = (isiOS() || isAndroid()) ? 'orientationchange' : 'resize';
 
     window.addEventListener('scroll', (event) => {
@@ -215,6 +219,8 @@ export default class SmoothScrollManager {
     window.addEventListener(hookEventForResize, debounce((event) => {
       this.resize();
     }, 400), false);
+
+    this.isAlreadyAddEvent = true;
   }
   off() {
     this.scrollPrev = null;
@@ -224,5 +230,8 @@ export default class SmoothScrollManager {
     this.resizeNext = null;
     this.renderPrev = null;
     this.renderNext = null;
+  }
+  isValidSmooth() {
+    return this.isWorkingSmooth && this.resolution.x > this.X_SWITCH_SMOOTH;
   }
 }
