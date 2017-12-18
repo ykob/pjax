@@ -9,15 +9,15 @@ html(lang="ja")
     include ./_head.pug
   body
     .l-page.js-pjax-page(data-page-id=page.id)
+      .p-contents-overlay.js-pjax-overlay.is-expand
+      .p-progress.js-pjax-progress
+        .p-progress__marker
+      .p-dummy-scroll.js-dummy-scroll
       .js-pjax-fixed-before
         block contentFixedBefore
       .l-contents.js-contents
         .js-pjax-contents
           block contentStatic
-      .p-contents-overlay.js-pjax-overlay.is-expand
-      .p-progress.js-pjax-progress
-        .p-progress__marker
-      .p-dummy-scroll.js-dummy-scroll
       .js-pjax-fixed-after
         block contentFixedAfter
       include ./_gf.pug
