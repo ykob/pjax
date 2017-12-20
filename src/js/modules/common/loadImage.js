@@ -1,5 +1,5 @@
-export default function(imageArray, callback) {
-  const length = imageArray.length;
+export default function(imgArray, callback) {
+  const length = imgArray.length;
   let count = 0;
 
   for (var i = 0; i < length; i++) {
@@ -13,6 +13,6 @@ export default function(imageArray, callback) {
       count++;
       if (count >= length) callback();
     };
-    img.src = imageArray[i];
+    img.src = imgArray[i];
   }
 }
