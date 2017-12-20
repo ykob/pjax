@@ -8,6 +8,11 @@ export default function(imageArray, callback) {
       count++;
       if (count >= length) callback();
     };
+    img.onerror = () => {
+      console.error(`Failed to load image in loadImage function.`)
+      count++;
+      if (count >= length) callback();
+    };
     img.src = imageArray[i];
   }
 }
