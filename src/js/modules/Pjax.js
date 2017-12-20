@@ -24,7 +24,7 @@ export default class Pjax {
     this.elmFixedAfter = document.querySelector(CLASSNAME_FIXED_AFTER);
     this.elmOverlay = document.querySelector('.js-pjax-overlay');
     this.elmProgress = document.querySelector('.js-pjax-progress');
-    this.href = location.pathname;
+    this.href = location.pathname + location.search;
     this.page = null;
     this.isAnimate = false;
     this.isPageLoaded = false;
@@ -126,7 +126,7 @@ export default class Pjax {
     } else {
       this.elmOverlay.classList.add('is-expand-moment');
       this.elmProgress.classList.add('is-shown-moment');
-      this.href = location.pathname;
+      this.href = location.pathname + location.search;
       this.send();
     }
   }
@@ -178,7 +178,7 @@ export default class Pjax {
     this.elmOverlay.addEventListener('transitionend', () => {
       if (this.elmOverlay.classList.contains('is-expand')) {
         // オーバーレイが展開したあとの処理
-        this.href = location.pathname;
+        this.href = location.pathname + location.search;
         this.send();
       } else {
         // オーバーレイが収縮したあとの処理
@@ -186,8 +186,8 @@ export default class Pjax {
         this.elmProgress.classList.remove('is-shown');
         this.elmProgress.classList.remove('is-shown-moment');
         this.elmProgress.classList.remove('is-hidden');
-        // history.back連打によって、読み込まれた本文とlocation.pathnameが異なる場合、自動的に再度読み込みを行う。
-        if (this.href !== location.pathname) {
+        // history.back連打によって、読み込まれた本文とその瞬間に表示されているURIが異なる場合、自動的に再度読み込みを行う。
+        if (this.href !== location.pathname + location.search) {
           this.transitStart(true);
           return;
         }
@@ -211,7 +211,7 @@ export default class Pjax {
     ];
 
     const transit = (href, withAnime) => {
-      if (href == location.pathname) {
+      if (href == location.pathname + location.search) {
         return;
       }
       history.pushState(null, null, href);
