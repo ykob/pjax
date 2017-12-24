@@ -1,8 +1,8 @@
-const loadImage = require('../modules/common/loadImage').default;
+const loadImgs = require('../modules/common/loadImgs').default;
 
 module.exports = {
   preload: function(contents, fixedBefore, fixedAfter, scrollManager, callback) {
-    loadImage([
+    loadImgs([
       '/pjax/img/page01/bg.jpg'
     ], callback);
   },

@@ -9,7 +9,7 @@ export default function(imgArray, callback) {
       if (count >= length) callback();
     };
     img.onerror = () => {
-      console.error(`Failed to load image in loadImage function.`)
+      console.error(`Failed to load image in loadImgs function.`)
       count++;
       if (count >= length) callback();
     };

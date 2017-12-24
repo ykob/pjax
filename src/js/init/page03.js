@@ -1,9 +1,9 @@
-const loadImage = require('../modules/common/loadImage').default;
+const loadImgs = require('../modules/common/loadImgs').default;
 
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.
   preload: function(contents, fixedBefore, fixedAfter, scrollManager, callback) {
-    loadImage([
+    loadImgs([
       '/pjax/img/page03/bg.jpg'
     ], callback);
   },
