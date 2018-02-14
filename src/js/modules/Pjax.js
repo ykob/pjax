@@ -221,7 +221,7 @@ export default class Pjax {
       for (var j = 0; j < elms[i].length; j++) {
         const elm = elms[i][j];
         const href = elm.getAttribute('href');
-        if (elm.classList.contains(CLASSNAME_LINK.replace('.', ''))) {
+        if (elm.classList.contains(CLASSNAME_LINK.replace('.', '')) || !href.match(/^http/)) {
           elm.addEventListener('click', (event) => {
             event.preventDefault();
             transit(href, true);
