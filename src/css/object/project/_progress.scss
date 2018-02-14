@@ -48,9 +48,16 @@
   &__marker {
     opacity: 0;
     transform: translateX(-60px) scale(0.5);
-    transition-duration: 0.2s;
   }
   &.is-shown & {
+    &__marker {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      transition-timing-function: $easeOutCubic;
+      transition-duration: 0.2s;
+    }
+  }
+  &.is-shown-moment & {
     &__marker {
       opacity: 1;
       transform: translateX(0) scale(1);
@@ -62,6 +69,7 @@
       opacity: 0;
       transform: translateX(60px) scale(0.5);
       transition-timing-function: $easeInCubic;
+      transition-duration: 0.2s;
     }
   }
 }
