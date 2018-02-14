@@ -8,8 +8,13 @@
   //
   transform: scaleX(0);
   transition-property: transform;
-  transition-duration: 0.4s;
   &.is-expand {
+    transform-origin: left;
+    transform: scaleX(1);
+    transition-timing-function: $easeOutCubic;
+    transition-duration: 0.4s;
+  }
+  &.is-expand-moment {
     transform-origin: left;
     transform: scaleX(1);
     transition-timing-function: $easeOutCubic;
@@ -18,5 +23,6 @@
     transform-origin: right;
     transform: scaleX(0);
     transition-timing-function: $easeInCubic;
+    transition-duration: 0.4s;
   }
 }

@@ -204,14 +204,9 @@ export default class Pjax {
   onPjaxLinks(content, fixedBefore, fixedAfter) {
     // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
     const elms = [
-      content.querySelectorAll(CLASSNAME_LINK),
-      (fixedBefore) ? fixedBefore.querySelectorAll(CLASSNAME_LINK) : [],
-      (fixedAfter) ? fixedAfter.querySelectorAll(CLASSNAME_LINK) : [],
-    ];
-    const elmsMoment = [
-      content.querySelectorAll(CLASSNAME_LINK_MOMENT),
-      (fixedBefore) ? fixedBefore.querySelectorAll(CLASSNAME_LINK_MOMENT) : [],
-      (fixedAfter) ? fixedAfter.querySelectorAll(CLASSNAME_LINK_MOMENT) : [],
+      content.getElementsByTagName('a'),
+      (fixedBefore) ? fixedBefore.getElementsByTagName('a') : [],
+      (fixedAfter) ? fixedAfter.getElementsByTagName('a') : [],
     ];
 
     const transit = (href, withAnime) => {
@@ -226,20 +221,18 @@ export default class Pjax {
       for (var j = 0; j < elms[i].length; j++) {
         const elm = elms[i][j];
         const href = elm.getAttribute('href');
-        elm.addEventListener('click', (event) => {
-          event.preventDefault();
-          transit(href, true);
-        });
-      }
-    }
-    for (var i = 0; i < elms.length; i++) {
-      for (var j = 0; j < elmsMoment[i].length; j++) {
-        const elm = elmsMoment[i][j];
-        const href = elm.getAttribute('href');
-        elm.addEventListener('click', (event) => {
-          event.preventDefault();
-          transit(href, false);
-        });
+        if (elm.classList.contains(CLASSNAME_LINK.replace('.', '')) || !href.match(/^http/)) {
+          elm.addEventListener('click', (event) => {
+            event.preventDefault();
+            transit(href, true);
+          });
+        }
+        if (elm.classList.contains(CLASSNAME_LINK_MOMENT.replace('.', ''))) {
+          elm.addEventListener('click', (event) => {
+            event.preventDefault();
+            transit(href, false);
+          });
+        }
       }
     }
   }
