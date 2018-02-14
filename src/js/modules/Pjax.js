@@ -208,11 +208,6 @@ export default class Pjax {
       (fixedBefore) ? fixedBefore.getElementsByTagName('a') : [],
       (fixedAfter) ? fixedAfter.getElementsByTagName('a') : [],
     ];
-    const elmsMoment = [
-      content.querySelectorAll(CLASSNAME_LINK_MOMENT),
-      (fixedBefore) ? fixedBefore.querySelectorAll(CLASSNAME_LINK_MOMENT) : [],
-      (fixedAfter) ? fixedAfter.querySelectorAll(CLASSNAME_LINK_MOMENT) : [],
-    ];
 
     const transit = (href, withAnime) => {
       if (href == location.pathname + location.search) {
@@ -232,13 +227,7 @@ export default class Pjax {
             transit(href, true);
           });
         }
-      }
-    }
-    for (var i = 0; i < elms.length; i++) {
-      for (var j = 0; j < elmsMoment[i].length; j++) {
-        const elm = elmsMoment[i][j];
-        const href = elm.getAttribute('href');
-        if (elm.classList.contains(CLASSNAME_LINK.replace('.', ''))) {
+        if (elm.classList.contains(CLASSNAME_LINK_MOMENT.replace('.', ''))) {
           elm.addEventListener('click', (event) => {
             event.preventDefault();
             transit(href, false);
