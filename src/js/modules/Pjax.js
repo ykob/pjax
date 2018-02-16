@@ -209,6 +209,7 @@ export default class Pjax {
       (fixedAfter) ? fixedAfter.getElementsByTagName('a') : [],
     ];
 
+    // 非同期遷移のイベント内関数を事前に定義
     const transit = (href, withAnime) => {
       if (href == location.pathname + location.search) {
         return;
@@ -217,11 +218,16 @@ export default class Pjax {
       this.transitStart(withAnime);
     };
 
+    // 事前に取得したアンカーリンク要素が非同期遷移の対象かどうかを判定し、イベントを付与する
     for (var i = 0; i < elms.length; i++) {
       for (var j = 0; j < elms[i].length; j++) {
         const elm = elms[i][j];
         const href = elm.getAttribute('href');
-        if (elm.classList.contains(CLASSNAME_LINK.replace('.', '')) || !href.match(/^http/)) {
+        const target = elm.getAttribute('target');
+        if (
+          elm.classList.contains(CLASSNAME_LINK.replace('.', ''))
+          || !(href.match(/^http/) || target === '_blank')
+        ) {
           elm.addEventListener('click', (event) => {
             event.preventDefault();
             transit(href, true);
