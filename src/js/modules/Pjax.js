@@ -67,7 +67,7 @@ export default class Pjax {
   send() {
     // XMLHttpRequestの通信開始
     this.scrollManager.off();
-    this.scrollManager.isWorkingSmooth = false;
+    this.scrollManager.isWorkingRender = false;
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
   }
@@ -92,6 +92,9 @@ export default class Pjax {
 
     // Google Analytics の集計処理。
     if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
+
+    // ページのトップに戻る
+    window.scrollTo(0, 0);
 
     // ページの初期化関数オブジェクトを選択
     this.selectPageFunc();
