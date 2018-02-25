@@ -1,9 +1,9 @@
-const CLASSNAME_LINK = '.js-pjax-link';
-const CLASSNAME_LINK_MOMENT = '.js-pjax-link-moment';
-const CLASSNAME_PAGE = '.js-pjax-page';
-const CLASSNAME_CONTENTS = '.js-pjax-contents';
-const CLASSNAME_FIXED_BEFORE = '.js-pjax-fixed-before';
-const CLASSNAME_FIXED_AFTER = '.js-pjax-fixed-after';
+const CLASSNAME_LINK = 'js-pjax-link';
+const CLASSNAME_LINK_MOMENT = 'js-pjax-link-moment';
+const CLASSNAME_PAGE = 'js-pjax-page';
+const CLASSNAME_CONTENTS = 'js-pjax-contents';
+const CLASSNAME_FIXED_BEFORE = 'js-pjax-fixed-before';
+const CLASSNAME_FIXED_AFTER = 'js-pjax-fixed-after';
 
 const page = {
   common: require('../init/common.js'),
@@ -18,10 +18,10 @@ export default class Pjax {
   constructor(scrollManager) {
     this.scrollManager = scrollManager;
     this.xhr = new XMLHttpRequest();
-    this.elmPage = document.querySelector(CLASSNAME_PAGE);
-    this.elmContents = document.querySelector(CLASSNAME_CONTENTS);
-    this.elmFixedBefore = document.querySelector(CLASSNAME_FIXED_BEFORE);
-    this.elmFixedAfter = document.querySelector(CLASSNAME_FIXED_AFTER);
+    this.elmPage = document.querySelector(`.${CLASSNAME_PAGE}`);
+    this.elmContents = document.querySelector(`.${CLASSNAME_CONTENTS}`);
+    this.elmFixedBefore = document.querySelector(`.${CLASSNAME_FIXED_BEFORE}`);
+    this.elmFixedAfter = document.querySelector(`.${CLASSNAME_FIXED_AFTER}`);
     this.elmOverlay = document.querySelector('.js-pjax-overlay');
     this.elmProgress = document.querySelector('.js-pjax-progress');
     this.href = location.pathname + location.search;
@@ -78,10 +78,10 @@ export default class Pjax {
     // 次のページを取得
     const responseHtml = document.createElement('div');
     responseHtml.innerHTML = this.xhr.responseText;
-    const responsePage = responseHtml.querySelector(CLASSNAME_PAGE);
-    const responseContents = responseHtml.querySelector(CLASSNAME_CONTENTS);
-    const responseFixedBefore = responseHtml.querySelector(CLASSNAME_FIXED_BEFORE);
-    const responseFixedAfter = responseHtml.querySelector(CLASSNAME_FIXED_AFTER);
+    const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
+    const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
+    const responseFixedBefore = responseHtml.querySelector(`.${CLASSNAME_FIXED_BEFORE}`);
+    const responseFixedAfter = responseHtml.querySelector(`.${CLASSNAME_FIXED_AFTER}`);
 
     // ページの中身を差し替え
     this.elmPage.dataset.pageId = responsePage.dataset.pageId;
@@ -228,7 +228,7 @@ export default class Pjax {
         const href = elm.getAttribute('href');
         const target = elm.getAttribute('target');
         if (
-          elm.classList.contains(CLASSNAME_LINK.replace('.', ''))
+          elm.classList.contains(CLASSNAME_LINK)
           || !(href.match(/^http/) || target === '_blank')
         ) {
           elm.addEventListener('click', (event) => {
@@ -236,7 +236,7 @@ export default class Pjax {
             transit(href, true);
           });
         }
-        if (elm.classList.contains(CLASSNAME_LINK_MOMENT.replace('.', ''))) {
+        if (elm.classList.contains(CLASSNAME_LINK_MOMENT)) {
           elm.addEventListener('click', (event) => {
             event.preventDefault();
             transit(href, false);
