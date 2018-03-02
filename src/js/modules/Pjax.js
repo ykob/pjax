@@ -67,7 +67,6 @@ export default class Pjax {
   send() {
     // XMLHttpRequestの通信開始
     this.scrollManager.off();
-    this.scrollManager.isWorkingRender = false;
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
   }
