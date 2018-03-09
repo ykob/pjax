@@ -1,24 +1,17 @@
 const loadImgs = require('../modules/common/loadImgs').default;
 
-let elmBg = null;
-
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.
-  preload: function(contents, fixedBefore, fixedAfter, scrollManager, callback) {
-    loadImgs([
-      '/pjax/img/index/bg.jpg'
-    ], callback);
+  preload: function(contents, scrollManager, callback) {
+    callback();
   },
   // initBeforeTransit method: after scrollManager.resize run. / before page transition.
-  initBeforeTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
+  initBeforeTransit: function(contents, scrollManager) {
   },
   // initAfterTransit method: after page transition.
-  initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
-    elmBg = fixedAfter.querySelector('.js-background');
-    elmBg.classList.add('is-scale')
+  initAfterTransit: function(contents, scrollManager) {
   },
   // clear any variables.
   clear: function() {
-    elmBg = null;
   },
 }

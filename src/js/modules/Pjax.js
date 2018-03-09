@@ -2,8 +2,6 @@ const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_LINK_MOMENT = 'js-pjax-link-moment';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
-const CLASSNAME_FIXED_BEFORE = 'js-pjax-fixed-before';
-const CLASSNAME_FIXED_AFTER = 'js-pjax-fixed-after';
 
 const page = {
   common: require('../init/common.js'),
@@ -20,8 +18,6 @@ export default class Pjax {
     this.xhr = new XMLHttpRequest();
     this.elmPage = document.querySelector(`.${CLASSNAME_PAGE}`);
     this.elmContents = document.querySelector(`.${CLASSNAME_CONTENTS}`);
-    this.elmFixedBefore = document.querySelector(`.${CLASSNAME_FIXED_BEFORE}`);
-    this.elmFixedAfter = document.querySelector(`.${CLASSNAME_FIXED_AFTER}`);
     this.elmOverlay = document.querySelector('.js-pjax-overlay');
     this.elmProgress = document.querySelector('.js-pjax-progress');
     this.href = location.pathname + location.search;
@@ -35,12 +31,12 @@ export default class Pjax {
     this.selectPageFunc();
 
     // ページごとのプリロード処理
-    this.page.preload(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager, () => {
+    this.page.preload(this.elmContents, this.scrollManager, () => {
       // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
       this.scrollManager.start(() => {
         // ページごとの、遷移演出終了前に実行する初期化処理
         page.common.initBeforeTransit(document, null, null, this.scrollManager, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
+        this.page.initBeforeTransit(this.elmContents, this.scrollManager);
 
         // 初期ロード後の非同期遷移のイベント設定
         this.onPjaxLinks(document);
@@ -79,14 +75,10 @@ export default class Pjax {
     responseHtml.innerHTML = this.xhr.responseText;
     const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
     const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
-    const responseFixedBefore = responseHtml.querySelector(`.${CLASSNAME_FIXED_BEFORE}`);
-    const responseFixedAfter = responseHtml.querySelector(`.${CLASSNAME_FIXED_AFTER}`);
 
     // ページの中身を差し替え
     this.elmPage.dataset.pageId = responsePage.dataset.pageId;
     this.elmContents.innerHTML = responseContents.innerHTML;
-    this.elmFixedBefore.innerHTML = responseFixedBefore.innerHTML;
-    this.elmFixedAfter.innerHTML = responseFixedAfter.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
     // Google Analytics の集計処理。
@@ -99,15 +91,15 @@ export default class Pjax {
     this.selectPageFunc();
 
     // ページごとのプリロード処理
-    this.page.preload(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager, () => {
+    this.page.preload(this.elmContents, this.scrollManager, () => {
       // 差し替えたページの本文に対しての非同期遷移のイベント設定
-      this.onPjaxLinks(this.elmContents, this.elmFixedBefore, this.elmFixedAfter);
+      this.onPjaxLinks(this.elmContents);
 
       // Scroll Managerの初期化
       this.scrollManager.start(() => {
         // ページごとの、遷移演出終了前に実行する初期化処理
-        page.common.initBeforeTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
+        page.common.initBeforeTransit(this.elmContents, this.scrollManager, this.isPageLoaded);
+        this.page.initBeforeTransit(this.elmContents, this.scrollManager);
 
         // 遷移演出の終了
         this.transitEnd();
@@ -198,18 +190,14 @@ export default class Pjax {
           return;
         }
         // ページごとの、遷移演出終了後に実行する初期化処理
-        page.common.initAfterTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
-        this.page.initAfterTransit(this.elmContents, this.elmFixedBefore, this.elmFixedAfter, this.scrollManager);
+        page.common.initAfterTransit(this.elmContents, this.scrollManager);
+        this.page.initAfterTransit(this.elmContents, this.scrollManager);
       }
     });
   }
-  onPjaxLinks(content, fixedBefore, fixedAfter) {
+  onPjaxLinks(content) {
     // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
-    const elms = [
-      content.getElementsByTagName('a'),
-      (fixedBefore) ? fixedBefore.getElementsByTagName('a') : [],
-      (fixedAfter) ? fixedAfter.getElementsByTagName('a') : [],
-    ];
+    const elms = content.getElementsByTagName('a');
 
     // 非同期遷移のイベント内関数を事前に定義
     const transit = (href, withAnime) => {
@@ -222,25 +210,23 @@ export default class Pjax {
 
     // 事前に取得したアンカーリンク要素が非同期遷移の対象かどうかを判定し、イベントを付与する
     for (var i = 0; i < elms.length; i++) {
-      for (var j = 0; j < elms[i].length; j++) {
-        const elm = elms[i][j];
-        const href = elm.getAttribute('href');
-        const target = elm.getAttribute('target');
-        if (
-          elm.classList.contains(CLASSNAME_LINK)
-          || !(href.match(/^http/) || target === '_blank')
-        ) {
-          elm.addEventListener('click', (event) => {
-            event.preventDefault();
-            transit(href, true);
-          });
-        }
-        if (elm.classList.contains(CLASSNAME_LINK_MOMENT)) {
-          elm.addEventListener('click', (event) => {
-            event.preventDefault();
-            transit(href, false);
-          });
-        }
+      const elm = elms[i];
+      const href = elm.getAttribute('href');
+      const target = elm.getAttribute('target');
+      if (
+        elm.classList.contains(CLASSNAME_LINK)
+        || !(href.match(/^http/) || target === '_blank')
+      ) {
+        elm.addEventListener('click', (event) => {
+          event.preventDefault();
+          transit(href, true);
+        });
+      }
+      if (elm.classList.contains(CLASSNAME_LINK_MOMENT)) {
+        elm.addEventListener('click', (event) => {
+          event.preventDefault();
+          transit(href, false);
+        });
       }
     }
   }

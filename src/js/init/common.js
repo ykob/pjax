@@ -1,7 +1,7 @@
 const Hover = require('js-util/Hover');
 
 module.exports = {
-  initBeforeTransit: function(contents, fixedBefore, fixedAfter, scrollManager, isPageLoaded) {
+  initBeforeTransit: function(contents, scrollManager, isPageLoaded) {
     // hover演出のためのclassをjsで付与
     const elmHover = contents.querySelectorAll('.js-hover');
     for (var i = 0; i < elmHover.length; i++) {
@@ -15,7 +15,7 @@ module.exports = {
       // ページ遷移後の初期化
     }
   },
-  initAfterTransit: function(contents, fixedBefore, fixedAfter, scrollManager) {
+  initAfterTransit: function(contents, scrollManager) {
 
   },
 };

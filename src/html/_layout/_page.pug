@@ -13,13 +13,9 @@ html(lang="ja")
       .p-progress.js-pjax-progress
         .p-progress__marker
       .p-dummy-scroll.js-dummy-scroll
-      .js-pjax-fixed-before
-        block contentFixedBefore
       .l-contents.js-contents
         .js-pjax-contents
-          block contentStatic
-      .js-pjax-fixed-after
-        block contentFixedAfter
+          block content
       include ./_gf.pug
     block script
     script(src="/pjax/js/main.js" async)
