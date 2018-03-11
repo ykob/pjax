@@ -15,6 +15,6 @@ module.exports = {
     excerpt.classList.add('is-shown');
   },
   // clear any variables.
-  clear: function() {
+  clear: function(modules) {
   },
 }

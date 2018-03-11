@@ -28,6 +28,7 @@ export default class PjaxWithPreload {
     this.page = null;
     this.isAnimate = false;
     this.isPageLoaded = false;
+
     this.on();
   }
   onLoad() {
@@ -80,7 +81,7 @@ export default class PjaxWithPreload {
   }
   replaceContent() {
     // 前ページの変数を空にするclear関数を実行
-    this.page.clear();
+    this.page.clear(this.modules);
 
     // 次のページを取得
     const responseHtml = document.createElement('div');

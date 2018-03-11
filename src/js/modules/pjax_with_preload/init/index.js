@@ -10,6 +10,6 @@ module.exports = {
   initAfterTransit: function(contents, modules) {
   },
   // clear any variables.
-  clear: function() {
+  clear: function(modules) {
   },
 }
