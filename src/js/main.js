@@ -2,7 +2,9 @@ const ScrollManager = require('./modules/smooth_scroll_manager/SmoothScrollManag
 const Pjax = require('./modules/Pjax').default;
 
 const scrollManager = new ScrollManager();
-const pjax = new Pjax(scrollManager);
+const pjax = new Pjax({
+  scrollManager: scrollManager
+});
 
 const init = () => {
   pjax.elmProgress.classList.add('is-shown');

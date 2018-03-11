@@ -13,8 +13,8 @@ const page = {
 };
 
 export default class Pjax {
-  constructor(scrollManager) {
-    this.scrollManager = scrollManager;
+  constructor(modules) {
+    this.modules = modules;
     this.xhr = new XMLHttpRequest();
     this.elmPage = document.querySelector(`.${CLASSNAME_PAGE}`);
     this.elmContents = document.querySelector(`.${CLASSNAME_CONTENTS}`);
@@ -31,12 +31,12 @@ export default class Pjax {
     this.selectPageFunc();
 
     // ページごとのプリロード処理
-    this.page.preload(this.elmContents, this.scrollManager, () => {
+    this.page.preload(this.elmContents, this.modules, () => {
       // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
-      this.scrollManager.start(() => {
+      this.modules.scrollManager.start(() => {
         // ページごとの、遷移演出終了前に実行する初期化処理
-        page.common.initBeforeTransit(document, null, null, this.scrollManager, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elmContents, this.scrollManager);
+        page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
+        this.page.initBeforeTransit(this.elmContents, this.modules);
 
         // 初期ロード後の非同期遷移のイベント設定
         this.onPjaxLinks(document);
@@ -62,7 +62,7 @@ export default class Pjax {
   }
   send() {
     // XMLHttpRequestの通信開始
-    this.scrollManager.off();
+    this.modules.scrollManager.off();
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
   }
@@ -91,15 +91,15 @@ export default class Pjax {
     this.selectPageFunc();
 
     // ページごとのプリロード処理
-    this.page.preload(this.elmContents, this.scrollManager, () => {
+    this.page.preload(this.elmContents, this.modules, () => {
       // 差し替えたページの本文に対しての非同期遷移のイベント設定
       this.onPjaxLinks(this.elmContents);
 
       // Scroll Managerの初期化
-      this.scrollManager.start(() => {
+      this.modules.scrollManager.start(() => {
         // ページごとの、遷移演出終了前に実行する初期化処理
-        page.common.initBeforeTransit(this.elmContents, this.scrollManager, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elmContents, this.scrollManager);
+        page.common.initBeforeTransit(this.elmContents, this.modules, this.isPageLoaded);
+        this.page.initBeforeTransit(this.elmContents, this.modules);
 
         // 遷移演出の終了
         this.transitEnd();
@@ -110,7 +110,7 @@ export default class Pjax {
     // ページ切り替え前の演出
     if (this.isAnimate) return;
     this.isAnimate = true;
-    this.scrollManager.pause();
+    this.modules.scrollManager.pause();
     this.elmOverlay.classList.remove('is-shrink');
 
     // オーバーレイのアニメを省略するか否かの判定
@@ -190,8 +190,8 @@ export default class Pjax {
           return;
         }
         // ページごとの、遷移演出終了後に実行する初期化処理
-        page.common.initAfterTransit(this.elmContents, this.scrollManager);
-        this.page.initAfterTransit(this.elmContents, this.scrollManager);
+        page.common.initAfterTransit(this.elmContents, this.modules);
+        this.page.initAfterTransit(this.elmContents, this.modules);
       }
     });
   }

@@ -2,14 +2,14 @@ const loadContentImgs = require('../modules/common/loadContentImgs').default;
 
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.
-  preload: function(contents, scrollManager, callback) {
+  preload: function(contents, modules, callback) {
     loadContentImgs(contents, callback);
   },
   // initBeforeTransit method: after scrollManager.resize run. / before page transition.
-  initBeforeTransit: function(contents, scrollManager) {
+  initBeforeTransit: function(contents, modules) {
   },
   // initAfterTransit method: after page transition.
-  initAfterTransit: function(contents, scrollManager) {
+  initAfterTransit: function(contents, modules) {
   },
   // clear any variables.
   clear: function() {
