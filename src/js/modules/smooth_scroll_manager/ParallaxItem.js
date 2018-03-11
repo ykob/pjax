@@ -24,16 +24,17 @@ export default class ParallaxItem {
     this.render();
   }
   render(iwWorking) {
-    const x = (iwWorking) ? MathEx.clamp(
+    if (!iwWorking) return;
+    const x = MathEx.clamp(
       this.hookes.velocity[0] * this.ratioX,
       this.rangeX * -1,
       this.rangeX
-    ) : 0;
-    const y = (iwWorking) ? MathEx.clamp(
+    );
+    const y = MathEx.clamp(
       (this.hookes.velocity[1] - (this.top + this.height * 0.5)) * this.ratioY,
       this.rangeY * -1,
       this.rangeY
-    ) : 0;
+    );
     this.elm.style.transform =
       (isIE())
         ? `translate(${x}${this.unitX}, ${y}${this.unitY})`
