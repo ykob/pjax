@@ -1,3 +1,7 @@
+const ConsoleSignature = require('./common/ConsoleSignature').default;
+
+const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
+
 const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_LINK_MOMENT = 'js-pjax-link-moment';
 const CLASSNAME_PAGE = 'js-pjax-page';
@@ -52,10 +56,18 @@ export default class Pjax {
   selectPageFunc() {
     // ページごと個別に実行する関数の選択
     switch (this.elmPage.dataset.pageId) {
-      case 'index':  this.page = page.index; break;
-      case 'page01': this.page = page.page01; break;
-      case 'page02': this.page = page.page02; break;
-      case 'page03': this.page = page.page03; break;
+      case 'index':
+        this.page = page.index;
+        break;
+      case 'page01':
+        this.page = page.page01;
+        break;
+      case 'page02':
+        this.page = page.page02;
+        break;
+      case 'page03':
+        this.page = page.page03;
+        break;
       default:
         this.page = page.blank;
     }

@@ -13,7 +13,7 @@ const ConsoleSignature = require('../common/ConsoleSignature').default;
 const Hookes = require('./Hookes').default;
 const ScrollItems = require('./ScrollItems').default;
 
-const consoleSignature = new ConsoleSignature();
+const consoleSignature = new ConsoleSignature('this content is rendered with scroll-manager', 'https://github.com/ykob/scroll-manager');
 
 export default class SmoothScrollManager {
   constructor() {
