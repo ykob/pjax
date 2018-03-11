@@ -37,13 +37,13 @@
 // -----------------------------------------------------------------
 // Project
 // -----------------------------------------------------------------
-@import "object/project/index/_index-content";
 
-@import "object/project/with_preload/_background-image";
-@import "object/project/with_preload/_contents-overlay";
-@import "object/project/with_preload/_index-header";
-@import "object/project/with_preload/_lower-header";
-@import "object/project/with_preload/_progress";
+@import "object/project/_background-image";
+@import "object/project/_contents-overlay";
+@import "object/project/_index-content";
+@import "object/project/_index-header";
+@import "object/project/_lower-header";
+@import "object/project/_progress";
 
 // -----------------------------------------------------------------
 // Utility

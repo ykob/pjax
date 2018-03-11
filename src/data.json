@@ -11,31 +11,57 @@
       "description": "it is utility class that manage asynchronous transition on website.",
       "path": "/"
     },
+    "basic": {
+      "index": {
+        "id": "index",
+        "title": "",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/basic/"
+      },
+      "page01": {
+        "id": "page01",
+        "title": "Page01",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/basic/page01.html"
+      },
+      "page02": {
+        "id": "page02",
+        "title": "Page02",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/basic/page02.html"
+      },
+      "page03": {
+        "id": "page03",
+        "title": "Page03",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/basic/page03.html"
+      }
+    },
     "withPreload": {
       "index": {
         "id": "index",
         "title": "",
         "description": "it is utility class that manage asynchronous transition on website.",
         "path": "/with_preload/"
-        },
+      },
       "page01": {
         "id": "page01",
         "title": "Page01",
         "description": "it is utility class that manage asynchronous transition on website.",
         "path": "/with_preload/page01.html"
-        },
+      },
       "page02": {
         "id": "page02",
         "title": "Page02",
         "description": "it is utility class that manage asynchronous transition on website.",
         "path": "/with_preload/page02.html"
-        },
+      },
       "page03": {
         "id": "page03",
         "title": "Page03",
         "description": "it is utility class that manage asynchronous transition on website.",
         "path": "/with_preload/page03.html"
-        }
+      }
     }
   }
 }

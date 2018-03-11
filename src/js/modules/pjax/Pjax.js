@@ -1,0 +1,226 @@
+const ConsoleSignature = require('../common/ConsoleSignature').default;
+
+const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
+
+const CLASSNAME_LINK = '.js-pjax-link';
+const CLASSNAME_PAGE = '.js-pjax-page';
+const CLASSNAME_CONTENTS = '.js-pjax-contents';
+const TIME_REMOVE_PREV_CONTENTS = 1000;
+
+const page = {
+  common: require('./init/common.js'),
+  blank: require('./init/blank.js'),
+  index: require('./init/index.js'),
+  page01: require('./init/page01.js'),
+  page02: require('./init/page02.js'),
+  page03: require('./init/page03.js'),
+};
+
+export default class Pjax {
+  constructor(modules) {
+    this.modules = modules;
+    this.xhr = new XMLHttpRequest();
+    this.elmPage = document.querySelector(CLASSNAME_PAGE);
+    this.elmContents = document.querySelector(CLASSNAME_CONTENTS);
+    this.href = location.pathname + location.search;
+    this.page = null;
+    this.isTransition = false;
+    this.isPageLoaded = false;
+
+    this.on();
+  }
+  onLoad() {
+    // ページが最初に読み込まれた際の処理
+    this.selectPageFunc();
+
+    // ページごとの、遷移演出終了前に実行する初期化処理
+    page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
+    this.page.initBeforeTransit(this.elmContents, this.modules);
+
+    // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
+    this.modules.scrollManager.start(() => {
+      // 初期ロード後の非同期遷移のイベント設定
+      this.onPjaxLinks(document);
+
+      // 遷移演出の終了
+      this.transitEnd();
+
+      // ロード完了のフラグを立てる
+      this.isPageLoaded = true;
+    });
+  }
+  selectPageFunc() {
+    // ページごと個別に実行する関数の選択
+    switch (this.elmPage.dataset.pageId) {
+      case 'index':
+        this.page = page.index;
+        break;
+      case 'page01':
+        this.page = page.page01;
+        break;
+      case 'page02':
+        this.page = page.page02;
+        break;
+      case 'page03':
+        this.page = page.page03;
+        break;
+      default:
+        this.page = page.blank;
+    }
+  }
+  send() {
+    // XMLHttpRequestの通信開始
+    this.modules.scrollManager.off();
+    this.xhr.open('GET', this.href, true);
+    this.xhr.send();
+  }
+  replaceContent() {
+    // 前ページの変数を空にするclear関数を実行
+    this.page.clear(this.modules);
+
+    // 現在のページの本文を取得
+    const currentContents = this.elmContents;
+    currentContents.classList.remove('js-contents')
+
+    // 次のページを取得
+    const responseHtml = document.createElement('div');
+    responseHtml.innerHTML = this.xhr.responseText;
+    const responsePage = responseHtml.querySelector(CLASSNAME_PAGE);
+    const responseContents = responseHtml.querySelector(CLASSNAME_CONTENTS);
+
+    // 次のページのDOMを追加
+    this.elmPage.dataset.pageId = responsePage.dataset.pageId;
+    this.elmPage.appendChild(responseContents);
+    this.elmContents = responseContents;
+    document.title = responseHtml.querySelector('title').innerHTML;
+
+    // スクロール値をトップに戻す
+    window.scrollTo(0, 0);
+
+    // 遷移演出用のクラスを付与/除去する
+    currentContents.classList.remove('is-arrived');
+    currentContents.classList.add('is-leaved');
+    setTimeout(() => {
+      responseContents.classList.add('is-arrived');
+    }, 100);
+
+    // Google Analytics の集計処理。
+    if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
+
+    // ページの初期化関数オブジェクトを選択
+    this.selectPageFunc();
+
+    // 演出分のタイマーを回したあとで現在のページを削除
+    setTimeout(() => {
+      this.elmPage.removeChild(currentContents);
+    }, TIME_REMOVE_PREV_CONTENTS);
+
+    // ページごとの、遷移演出終了前に実行する初期化処理
+    page.common.initBeforeTransit(this.elmContents, this.modules, this.isPageLoaded);
+    this.page.initBeforeTransit(this.elmContents, this.modules);
+
+    // 差し替えたページの本文に対しての非同期遷移のイベント設定
+    this.onPjaxLinks(this.elmContents);
+
+    // Scroll Managerの初期化
+    this.modules.scrollManager.start(() => {
+      // 遷移演出の終了
+      this.transitEnd();
+    });
+  }
+  transitStart() {
+    // ページ切り替え前の処理
+    if (this.isTransition) return;
+    this.isTransition = true;
+    this.modules.scrollManager.pause();
+
+    this.href = location.pathname + location.search;
+    this.send();
+  }
+  transitEnd() {
+    // ページ切り替え後の処理
+    this.isTransition = false;
+    // history.back連打によって、読み込まれた本文とその瞬間に表示されているURIが異なる場合、自動的に再度読み込みを行う。
+    if (this.href !== location.pathname + location.search) {
+      this.transitStart();
+      return;
+    }
+    // ページごとの、遷移演出終了後に実行する初期化処理
+    page.common.initAfterTransit(this.elmContents, this.modules);
+    this.page.initAfterTransit(this.elmContents, this.modules);
+  }
+  on() {
+    // 各イベントの設定
+    // 非同期通信に関する処理
+    this.xhr.onreadystatechange = () => {
+      switch (this.xhr.readyState) {
+        case 0: // UNSENT
+          break;
+        case 1: // OPENED
+          break;
+        case 2: // HEADERS_RECEIVED
+          break;
+        case 3: // LOADING
+          break;
+        case 4: // DONE
+          switch (this.xhr.status) {
+            case 200:
+              this.replaceContent();
+              break;
+            case 404:
+              console.error('Async request by Pjax has error, 404 not found.');
+              this.replaceContent();
+              break;
+            case 500:
+              console.error('Async request by Pjax has error, 500 Internal Server Error.');
+              break;
+            default:
+          }
+          break;
+        default:
+      }
+    }
+
+    // History API 関連の処理
+    window.addEventListener('popstate', (event) => {
+      event.preventDefault();
+      history.scrollRestoration = 'manual';
+      this.transitStart(true);
+    });
+  }
+  onPjaxLinks(content, fixedBefore, fixedAfter) {
+    // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
+    const elms = [
+      content.getElementsByTagName('a'),
+      (fixedBefore) ? fixedBefore.getElementsByTagName('a') : [],
+      (fixedAfter) ? fixedAfter.getElementsByTagName('a') : [],
+    ];
+
+    // 非同期遷移のイベント内関数を事前に定義
+    const transit = (href) => {
+      if (href == location.pathname + location.search) {
+        return;
+      }
+      history.pushState(null, null, href);
+      this.transitStart();
+    };
+
+    // 事前に取得したアンカーリンク要素が非同期遷移の対象かどうかを判定し、イベントを付与する
+    for (var i = 0; i < elms.length; i++) {
+      for (var j = 0; j < elms[i].length; j++) {
+        const elm = elms[i][j];
+        const href = elm.getAttribute('href');
+        const target = elm.getAttribute('target');
+        if (
+          elm.classList.contains(CLASSNAME_LINK.replace('.', ''))
+          || !(href.match(/^http/) || target === '_blank')
+        ) {
+          elm.addEventListener('click', (event) => {
+            event.preventDefault();
+            transit(href);
+          });
+        }
+      }
+    }
+  }
+}

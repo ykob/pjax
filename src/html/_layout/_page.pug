@@ -1,0 +1,13 @@
+block vars
+
+doctype html
+html(lang="ja")
+  head
+    include ./_head.pug
+  body
+    .l-page.js-pjax-page(data-page-id=page.id)
+      .l-dummy-scroll.js-dummy-scroll
+      .l-contents.js-contents.js-pjax-contents
+        block content
+    block script
+    script(src="/pjax/js/main.js" async)

@@ -35,4 +35,16 @@
       margin-top: -50px;
     }
   }
+  &.is-arrived {
+    opacity: 1;
+    transition-duration: .4s;
+    transition-delay: .4s;
+    transition-property: opacity;
+  }
+  &.is-leaved {
+    opacity: 0;
+    transition-duration: .4s;
+    transition-delay: 0s;
+    transition-property: opacity;
+  }
 }
