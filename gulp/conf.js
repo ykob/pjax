@@ -41,7 +41,7 @@ module.exports.serve = {
 module.exports.scripts = {
   common: '',
   entryFiles: [
-    `./${DIR.SRC}/js/main.js`,
+    `./${DIR.SRC}/js/main_with_preload.js`,
   ],
   browserifyOpts: {
     transform: [

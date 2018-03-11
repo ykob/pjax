@@ -1,5 +1,3 @@
-const loadImgs = require('../modules/common/loadImgs').default;
-
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.
   preload: function(contents, modules, callback) {

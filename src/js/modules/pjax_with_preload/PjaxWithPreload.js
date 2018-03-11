@@ -1,4 +1,4 @@
-const ConsoleSignature = require('./common/ConsoleSignature').default;
+const ConsoleSignature = require('../common/ConsoleSignature').default;
 
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
@@ -8,15 +8,15 @@ const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
 
 const page = {
-  common: require('../init/common.js'),
-  blank: require('../init/blank.js'),
-  index: require('../init/index.js'),
-  page01: require('../init/page01.js'),
-  page02: require('../init/page02.js'),
-  page03: require('../init/page03.js'),
+  common: require('./init/common.js'),
+  blank: require('./init/blank.js'),
+  index: require('./init/index.js'),
+  page01: require('./init/page01.js'),
+  page02: require('./init/page02.js'),
+  page03: require('./init/page03.js'),
 };
 
-export default class Pjax {
+export default class PjaxWithPreload {
   constructor(modules) {
     this.modules = modules;
     this.xhr = new XMLHttpRequest();

@@ -1,5 +1,3 @@
-const loadImgs = require('../modules/common/loadImgs').default;
-
 module.exports = {
   // preload method: after content is replaced. / before scrollManager.resize run.
   preload: function(contents, modules, callback) {
@@ -10,6 +8,11 @@ module.exports = {
   },
   // initAfterTransit method: after page transition.
   initAfterTransit: function(contents, modules) {
+    const title = contents.querySelector('.p-lower-header__title');
+    const excerpt = contents.querySelector('.p-lower-header__excerpt');
+
+    title.classList.add('is-shown');
+    excerpt.classList.add('is-shown');
   },
   // clear any variables.
   clear: function() {

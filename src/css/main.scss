@@ -11,17 +11,16 @@
 // Mixins
 @import "foundation/_mixin-utils";
 @import "foundation/_mixin-easing";
-//@import "foundation/_mixin-sprite";
 
 // Base
 @import "foundation/_normalize";
 @import "foundation/_global";
-//@import "foundation/_sprite";
 
 // ==========================================================================
 // Layout
 // ==========================================================================
 @import "layout/_contents";
+@import "layout/_dummy-scroll";
 @import "layout/_gf";
 @import "layout/_page";
 
@@ -38,12 +37,13 @@
 // -----------------------------------------------------------------
 // Project
 // -----------------------------------------------------------------
-@import "object/project/_background-image";
-@import "object/project/_contents-overlay";
-@import "object/project/_dummy-scroll";
-@import "object/project/_index-header";
-@import "object/project/_lower-header";
-@import "object/project/_progress";
+@import "object/project/index/_index-content";
+
+@import "object/project/with_preload/_background-image";
+@import "object/project/with_preload/_contents-overlay";
+@import "object/project/with_preload/_index-header";
+@import "object/project/with_preload/_lower-header";
+@import "object/project/with_preload/_progress";
 
 // -----------------------------------------------------------------
 // Utility

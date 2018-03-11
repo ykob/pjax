@@ -1,41 +1,41 @@
 {
   "meta": {
     "websiteName": "Pjax",
-    "keywords": "",
+    "keywords": "pjax",
     "themeColor": "#111111"
   },
   "pages": {
     "index": {
       "id": "index",
       "title": "",
-      "keywords": "",
       "description": "it is utility class that manage asynchronous transition on website.",
-      "path": "/",
-      "ogpImg": "ogp.jpg"
+      "path": "/"
     },
-    "page01": {
-      "id": "page01",
-      "title": "Page01",
-      "keywords": "",
-      "description": "it is utility class that manage asynchronous transition on website.",
-      "path": "/page01.html",
-      "ogpImg": "ogp.jpg"
-    },
-    "page02": {
-      "id": "page02",
-      "title": "Page02",
-      "keywords": "",
-      "description": "it is utility class that manage asynchronous transition on website.",
-      "path": "/page02.html",
-      "ogpImg": "ogp.jpg"
-    },
-    "page03": {
-      "id": "page03",
-      "title": "Page03",
-      "keywords": "",
-      "description": "it is utility class that manage asynchronous transition on website.",
-      "path": "/page03.html",
-      "ogpImg": "ogp.jpg"
+    "withPreload": {
+      "index": {
+        "id": "index",
+        "title": "",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/with_preload/"
+        },
+      "page01": {
+        "id": "page01",
+        "title": "Page01",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/with_preload/page01.html"
+        },
+      "page02": {
+        "id": "page02",
+        "title": "Page02",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/with_preload/page02.html"
+        },
+      "page03": {
+        "id": "page03",
+        "title": "Page03",
+        "description": "it is utility class that manage asynchronous transition on website.",
+        "path": "/with_preload/page03.html"
+        }
     }
   }
 }
