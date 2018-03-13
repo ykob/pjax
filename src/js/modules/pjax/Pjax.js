@@ -1,3 +1,11 @@
+/**
+* Pjax
+*
+* Copyright (c) 2018 Yoichi Kobayashi
+* Released under the MIT license
+* http://opensource.org/licenses/mit-license.php
+*/
+
 const ConsoleSignature = require('../common/ConsoleSignature').default;
 
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
