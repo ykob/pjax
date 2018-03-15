@@ -10,9 +10,9 @@ const ConsoleSignature = require('../common/ConsoleSignature').default;
 
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
-const CLASSNAME_LINK = '.js-pjax-link';
-const CLASSNAME_PAGE = '.js-pjax-page';
-const CLASSNAME_CONTENTS = '.js-pjax-contents';
+const CLASSNAME_LINK = 'js-pjax-link';
+const CLASSNAME_PAGE = 'js-pjax-page';
+const CLASSNAME_CONTENTS = 'js-pjax-contents';
 const TIME_REMOVE_PREV_CONTENTS = 1000;
 
 const page = {
@@ -29,8 +29,8 @@ export default class Pjax {
     this.modules = modules;
     this.xhr = new XMLHttpRequest();
     this.elm = {
-      page: document.querySelector(CLASSNAME_PAGE),
-      contents: document.querySelector(CLASSNAME_CONTENTS),
+      page: document.querySelector(`.${CLASSNAME_PAGE}`),
+      contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
     };
     this.href = location.pathname + location.search;
     this.page = null;
@@ -95,8 +95,8 @@ export default class Pjax {
     // 次のページを取得
     const responseHtml = document.createElement('div');
     responseHtml.innerHTML = this.xhr.responseText;
-    const responsePage = responseHtml.querySelector(CLASSNAME_PAGE);
-    const responseContents = responseHtml.querySelector(CLASSNAME_CONTENTS);
+    const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
+    const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
 
     // 次のページのDOMを追加
     this.elm.page.dataset.pageId = responsePage.dataset.pageId;
@@ -222,7 +222,7 @@ export default class Pjax {
         const href = elm.getAttribute('href');
         const target = elm.getAttribute('target');
         if (
-          elm.classList.contains(CLASSNAME_LINK.replace('.', ''))
+          elm.classList.contains(CLASSNAME_LINK)
           || !(href.match(/^http/) || target === '_blank')
         ) {
           elm.addEventListener('click', (event) => {

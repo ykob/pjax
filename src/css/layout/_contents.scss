@@ -35,16 +35,31 @@
       margin-top: -50px;
     }
   }
+  @keyframes arriveContents {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes leaveContents {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  animation-fill-mode: both;
   &.is-arrived {
-    opacity: 1;
-    transition-duration: .4s;
-    transition-delay: .4s;
-    transition-property: opacity;
+    animation-name: arriveContents;
+    animation-duration: .4s;
+    animation-delay: .2s;
   }
   &.is-leaved {
-    opacity: 0;
-    transition-duration: .4s;
-    transition-delay: 0s;
-    transition-property: opacity;
+    animation-name: leaveContents;
+    animation-duration: .4s;
+    animation-delay: 0s;
   }
 }
