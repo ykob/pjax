@@ -28,8 +28,10 @@ export default class Pjax {
   constructor(modules) {
     this.modules = modules;
     this.xhr = new XMLHttpRequest();
-    this.elmPage = document.querySelector(CLASSNAME_PAGE);
-    this.elmContents = document.querySelector(CLASSNAME_CONTENTS);
+    this.elm = {
+      page: document.querySelector(CLASSNAME_PAGE),
+      contents: document.querySelector(CLASSNAME_CONTENTS),
+    };
     this.href = location.pathname + location.search;
     this.page = null;
     this.isTransition = false;
@@ -43,7 +45,7 @@ export default class Pjax {
 
     // ページごとの、遷移演出終了前に実行する初期化処理
     page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
-    this.page.initBeforeTransit(this.elmContents, this.modules);
+    this.page.initBeforeTransit(this.elm.contents, this.modules);
 
     // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
     this.modules.scrollManager.start(() => {
@@ -59,7 +61,7 @@ export default class Pjax {
   }
   selectPageFunc() {
     // ページごと個別に実行する関数の選択
-    switch (this.elmPage.dataset.pageId) {
+    switch (this.elm.page.dataset.pageId) {
       case 'index':
         this.page = page.index;
         break;
@@ -87,7 +89,7 @@ export default class Pjax {
     this.page.clear(this.modules);
 
     // 現在のページの本文を取得
-    const currentContents = this.elmContents;
+    const currentContents = this.elm.contents;
     currentContents.classList.remove('js-contents')
 
     // 次のページを取得
@@ -97,9 +99,9 @@ export default class Pjax {
     const responseContents = responseHtml.querySelector(CLASSNAME_CONTENTS);
 
     // 次のページのDOMを追加
-    this.elmPage.dataset.pageId = responsePage.dataset.pageId;
-    this.elmPage.appendChild(responseContents);
-    this.elmContents = responseContents;
+    this.elm.page.dataset.pageId = responsePage.dataset.pageId;
+    this.elm.page.appendChild(responseContents);
+    this.elm.contents = responseContents;
     document.title = responseHtml.querySelector('title').innerHTML;
 
     // スクロール値をトップに戻す
@@ -120,15 +122,15 @@ export default class Pjax {
 
     // 演出分のタイマーを回したあとで現在のページを削除
     setTimeout(() => {
-      this.elmPage.removeChild(currentContents);
+      this.elm.page.removeChild(currentContents);
     }, TIME_REMOVE_PREV_CONTENTS);
 
     // ページごとの、遷移演出終了前に実行する初期化処理
-    page.common.initBeforeTransit(this.elmContents, this.modules, this.isPageLoaded);
-    this.page.initBeforeTransit(this.elmContents, this.modules);
+    page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
+    this.page.initBeforeTransit(this.elm.contents, this.modules);
 
     // 差し替えたページの本文に対しての非同期遷移のイベント設定
-    this.onPjaxLinks(this.elmContents);
+    this.onPjaxLinks(this.elm.contents);
 
     // Scroll Managerの初期化
     this.modules.scrollManager.start(() => {
@@ -154,8 +156,8 @@ export default class Pjax {
       return;
     }
     // ページごとの、遷移演出終了後に実行する初期化処理
-    page.common.initAfterTransit(this.elmContents, this.modules);
-    this.page.initAfterTransit(this.elmContents, this.modules);
+    page.common.initAfterTransit(this.elm.contents, this.modules);
+    this.page.initAfterTransit(this.elm.contents, this.modules);
   }
   on() {
     // 各イベントの設定

@@ -28,10 +28,12 @@ export default class PjaxWithPreload {
   constructor(modules) {
     this.modules = modules;
     this.xhr = new XMLHttpRequest();
-    this.elmPage = document.querySelector(`.${CLASSNAME_PAGE}`);
-    this.elmContents = document.querySelector(`.${CLASSNAME_CONTENTS}`);
-    this.elmOverlay = document.querySelector('.js-pjax-overlay');
-    this.elmProgress = document.querySelector('.js-pjax-progress');
+    this.elm = {
+      page: document.querySelector(`.${CLASSNAME_PAGE}`),
+      contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
+      overlay: document.querySelector('.js-pjax-overlay'),
+      progress: document.querySelector('.js-pjax-progress'),
+    };
     this.href = location.pathname + location.search;
     this.page = null;
     this.isAnimate = false;
@@ -44,12 +46,12 @@ export default class PjaxWithPreload {
     this.selectPageFunc();
 
     // ページごとのプリロード処理
-    this.page.preload(this.elmContents, this.modules, () => {
+    this.page.preload(this.elm.contents, this.modules, () => {
       // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
       this.modules.scrollManager.start(() => {
         // ページごとの、遷移演出終了前に実行する初期化処理
         page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elmContents, this.modules);
+        this.page.initBeforeTransit(this.elm.contents, this.modules);
 
         // 初期ロード後の非同期遷移のイベント設定
         this.onPjaxLinks(document);
@@ -64,7 +66,7 @@ export default class PjaxWithPreload {
   }
   selectPageFunc() {
     // ページごと個別に実行する関数の選択
-    switch (this.elmPage.dataset.pageId) {
+    switch (this.elm.page.dataset.pageId) {
       case 'index':
         this.page = page.index;
         break;
@@ -98,8 +100,8 @@ export default class PjaxWithPreload {
     const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
 
     // ページの中身を差し替え
-    this.elmPage.dataset.pageId = responsePage.dataset.pageId;
-    this.elmContents.innerHTML = responseContents.innerHTML;
+    this.elm.page.dataset.pageId = responsePage.dataset.pageId;
+    this.elm.contents.innerHTML = responseContents.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
     // Google Analytics の集計処理。
@@ -112,15 +114,15 @@ export default class PjaxWithPreload {
     this.selectPageFunc();
 
     // ページごとのプリロード処理
-    this.page.preload(this.elmContents, this.modules, () => {
+    this.page.preload(this.elm.contents, this.modules, () => {
       // 差し替えたページの本文に対しての非同期遷移のイベント設定
-      this.onPjaxLinks(this.elmContents);
+      this.onPjaxLinks(this.elm.contents);
 
       // Scroll Managerの初期化
       this.modules.scrollManager.start(() => {
         // ページごとの、遷移演出終了前に実行する初期化処理
-        page.common.initBeforeTransit(this.elmContents, this.modules, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elmContents, this.modules);
+        page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
+        this.page.initBeforeTransit(this.elm.contents, this.modules);
 
         // 遷移演出の終了
         this.transitEnd();
@@ -132,15 +134,15 @@ export default class PjaxWithPreload {
     if (this.isAnimate) return;
     this.isAnimate = true;
     this.modules.scrollManager.pause();
-    this.elmOverlay.classList.remove('is-shrink');
+    this.elm.overlay.classList.remove('is-shrink');
 
     // オーバーレイのアニメを省略するか否かの判定
     if (withAnime) {
-      this.elmOverlay.classList.add('is-expand');
-      this.elmProgress.classList.add('is-shown');
+      this.elm.overlay.classList.add('is-expand');
+      this.elm.progress.classList.add('is-shown');
     } else {
-      this.elmOverlay.classList.add('is-expand-moment');
-      this.elmProgress.classList.add('is-shown-moment');
+      this.elm.overlay.classList.add('is-expand-moment');
+      this.elm.progress.classList.add('is-shown-moment');
       this.href = location.pathname + location.search;
       this.send();
     }
@@ -148,10 +150,10 @@ export default class PjaxWithPreload {
   transitEnd() {
     // ページ切り替え後の演出
     setTimeout(() => {
-      this.elmOverlay.classList.remove('is-expand');
-      this.elmOverlay.classList.remove('is-expand-moment');
-      this.elmOverlay.classList.add('is-shrink');
-      this.elmProgress.classList.add('is-hidden');
+      this.elm.overlay.classList.remove('is-expand');
+      this.elm.overlay.classList.remove('is-expand-moment');
+      this.elm.overlay.classList.add('is-shrink');
+      this.elm.progress.classList.add('is-hidden');
     }, 100);
   }
   on() {
@@ -194,25 +196,25 @@ export default class PjaxWithPreload {
     });
 
     // 遷移演出の途中または終了時の処理
-    this.elmOverlay.addEventListener('transitionend', () => {
-      if (this.elmOverlay.classList.contains('is-expand')) {
+    this.elm.overlay.addEventListener('transitionend', () => {
+      if (this.elm.overlay.classList.contains('is-expand')) {
         // オーバーレイが展開したあとの処理
         this.href = location.pathname + location.search;
         this.send();
       } else {
         // オーバーレイが収縮したあとの処理
         this.isAnimate = false;
-        this.elmProgress.classList.remove('is-shown');
-        this.elmProgress.classList.remove('is-shown-moment');
-        this.elmProgress.classList.remove('is-hidden');
+        this.elm.progress.classList.remove('is-shown');
+        this.elm.progress.classList.remove('is-shown-moment');
+        this.elm.progress.classList.remove('is-hidden');
         // history.back連打によって、読み込まれた本文とその瞬間に表示されているURIが異なる場合、自動的に再度読み込みを行う。
         if (this.href !== location.pathname + location.search) {
           this.transitStart(true);
           return;
         }
         // ページごとの、遷移演出終了後に実行する初期化処理
-        page.common.initAfterTransit(this.elmContents, this.modules);
-        this.page.initAfterTransit(this.elmContents, this.modules);
+        page.common.initAfterTransit(this.elm.contents, this.modules);
+        this.page.initAfterTransit(this.elm.contents, this.modules);
       }
     });
   }

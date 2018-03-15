@@ -7,7 +7,7 @@ const pjax = new Pjax({
 });
 
 const init = () => {
-  pjax.elmProgress.classList.add('is-shown');
+  pjax.elm.progress.classList.add('is-shown');
   setTimeout(() => {
     pjax.onLoad();
   }, 500);
