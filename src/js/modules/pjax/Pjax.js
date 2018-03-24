@@ -83,6 +83,10 @@ export default class Pjax {
     this.modules.scrollManager.off();
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
+
+    // 遷移前のコンテンツに遷移演出用のクラスを付与/除去する
+    this.elm.contents.classList.remove('is-arrived');
+    this.elm.contents.classList.add('is-leaved');
   }
   replaceContent() {
     // 前ページの変数を空にするclear関数を実行
@@ -107,12 +111,10 @@ export default class Pjax {
     // スクロール値をトップに戻す
     window.scrollTo(0, 0);
 
-    // 遷移演出用のクラスを付与/除去する
-    currentContents.classList.remove('is-arrived');
-    currentContents.classList.add('is-leaved');
+    // 遷移後のコンテンツに遷移演出用のクラスを付与する
     setTimeout(() => {
       responseContents.classList.add('is-arrived');
-    }, 100);
+    });
 
     // Google Analytics の集計処理。
     if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
