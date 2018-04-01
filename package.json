@@ -53,6 +53,7 @@
   "dependencies": {
     "gl-matrix": "^2.4.0",
     "js-util": "git://github.com/ykob/js-util.git",
-    "jstransformer-markdown-it": "^2.0.0"
+    "jstransformer-markdown-it": "^2.0.0",
+    "viewport-units-buggyfill": "^0.6.2"
   }
 }
