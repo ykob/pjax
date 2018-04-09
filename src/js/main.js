@@ -7,10 +7,16 @@ const pjax = new Pjax({
   scrollManager: scrollManager
 });
 
-// Apply the polyfill fixes the bug that Mobile Safari return a wrong vh value.
-viewportUnitsBuggyfill.init();
+const ua = window.navigator.userAgent;
+const link = document.querySelector('link[as=style]');
 
-const init = () => {
+// preload stylesheet other than Google Chrome browser.
+if (ua.indexOf('Chrome') < 0) link.rel = 'stylesheet';
+
+setTimeout(() => {
+  // Making viewport units (vh|vw|vmin|vmax) work properly in Mobile Safari.
+  viewportUnitsBuggyfill.init();
+
+  // start to run Pjax.
   pjax.onLoad();
-}
-init();
+}, 100);
