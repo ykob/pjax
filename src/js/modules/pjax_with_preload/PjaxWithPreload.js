@@ -238,7 +238,7 @@ export default class PjaxWithPreload {
       const target = elm.getAttribute('target');
       if (
         elm.classList.contains(CLASSNAME_LINK)
-        || !(elm.host !== location.host || target === '_blank')
+        || !(href.match(location.host) || target === '_blank')
       ) {
         elm.addEventListener('click', (event) => {
           event.preventDefault();
