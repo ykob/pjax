@@ -102,6 +102,15 @@ export default class Pjax {
     const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
     const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
 
+    // 遷移時に前後のページ本文が重なるようにfixed配置に変更する
+    console.log(this.modules.scrollManager.scrollTop)
+    if (this.modules.scrollManager.isValidSmooth() === false) {
+      currentContents.style.position = 'fixed';
+      currentContents.style.top = `${this.modules.scrollManager.scrollTop * -1}px`;
+    }
+    responseContents.style.position = 'fixed';
+    responseContents.style.top = '0';
+
     // 次のページのDOMを追加
     this.elm.page.dataset.pageId = responsePage.dataset.pageId;
     this.elm.page.appendChild(responseContents);
@@ -110,11 +119,6 @@ export default class Pjax {
 
     // スクロール値をトップに戻す
     window.scrollTo(0, 0);
-
-    // 遷移後のコンテンツに遷移演出用のクラスを付与する
-    setTimeout(() => {
-      responseContents.classList.add('is-arrived');
-    });
 
     // Google Analytics の集計処理。
     if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
@@ -144,19 +148,29 @@ export default class Pjax {
     // ページ切り替え前の処理
     if (this.isTransition) return;
     this.isTransition = true;
-    this.modules.scrollManager.pause();
+    this.modules.scrollManager.isWorkingScroll = false;
 
     this.href = location.pathname + location.search;
     this.send();
   }
   transitEnd() {
-    // ページ切り替え後の処理
+    // 遷移後のコンテンツに遷移演出用のクラスを付与する
+    this.elm.contents.classList.add('is-arrived');
+
+    // 遷移時に付与した遷移後の本文wrapperのsytle値をリセット
+    this.elm.contents.style.position = '';
+    this.elm.contents.style.top = '';
+
+    // ページ切り替え後のフラグ変更
     this.isTransition = false;
+    this.modules.scrollManager.isWorkingScroll = true;
+
     // history.back連打によって、読み込まれた本文とその瞬間に表示されているURIが異なる場合、自動的に再度読み込みを行う。
     if (this.href !== location.pathname + location.search) {
       this.transitStart();
       return;
     }
+
     // ページごとの、遷移演出終了後に実行する初期化処理
     page.common.initAfterTransit(this.elm.contents, this.modules);
     this.page.initAfterTransit(this.elm.contents, this.modules);
