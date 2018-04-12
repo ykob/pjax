@@ -52,7 +52,7 @@ export default class SmoothScrollManager {
     this.isWorkingScroll = false;
     this.isWorkingRender = false;
     this.isWorkingTransform = false;
-    this.isAlreadyAddEvent = false;
+    this.isPaused = false;
 
     this.on();
   }
@@ -107,11 +107,7 @@ export default class SmoothScrollManager {
   pause() {
     // スムーススクロールの一時停止
     this.isWorkingScroll = false;
-
-    // スマホ時には本文のtranslate値を更新してスクロールを固定する。
-    if (this.resolution.x <= this.X_SWITCH_SMOOTH) {
-      this.hookes.contents.velocity[1] = this.hookes.contents.anchor[1] = this.scrollTop * -1;
-    }
+    this.isPaused = true;
 
     // 一時停止時の位置を記憶
     this.scrollTopPause = this.scrollTop;
@@ -120,11 +116,7 @@ export default class SmoothScrollManager {
   play() {
     // スムーススクロールの再生
     this.isWorkingScroll = true;
-
-    // スマホ時には本文のtranslate値をゼロにしてスクロールを復帰させる。
-    if (this.resolution.x <= this.X_SWITCH_SMOOTH) {
-      this.hookes.contents.velocity[1] = this.hookes.contents.anchor[1] = 0;
-    }
+    this.isPaused = false;
 
     // 一時停止時の位置に移動（pause後に標準のスクロールがされても元の位置から動いていないように見せるため）
     this.scrollTop = this.scrollTopPause;
@@ -241,8 +233,8 @@ export default class SmoothScrollManager {
     // 個別のリサイズイベントを実行（ページの高さ変更後）
     if (this.resizeNext) this.resizeNext();
 
-    // スクロールイベントを再開
-    this.isWorkingScroll = true;
+    // スクロールイベントを再開（一時停止中は再開しない）
+    if (this.isPaused === false) this.isWorkingScroll = true;
   }
   render() {
     // 各要素のレンダリング
