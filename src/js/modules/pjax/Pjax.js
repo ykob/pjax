@@ -103,7 +103,6 @@ export default class Pjax {
     const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
 
     // 遷移時に前後のページ本文が重なるようにfixed配置に変更する
-    console.log(this.modules.scrollManager.scrollTop)
     if (this.modules.scrollManager.isValidSmooth() === false) {
       currentContents.style.position = 'fixed';
       currentContents.style.top = `${this.modules.scrollManager.scrollTop * -1}px`;
