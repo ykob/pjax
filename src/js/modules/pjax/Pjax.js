@@ -27,8 +27,8 @@ const page = {
 };
 
 export default class Pjax {
-  constructor(modules) {
-    this.modules = modules;
+  constructor() {
+    this.modules = null;
     this.xhr = new XMLHttpRequest();
     this.elm = {
       page: document.querySelector(`.${CLASSNAME_PAGE}`),
