@@ -38,12 +38,13 @@ export default class PjaxWithPreload {
     this.page = null;
     this.isAnimate = false;
     this.isPageLoaded = false;
-
-    this.on();
   }
   onLoad() {
     // ページが最初に読み込まれた際の処理
     this.selectPageFunc();
+
+    // set events.
+    this.on();
 
     // ページごとのプリロード処理
     this.page.preload(this.elm.contents, this.modules, () => {
@@ -115,15 +116,15 @@ export default class PjaxWithPreload {
 
     // ページごとのプリロード処理
     this.page.preload(this.elm.contents, this.modules, () => {
+      // ページごとの、遷移演出終了前に実行する初期化処理
+      page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
+      this.page.initBeforeTransit(this.elm.contents, this.modules);
+
       // 差し替えたページの本文に対しての非同期遷移のイベント設定
       this.onPjaxLinks(this.elm.contents);
 
       // Scroll Managerの初期化
       this.modules.scrollManager.start(() => {
-        // ページごとの、遷移演出終了前に実行する初期化処理
-        page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elm.contents, this.modules);
-
         // 遷移演出の終了
         this.transitEnd();
       });
@@ -133,7 +134,7 @@ export default class PjaxWithPreload {
     // ページ切り替え前の演出
     if (this.isAnimate) return;
     this.isAnimate = true;
-    this.modules.scrollManager.pause();
+    this.modules.scrollManager.isWorkingScroll = false;
     this.elm.overlay.classList.remove('is-shrink');
 
     // オーバーレイのアニメを省略するか否かの判定
@@ -204,6 +205,7 @@ export default class PjaxWithPreload {
       } else {
         // オーバーレイが収縮したあとの処理
         this.isAnimate = false;
+        this.modules.scrollManager.isWorkingScroll = true;
         this.elm.progress.classList.remove('is-shown');
         this.elm.progress.classList.remove('is-shown-moment');
         this.elm.progress.classList.remove('is-hidden');

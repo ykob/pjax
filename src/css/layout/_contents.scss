@@ -36,15 +36,17 @@
       margin-top: -50px;
     }
   }
-  opacity: 0;
-  &.is-arrived {
-    opacity: 1;
-    transition-duration: .6s;
-    transition-property: opacity;
-  }
-  &.is-leaved {
+  &--basic {
     opacity: 0;
-    transition-duration: .6s;
-    transition-property: opacity;
+    &.is-arrived {
+      opacity: 1;
+      transition-duration: .6s;
+      transition-property: opacity;
+    }
+    &.is-leaved {
+      opacity: 0;
+      transition-duration: .6s;
+      transition-property: opacity;
+    }
   }
 }
