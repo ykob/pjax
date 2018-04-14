@@ -13,6 +13,8 @@ const consoleSignature = new ConsoleSignature('page transition in this website w
 const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
+const CLASSNAME_TRANSITION_ARRIVED = 'is-arrived';
+const CLASSNAME_TRANSITION_LEAVED = 'is-leaved';
 const TIME_REMOVE_PREV_CONTENTS = 1000;
 
 const page = {
@@ -85,8 +87,8 @@ export default class Pjax {
     this.xhr.send();
 
     // 遷移前のコンテンツに遷移演出用のクラスを付与/除去する
-    this.elm.contents.classList.remove('is-arrived');
-    this.elm.contents.classList.add('is-leaved');
+    this.elm.contents.classList.remove(CLASSNAME_TRANSITION_ARRIVED);
+    this.elm.contents.classList.add(CLASSNAME_TRANSITION_LEAVED);
   }
   replaceContent() {
     // 前ページの変数を空にするclear関数を実行
@@ -154,7 +156,7 @@ export default class Pjax {
   }
   transitEnd() {
     // 遷移後のコンテンツに遷移演出用のクラスを付与する
-    this.elm.contents.classList.add('is-arrived');
+    this.elm.contents.classList.add(CLASSNAME_TRANSITION_ARRIVED);
 
     // 遷移時に付与した遷移後の本文wrapperのsytle値をリセット
     this.elm.contents.style.position = '';
