@@ -51,6 +51,7 @@
     "yargs": "^11.0.0"
   },
   "dependencies": {
+    "easing-js": "^1.1.2",
     "gl-matrix": "^2.4.0",
     "js-util": "git://github.com/ykob/js-util.git",
     "jstransformer-markdown-it": "^2.0.0",
