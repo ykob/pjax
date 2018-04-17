@@ -242,15 +242,15 @@ export default class PjaxWithPreload {
         elm.classList.contains(CLASSNAME_LINK)
         || !(href.match(location.host) || target === '_blank')
       ) {
-        elm.addEventListener('click', (event) => {
+        elm.addEventListener('click', function(event) {
           event.preventDefault();
-          transit(href, true);
+          transit(this.getAttribute('href'), true);
         });
       }
       if (elm.classList.contains(CLASSNAME_LINK_MOMENT)) {
-        elm.addEventListener('click', (event) => {
+        elm.addEventListener('click', function(event) {
           event.preventDefault();
-          transit(href, false);
+          transit(this.getAttribute('href'));
         });
       }
     }

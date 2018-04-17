@@ -242,9 +242,9 @@ export default class Pjax {
           elm.classList.contains(CLASSNAME_LINK)
           || !(href.match(location.host) || target === '_blank')
         ) {
-          elm.addEventListener('click', (event) => {
+          elm.addEventListener('click', function(event) {
             event.preventDefault();
-            transit(href);
+            transit(this.getAttribute('href'));
           });
         }
       }
