@@ -114,6 +114,9 @@ export default class SmoothScrollManager {
     window.scrollTo(0, this.scrollTop);
   }
   play() {
+    // if it is not paused, this methods doesn't run.
+    if (this.isPaused === false) return;
+
     // スムーススクロールの再生
     this.isWorkingScroll = true;
     this.isPaused = false;
@@ -274,13 +277,11 @@ export default class SmoothScrollManager {
 
     // スクロール
     window.addEventListener('scroll', (event) => {
-      if (this.isWorkingScroll === false) return;
       this.scroll(event);
     }, false);
 
     // リサイズ（debounceで連発を防ぐ）
     window.addEventListener(hookEventForResize, debounce((event) => {
-      if (this.isWorkingScroll === false) return;
       this.resize();
     }, 400), false);
 
