@@ -47,18 +47,18 @@ export default class Pjax {
 
     // ページごとの、遷移演出終了前に実行する初期化処理
     page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
-    this.page.initBeforeTransit(this.elm.contents, this.modules);
+    this.page.initBeforeTransit(this.elm.contents, this.modules, () => {
+      // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
+      this.modules.scrollManager.start(() => {
+        // 初期ロード後の非同期遷移のイベント設定
+        this.onPjaxLinks(document);
 
-    // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
-    this.modules.scrollManager.start(() => {
-      // 初期ロード後の非同期遷移のイベント設定
-      this.onPjaxLinks(document);
+        // 遷移演出の終了
+        this.transitEnd();
 
-      // 遷移演出の終了
-      this.transitEnd();
-
-      // ロード完了のフラグを立てる
-      this.isPageLoaded = true;
+        // ロード完了のフラグを立てる
+        this.isPageLoaded = true;
+      });
     });
   }
   selectPageFunc() {
@@ -134,15 +134,15 @@ export default class Pjax {
 
     // ページごとの、遷移演出終了前に実行する初期化処理
     page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
-    this.page.initBeforeTransit(this.elm.contents, this.modules);
+    this.page.initBeforeTransit(this.elm.contents, this.modules, () => {
+      // 差し替えたページの本文に対しての非同期遷移のイベント設定
+      this.onPjaxLinks(this.elm.contents);
 
-    // 差し替えたページの本文に対しての非同期遷移のイベント設定
-    this.onPjaxLinks(this.elm.contents);
-
-    // Scroll Managerの初期化
-    this.modules.scrollManager.start(() => {
-      // 遷移演出の終了
-      this.transitEnd();
+      // Scroll Managerの初期化
+      this.modules.scrollManager.start(() => {
+        // 遷移演出の終了
+        this.transitEnd();
+      });
     });
   }
   transitStart() {
