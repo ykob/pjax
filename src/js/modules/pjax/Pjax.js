@@ -21,9 +21,7 @@ const page = {
   common: require('./init/common.js'),
   blank: require('./init/blank.js'),
   index: require('./init/index.js'),
-  page01: require('./init/page01.js'),
-  page02: require('./init/page02.js'),
-  page03: require('./init/page03.js'),
+  lower: require('./init/lower.js'),
 };
 
 export default class Pjax {
@@ -68,13 +66,9 @@ export default class Pjax {
         this.page = page.index;
         break;
       case 'page01':
-        this.page = page.page01;
-        break;
       case 'page02':
-        this.page = page.page02;
-        break;
       case 'page03':
-        this.page = page.page03;
+        this.page = page.lower;
         break;
       default:
         this.page = page.blank;
