@@ -13,8 +13,8 @@ const consoleSignature = new ConsoleSignature('page transition in this website w
 const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
-const CLASSNAME_TRANSITION_ARRIVED = 'is-arrived';
-const CLASSNAME_TRANSITION_LEAVED = 'is-leaved';
+const CLASSNAME_TRANSITION_ARRIVED = 'is-arrived-contents';
+const CLASSNAME_TRANSITION_LEAVED = 'is-leaved-contents';
 const TIME_REMOVE_PREV_CONTENTS = 1000;
 
 const page = {

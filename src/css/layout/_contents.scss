@@ -38,12 +38,12 @@
   }
   &--basic {
     opacity: 0;
-    &.is-arrived {
+    &.is-arrived-contents {
       opacity: 1;
       transition-duration: .6s;
       transition-property: opacity;
     }
-    &.is-leaved {
+    &.is-leaved-contents {
       opacity: 0;
       transition-duration: .6s;
       transition-property: opacity;
