@@ -209,22 +209,23 @@ export default class Pjax {
       this.transitStart(true);
     });
   }
+  transit(href) {
+    // 非同期遷移のイベント内関数を事前に定義
+      if (href == location.pathname + location.search) {
+        return;
+      }
+      history.pushState(null, null, href);
+      this.transitStart();
+  }
   onPjaxLinks(content, fixedBefore, fixedAfter) {
+    const self = this;
+
     // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
     const elms = [
       content.getElementsByTagName('a'),
       (fixedBefore) ? fixedBefore.getElementsByTagName('a') : [],
       (fixedAfter) ? fixedAfter.getElementsByTagName('a') : [],
     ];
-
-    // 非同期遷移のイベント内関数を事前に定義
-    const transit = (href) => {
-      if (href == location.pathname + location.search) {
-        return;
-      }
-      history.pushState(null, null, href);
-      this.transitStart();
-    };
 
     // 事前に取得したアンカーリンク要素が非同期遷移の対象かどうかを判定し、イベントを付与する
     for (var i = 0; i < elms.length; i++) {
@@ -238,7 +239,7 @@ export default class Pjax {
         ) {
           elm.addEventListener('click', function(event) {
             event.preventDefault();
-            transit(this.getAttribute('href'));
+            self.transit(this.getAttribute('href'));
           });
         }
       }
