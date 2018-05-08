@@ -4,16 +4,20 @@ $color-hatena: #00a4de;
 $color-googleplus: #db4e3f;
 $color-pocket: #ef4056;
 
-$color-text-black: #222;
+$color-text: #222;
+$color-key: #c22;
+$color-strong: #c22;
+$color-link: #c22;
 
 // @font-face {
 //   font-family: 'xxx';
+//   font-weight: '400';
 //   src:
 //     url('/font/xxx.ttf') format('truetype'),
 //     url('/font/xxx.woff') format('woff');
 // }
 
-$font-ja: "Noto Sans", "游ゴシック体", "Yu Gothic", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+$font-ja: "游ゴシック体", "Yu Gothic", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
 
 $max-width: 1600px;
 $min-width: 970px;
@@ -21,3 +25,4 @@ $min-width: 970px;
 $break-point-pc-s: 1366px;
 $break-point-tablet-l: 1024px;
 $break-point-tablet-p: 768px;
+$break-point-mobile-p: 414px;
