@@ -80,9 +80,8 @@ export default class Pjax {
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
 
-    // 遷移前のコンテンツに遷移演出用のクラスを付与/除去する
-    this.elm.contents.classList.remove(CLASSNAME_TRANSITION_ARRIVED);
-    this.elm.contents.classList.add(CLASSNAME_TRANSITION_LEAVED);
+    // fire the page transition effect.
+    this.leave();
   }
   replaceContent() {
     // 前ページの変数を空にするclear関数を実行
@@ -149,8 +148,8 @@ export default class Pjax {
     this.send();
   }
   transitEnd() {
-    // 遷移後のコンテンツに遷移演出用のクラスを付与する
-    this.elm.contents.classList.add(CLASSNAME_TRANSITION_ARRIVED);
+    // fire the page transition effect.
+    this.arrive();
 
     // 遷移時に付与した遷移後の本文wrapperのsytle値をリセット
     this.elm.contents.style.position = '';
@@ -169,6 +168,16 @@ export default class Pjax {
     // ページごとの、遷移演出終了後に実行する初期化処理
     page.common.initAfterTransit(this.elm.contents, this.modules);
     this.page.initAfterTransit(this.elm.contents, this.modules);
+  }
+  arrive() {
+    // toggle CSS classes for to add page transition effect to the content element that exists after the transition.
+    this.elm.contents.classList.add(CLASSNAME_TRANSITION_ARRIVED);
+    this.elm.contents.classList.remove(CLASSNAME_TRANSITION_LEAVED);
+  }
+  leave() {
+    // toggle CSS classes for to add page transition effect to the content element that exists before the transition.
+    this.elm.contents.classList.remove(CLASSNAME_TRANSITION_ARRIVED);
+    this.elm.contents.classList.add(CLASSNAME_TRANSITION_LEAVED);
   }
   on() {
     // 各イベントの設定
