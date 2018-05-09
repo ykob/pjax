@@ -28,6 +28,7 @@ export default class Pjax {
   constructor() {
     this.modules = null;
     this.xhr = new XMLHttpRequest();
+    this.xhrOpenMethod = 'GET';
     this.elm = {
       page: document.querySelector(`.${CLASSNAME_PAGE}`),
       contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
@@ -77,7 +78,7 @@ export default class Pjax {
   send() {
     // XMLHttpRequestの通信開始
     this.modules.scrollManager.off();
-    this.xhr.open('GET', this.href, true);
+    this.xhr.open(this.xhrOpenMethod, this.href, true);
     this.xhr.send();
 
     // fire the page transition effect.
@@ -218,12 +219,13 @@ export default class Pjax {
       this.transitStart(true);
     });
   }
-  transit(href) {
+  transit(href, method = 'GET') {
     // 非同期遷移のイベント内関数を事前に定義
       if (href == location.pathname + location.search) {
         return;
       }
       history.pushState(null, null, href);
+      this.xhrOpenMethod = method;
       this.transitStart();
   }
   onPjaxLinks(content, fixedBefore, fixedAfter) {

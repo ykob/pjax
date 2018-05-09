@@ -26,6 +26,7 @@ export default class PjaxWithPreload {
   constructor() {
     this.modules = null;
     this.xhr = new XMLHttpRequest();
+    this.xhrOpenMethod = 'GET';
     this.elm = {
       page: document.querySelector(`.${CLASSNAME_PAGE}`),
       contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
@@ -215,11 +216,12 @@ export default class PjaxWithPreload {
     });
   }
   // 非同期遷移のイベント内関数を事前に定義
-  transit(href, withAnime) {
+  transit(href, withAnime, method = 'GET') {
     if (href == location.pathname + location.search) {
       return;
     }
     history.pushState(null, null, href);
+    this.xhrOpenMethod = method;
     this.transitStart(withAnime);
   };
   onPjaxLinks(content) {
