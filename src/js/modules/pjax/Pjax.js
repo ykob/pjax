@@ -245,8 +245,12 @@ export default class Pjax {
         const href = elm.getAttribute('href');
         const target = elm.getAttribute('target');
         if (
-          elm.classList.contains(CLASSNAME_LINK)
-          || !(href.match(location.host) || target === '_blank')
+          elm.classList.contains(CLASSNAME_LINK) // It has the class name to set Pjax transition.
+          || (
+            target !== '_blank' // It doesn't have "_blank" value in target attribute.
+            && href.indexOf('#') < 0 // It doesn't link to an anchor on the same page.
+            && !(href.indexOf('http') > -1 && href.match(location.host) === null) // It doesn't have this website's hostname in the href attribute value.
+          )
         ) {
           elm.addEventListener('click', function(event) {
             event.preventDefault();
