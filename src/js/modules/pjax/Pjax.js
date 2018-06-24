@@ -60,6 +60,8 @@ export default class Pjax {
 
     // ロード完了のフラグを立てる
     this.isPageLoaded = true;
+
+    return;
   }
   selectPageFunc() {
     // ページごと個別に実行する関数の選択

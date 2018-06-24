@@ -6,6 +6,8 @@
 * http://opensource.org/licenses/mit-license.php
 */
 
+require("babel-polyfill");
+
 const ConsoleSignature = require('../common/ConsoleSignature').default;
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
@@ -37,7 +39,7 @@ export default class PjaxWithPreload {
     this.isAnimate = false;
     this.isPageLoaded = false;
   }
-  onLoad() {
+  async onLoad() {
     // ページが最初に読み込まれた際の処理
     this.selectPageFunc();
 
@@ -46,10 +48,10 @@ export default class PjaxWithPreload {
 
     // ページごとの、遷移演出終了前に実行する初期化処理
     page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
-    this.page.initBeforeTransit(this.elm.contents, this.modules);
+    await this.page.initBeforeTransit(this.elm.contents, this.modules);
 
     // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
-    this.modules.scrollManager.start();
+    await this.modules.scrollManager.start();
 
     // 初期ロード後の非同期遷移のイベント設定
     this.onPjaxLinks(document);
@@ -59,6 +61,8 @@ export default class PjaxWithPreload {
 
     // ロード完了のフラグを立てる
     this.isPageLoaded = true;
+
+    return;
   }
   selectPageFunc() {
     // ページごと個別に実行する関数の選択
