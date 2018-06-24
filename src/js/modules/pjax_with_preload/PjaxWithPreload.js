@@ -7,7 +7,6 @@
 */
 
 const ConsoleSignature = require('../common/ConsoleSignature').default;
-
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
 const CLASSNAME_LINK = 'js-pjax-link';
