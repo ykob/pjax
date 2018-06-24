@@ -1,14 +1,12 @@
+require("babel-polyfill");
+
 const loadContentImgs = require('../../common/loadContentImgs').default;
 
 module.exports = {
-  // preload method: after content is replaced. / before scrollManager.resize run.
-  preload: function(contents, modules, callback) {
-    loadContentImgs(contents, callback);
-  },
-  // initBeforeTransit method: after scrollManager.resize run. / before page transition.
+  // initBeforeTransit method: before scrollManager.resize run.
   initBeforeTransit: function(contents, modules) {
   },
-  // initAfterTransit method: after page transition.
+  // initAfterTransit method: after scrollManager.resize run.
   initAfterTransit: function(contents, modules) {
   },
   // clear any variables.

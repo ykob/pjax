@@ -48,7 +48,7 @@ export default class SmoothScrollManager {
     this.scrollPrev = null;
     this.scrollNext = null;
     this.resizeReset = null;
-    this.resizePrev = async () => { return; };
+    this.resizePrev = null;
     this.resizeNext = null;
     this.renderPrev = null;
     this.renderNext = null;
@@ -69,7 +69,7 @@ export default class SmoothScrollManager {
     this.elm.contents = document.querySelector(`.${CLASSNAME_CONTENTS}`);
 
     // It returns Promise with setTimeout to get a scroll top value accurately when a hash is included.
-    return new Promise (resolve => {
+    await new Promise((resolve) => {
       setTimeout(() => {
         // 初期スクロール値を取得する。(pjax遷移の際は不要)
         this.scrollTop = window.pageYOffset;
@@ -81,7 +81,6 @@ export default class SmoothScrollManager {
         this.scrollItems.init();
 
         // hash があった場合は指定の箇所にスクロール位置を調整する
-        this.isWorkingScroll = false;
         const { hash } = location;
         const target = (hash) ? document.querySelector(hash) : null;
         if (target) {
@@ -100,15 +99,12 @@ export default class SmoothScrollManager {
         this.isWorkingTransform = true;
         this.renderLoop();
 
-        // Resizeイベントを実行してページのレイアウトを初期化する
-        this.resize().then(() => {
-          // ページロード時にスクロールイベントを着火させる。
-          this.scroll();
-
-          resolve();
-        });
+        resolve();
       }, 100);
     });
+    await this.resize();
+    this.scroll();
+    return;
   }
   pause() {
     // if it is paused, this methods doesn't run.
@@ -195,8 +191,6 @@ export default class SmoothScrollManager {
 
     // ScrollItems のリサイズメソッドを実行
     this.scrollItems.resize(this.isValidSmooth());
-
-    return;
   }
   async resize() {
     // リサイズイベントの一連の流れ
@@ -234,8 +228,10 @@ export default class SmoothScrollManager {
     }
 
     // 個別のリサイズイベントを実行（ページの高さ変更前）
-    await this.resizePrev()
-      .then(() => {
+    if (this.resizePrev) this.resizePrev();
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
         // 本文やダミースクロールのレイアウトを再設定
         this.initDummyScroll();
         this.render();
@@ -243,38 +239,45 @@ export default class SmoothScrollManager {
 
         // 標準のリサイズイベントを実行
         this.resizeBasis();
-      })
-      .then(() => {
+
         // 個別のリサイズイベントを実行（ページの高さ変更後）
         if (this.resizeNext) this.resizeNext();
 
         // スクロールイベントを再開（一時停止中は再開しない）
         if (this.isPaused === false) this.isWorkingScroll = true;
 
-        return;
-      });
+        resolve();
+      }, 100);
+    });
+
+    return;
+  }
+  renderBasis() {
+    // It is the basic rendering.
+
   }
   render() {
-    // 各要素のレンダリング
-
-    // 個別のレンダリング処理を実行（標準のレンダリング処理前）
+    // run before the basic rendering.
     if (this.renderPrev) this.renderPrev();
 
-    // 本文全体のラッパー(contents)をレンダリング
+    // render the content wrapper.
     if (this.isWorkingTransform === true && this.resolution.x > this.X_SWITCH_SMOOTH) {
       const y = Math.floor(this.hookes.contents.velocity[1] * 1000) / 1000;
       this.elm.contents.style.transform = `translate3D(0, ${y}px, 0)`;
     }
 
-    // Hookesオブジェクトをレンダリング
+    // render Hookes objects.
     for (var key in this.hookes) {
       this.hookes[key].render();
     }
 
-    // スクロールイベント連動オブジェクトをレンダリング
+    // render Scroll Items.
     this.scrollItems.render(this.isValidSmooth());
 
-    // 個別のレンダリング処理を実行（標準のレンダリング処理後）
+    // run the basic rendering.
+    this.renderBasis();
+
+    // run after the basic rendering.
     if (this.renderNext) this.renderNext();
   }
   renderLoop() {
@@ -318,7 +321,7 @@ export default class SmoothScrollManager {
     this.scrollPrev = null;
     this.scrollNext = null;
     this.resizeReset = null;
-    this.resizePrev = async () => { return; };
+    this.resizePrev = null;
     this.resizeNext = null;
     this.renderPrev = null;
     this.renderNext = null;

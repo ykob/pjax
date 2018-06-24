@@ -44,24 +44,21 @@ export default class PjaxWithPreload {
     // set events.
     this.on();
 
-    // ページごとのプリロード処理
-    this.page.preload(this.elm.contents, this.modules, () => {
-      // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
-      this.modules.scrollManager.start(() => {
-        // ページごとの、遷移演出終了前に実行する初期化処理
-        page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
-        this.page.initBeforeTransit(this.elm.contents, this.modules);
+    // ページごとの、遷移演出終了前に実行する初期化処理
+    page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
+    this.page.initBeforeTransit(this.elm.contents, this.modules);
 
-        // 初期ロード後の非同期遷移のイベント設定
-        this.onPjaxLinks(document);
+    // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
+    this.modules.scrollManager.start();
 
-        // 遷移演出の終了
-        this.transitEnd();
+    // 初期ロード後の非同期遷移のイベント設定
+    this.onPjaxLinks(document);
 
-        // ロード完了のフラグを立てる
-        this.isPageLoaded = true;
-      });
-    });
+    // 遷移演出の終了
+    this.transitEnd();
+
+    // ロード完了のフラグを立てる
+    this.isPageLoaded = true;
   }
   selectPageFunc() {
     // ページごと個別に実行する関数の選択
@@ -84,7 +81,7 @@ export default class PjaxWithPreload {
     this.xhr.open('GET', this.href, true);
     this.xhr.send();
   }
-  replaceContent() {
+  async replaceContent() {
     // 前ページの変数を空にするclear関数を実行
     this.page.clear(this.modules);
 
@@ -108,21 +105,18 @@ export default class PjaxWithPreload {
     // ページの初期化関数オブジェクトを選択
     this.selectPageFunc();
 
-    // ページごとのプリロード処理
-    this.page.preload(this.elm.contents, this.modules, () => {
-      // ページごとの、遷移演出終了前に実行する初期化処理
-      page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
-      this.page.initBeforeTransit(this.elm.contents, this.modules);
+    // ページごとの、遷移演出終了前に実行する初期化処理
+    page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
+    await this.page.initBeforeTransit(this.elm.contents, this.modules);
 
-      // 差し替えたページの本文に対しての非同期遷移のイベント設定
-      this.onPjaxLinks(this.elm.contents);
+    // 差し替えたページの本文に対しての非同期遷移のイベント設定
+    this.onPjaxLinks(this.elm.contents);
 
-      // Scroll Managerの初期化
-      this.modules.scrollManager.start(() => {
-        // 遷移演出の終了
-        this.transitEnd();
-      });
-    });
+    // Scroll Managerの初期化
+    await this.modules.scrollManager.start();
+
+    // 遷移演出の終了
+    this.transitEnd();
   }
   transitStart(withAnime) {
     // ページ切り替え前の演出
