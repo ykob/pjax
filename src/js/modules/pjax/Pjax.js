@@ -18,12 +18,8 @@ const CLASSNAME_TRANSITION_ARRIVED = 'is-arrived-contents';
 const CLASSNAME_TRANSITION_LEAVED = 'is-leaved-contents';
 const TIME_REMOVE_PREV_CONTENTS = 1000;
 
-const page = {
-  common: require('./init/common.js'),
-  blank: require('./init/blank.js'),
-  index: require('./init/index.js'),
-  lower: require('./init/lower.js'),
-};
+const page = require('./page');
+const getPage = require('./getPage').default;
 
 export default class Pjax {
   constructor() {
@@ -35,7 +31,7 @@ export default class Pjax {
       contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
     };
     this.href = location.pathname + location.search;
-    this.page = null;
+    this.currentPage = null;
     this.isTransition = false;
     this.isPageLoaded = false;
 
@@ -43,11 +39,13 @@ export default class Pjax {
   }
   async onLoad() {
     // ページが最初に読み込まれた際の処理
-    this.selectPageFunc();
+
+    // ページ切替時の処理諸々
+    this.switchPage();
 
     // ページごとの、遷移演出終了前に実行する初期化処理
     page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
-    await this.page.initBeforeTransit(this.elm.contents, this.modules);
+    await this.currentPage.initBeforeTransit(this.elm.contents, this.modules);
 
     // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
     await this.modules.scrollManager.start();
@@ -63,20 +61,9 @@ export default class Pjax {
 
     return;
   }
-  selectPageFunc() {
-    // ページごと個別に実行する関数の選択
-    switch (this.elm.page.dataset.pageId) {
-      case 'index':
-        this.page = page.index;
-        break;
-      case 'page01':
-      case 'page02':
-      case 'page03':
-        this.page = page.lower;
-        break;
-      default:
-        this.page = page.blank;
-    }
+  switchPage() {
+    // ページ固有の関数オブジェクトを選択
+    this.currentPage = getPage(this.elm.page.dataset.pageId, page);
   }
   send() {
     // XMLHttpRequestの通信開始
@@ -89,7 +76,7 @@ export default class Pjax {
   }
   async replaceContent() {
     // 前ページの変数を空にするclear関数を実行
-    this.page.clear(this.modules);
+    this.currentPage.clear(this.modules);
 
     // 現在のページの本文を取得
     const currentContents = this.elm.contents;
@@ -121,8 +108,8 @@ export default class Pjax {
     // Google Analytics の集計処理。
     if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
 
-    // ページの初期化関数オブジェクトを選択
-    this.selectPageFunc();
+    // ページ切替時の処理諸々
+    this.switchPage();
 
     // 演出分のタイマーを回したあとで現在のページを削除
     setTimeout(() => {
@@ -131,7 +118,7 @@ export default class Pjax {
 
     // ページごとの、遷移演出終了前に実行する初期化処理
     page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
-    await this.page.initBeforeTransit(this.elm.contents, this.modules);
+    await this.currentPage.initBeforeTransit(this.elm.contents, this.modules);
 
     // 差し替えたページの本文に対しての非同期遷移のイベント設定
     this.onPjaxLinks(this.elm.contents);
@@ -170,7 +157,7 @@ export default class Pjax {
 
     // ページごとの、遷移演出終了後に実行する初期化処理
     page.common.initAfterTransit(this.elm.contents, this.modules);
-    this.page.initAfterTransit(this.elm.contents, this.modules);
+    this.currentPage.initAfterTransit(this.elm.contents, this.modules);
   }
   arrive() {
     // toggle CSS classes for to add page transition effect to the content element that exists after the transition.
