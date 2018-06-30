@@ -1,18 +1,16 @@
+require("babel-polyfill");
+
 const loadImgs = require('./loadImgs').default;
 
-export default function(contents, callback, addImgs = []) {
+export default async function(contents, addImgs = []) {
   const imgs = contents.querySelectorAll('img');
+  const imgArr = [];
 
-  if (imgs.length > 0) {
-    const imgArray = [];
-    for (var i = 0; i < imgs.length; i++) {
-      imgArray[i] = imgs[i].src;
-    }
-    for (var j = 0; j < addImgs.length; j++) {
-      imgArray.push(addImgs[j]);
-    }
-    loadImgs(imgArray, callback);
-  } else {
-    callback();
+  for (var i = 0; i < imgs.length; i++) {
+    imgArr[i] = imgs[i].src;
   }
+  for (var j = 0; j < addImgs.length; j++) {
+    imgArr.push(addImgs[j]);
+  }
+  return loadImgs(imgArr);
 }

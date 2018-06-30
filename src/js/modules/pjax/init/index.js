@@ -1,11 +1,11 @@
 require("babel-polyfill");
 
-const loadImgs = require('../../common/loadImgs').default;
+const loadContentImgs = require('../../common/loadContentImgs').default;
 
 module.exports = {
   // initBeforeTransit method: before scrollManager.resize run.
   initBeforeTransit: async function(contents, modules) {
-    await loadImgs([
+    await loadContentImgs(contents, [
       '/pjax/img/index/bg.jpg',
       '/pjax/img/page01/bg.jpg',
       '/pjax/img/page02/bg.jpg',
