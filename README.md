@@ -1,6 +1,6 @@
 # pjax
 
-it is utility class that manage asynchronous transition on website.   
+It's a utility JavaScript asset that manages asynchronous page transition on a website.   
 https://ykob.github.io/pjax/
 
 ## License
