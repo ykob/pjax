@@ -1,6 +1,6 @@
 {
   "name": "pjax",
-  "description": "My original class for pjax (Ajax + pushState).",
+  "description": "It's a utility JavaScript asset that manages asynchronous page transition on a website.",
   "repository": {
     "type": "git",
     "url": "https://github.com/ykob/pjax"
