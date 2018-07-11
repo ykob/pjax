@@ -18,8 +18,5 @@ if (ua.indexOf('Chrome') < 0) link.rel = 'stylesheet';
 
 setTimeout(() => {
   // start to run Pjax.
-  modules.pjax.elm.progress.classList.add('is-shown');
-  setTimeout(() => {
-    modules.pjax.onLoad();
-  }, 500);
+  modules.pjax.onLoad();
 }, 100);
