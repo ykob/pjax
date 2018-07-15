@@ -1,11 +1,13 @@
 const viewportUnitsBuggyfill = require('viewport-units-buggyfill');
 const Pjax = require('./modules/pjax/Pjax').default;
 const ScrollManager = require('./modules/smooth_scroll_manager/SmoothScrollManager').default;
+const Renderer = require('./modules/common/Renderer').default;
 
 const modules = {
   pjax: new Pjax(),
   scrollManager: new ScrollManager(),
 };
+const renderer = new Renderer(modules);
 const ua = window.navigator.userAgent;
 const link = document.querySelector('link[as=style]');
 
@@ -21,5 +23,7 @@ setTimeout(() => {
   viewportUnitsBuggyfill.init();
 
   // start to run Pjax.
-  modules.pjax.onLoad();
+  modules.pjax.onLoad().then(() => {
+    renderer.start();
+  });
 }, 100);
