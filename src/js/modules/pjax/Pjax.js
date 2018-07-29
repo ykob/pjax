@@ -11,6 +11,7 @@ require("babel-polyfill");
 const ConsoleSignature = require('../common/ConsoleSignature').default;
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
+const axios = require('axios');
 const sleep = require('js-util/sleep');
 
 const CLASSNAME_LINK = 'js-pjax-link';
@@ -26,8 +27,6 @@ const getPage = require('./getPage').default;
 export default class Pjax {
   constructor() {
     this.modules = null;
-    this.xhr = new XMLHttpRequest();
-    this.xhrOpenMethod = 'GET';
     this.elm = {
       page: document.querySelector(`.${CLASSNAME_PAGE}`),
       contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
@@ -70,13 +69,21 @@ export default class Pjax {
   send() {
     // XMLHttpRequestの通信開始
     this.modules.scrollManager.off();
-    this.xhr.open(this.xhrOpenMethod, this.href, true);
-    this.xhr.send();
+    axios.get(this.href)
+      .then((response) => {
+        // succeed to post.
+        this.replaceContent(response);
+      })
+      .catch((error) => {
+        // failed to post.
+        console.error(`A post by axios had an error : ${error.response.status} ${error.response.statusText}`);
+        if (error.response.status === 404) this.replaceContent();
+      });
 
     // fire the page transition effect.
     this.leave();
   }
-  async replaceContent() {
+  async replaceContent(response) {
     // 前ページの変数を空にするclear関数を実行
     this.currentPage.clear(this.modules);
 
@@ -86,7 +93,7 @@ export default class Pjax {
 
     // 次のページを取得
     const responseHtml = document.createElement('div');
-    responseHtml.innerHTML = this.xhr.responseText;
+    responseHtml.innerHTML = response.data;
     const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
     const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
 
@@ -135,7 +142,6 @@ export default class Pjax {
     if (this.isTransition) return;
     this.isTransition = true;
     this.modules.scrollManager.isWorkingScroll = false;
-
     this.href = location.pathname + location.search;
     this.send();
   }
@@ -173,36 +179,6 @@ export default class Pjax {
   }
   on() {
     // 各イベントの設定
-    // 非同期通信に関する処理
-    this.xhr.onreadystatechange = () => {
-      switch (this.xhr.readyState) {
-        case 0: // UNSENT
-          break;
-        case 1: // OPENED
-          break;
-        case 2: // HEADERS_RECEIVED
-          break;
-        case 3: // LOADING
-          break;
-        case 4: // DONE
-          switch (this.xhr.status) {
-            case 200:
-              this.replaceContent();
-              break;
-            case 404:
-              console.error('Async request by Pjax has error, 404 not found.');
-              this.replaceContent();
-              break;
-            case 500:
-              console.error('Async request by Pjax has error, 500 Internal Server Error.');
-              break;
-            default:
-          }
-          break;
-        default:
-      }
-    }
-
     // History API 関連の処理
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
@@ -210,14 +186,12 @@ export default class Pjax {
       this.transitStart(true);
     });
   }
-  transit(href, method = 'GET') {
-    // 非同期遷移のイベント内関数を事前に定義
-      if (href == location.pathname + location.search) {
-        return;
-      }
-      history.pushState(null, null, href);
-      this.xhrOpenMethod = method;
-      this.transitStart();
+  transit(href) {
+    if (href == location.pathname + location.search) {
+      return;
+    }
+    history.pushState(null, null, href);
+    this.transitStart();
   }
   onPjaxLinks(content) {
     const self = this;
