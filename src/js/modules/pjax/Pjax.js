@@ -219,35 +219,29 @@ export default class Pjax {
       this.xhrOpenMethod = method;
       this.transitStart();
   }
-  onPjaxLinks(content, fixedBefore, fixedAfter) {
+  onPjaxLinks(content) {
     const self = this;
 
     // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
-    const elms = [
-      content.getElementsByTagName('a'),
-      (fixedBefore) ? fixedBefore.getElementsByTagName('a') : [],
-      (fixedAfter) ? fixedAfter.getElementsByTagName('a') : [],
-    ];
+    const elms = content.getElementsByTagName('a');
 
     // 事前に取得したアンカーリンク要素が非同期遷移の対象かどうかを判定し、イベントを付与する
     for (var i = 0; i < elms.length; i++) {
-      for (var j = 0; j < elms[i].length; j++) {
-        const elm = elms[i][j];
-        const href = elm.getAttribute('href');
-        const target = elm.getAttribute('target');
-        if (
-          elm.classList.contains(CLASSNAME_LINK) // It has the class name to set Pjax transition.
-          || (
-            target !== '_blank' // It doesn't have "_blank" value in target attribute.
-            && href.indexOf('#') !== 0 // It doesn't link to an anchor on the same page.
-            && !(href.indexOf('http') > -1 && href.match(location.host) === null) // It doesn't have this website's hostname in the href attribute value.
-          )
-        ) {
-          elm.addEventListener('click', function(event) {
-            event.preventDefault();
-            self.transit(this.getAttribute('href'));
-          });
-        }
+      const elm = elms[i];
+      const href = elm.getAttribute('href');
+      const target = elm.getAttribute('target');
+      if (
+        elm.classList.contains(CLASSNAME_LINK) // It has the class name to set Pjax transition.
+        || (
+          target !== '_blank' // It doesn't have "_blank" value in target attribute.
+          && href.indexOf('#') !== 0 // It doesn't link to an anchor on the same page.
+          && !(href.indexOf('http') > -1 && href.match(location.host) === null) // It doesn't have this website's hostname in the href attribute value.
+        )
+      ) {
+        elm.addEventListener('click', function(event) {
+          event.preventDefault();
+          self.transit(this.getAttribute('href'));
+        });
       }
     }
   }
