@@ -11,6 +11,8 @@ require("babel-polyfill");
 const ConsoleSignature = require('../common/ConsoleSignature').default;
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
+const sleep = require('js-util/sleep');
+
 const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_LINK_MOMENT = 'js-pjax-link-moment';
 const CLASSNAME_PAGE = 'js-pjax-page';
@@ -40,12 +42,8 @@ export default class PjaxWithPreload {
     this.elm.progress.classList.add('is-shown');
 
     // ページ切替時の処理諸々
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        this.switchPage();
-        resolve();
-      }, 500);
-    });
+    await sleep(500);
+    this.switchPage();
 
     // ページごとの、遷移演出終了前に実行する初期化処理
     page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
@@ -133,14 +131,13 @@ export default class PjaxWithPreload {
       this.send();
     }
   }
-  transitEnd() {
+  async transitEnd() {
     // ページ切り替え後の演出
-    setTimeout(() => {
-      this.elm.overlay.classList.remove('is-expand');
-      this.elm.overlay.classList.remove('is-expand-moment');
-      this.elm.overlay.classList.add('is-shrink');
-      this.elm.progress.classList.add('is-hidden');
-    }, 100);
+    await sleep(100);
+    this.elm.overlay.classList.remove('is-expand');
+    this.elm.overlay.classList.remove('is-expand-moment');
+    this.elm.overlay.classList.add('is-shrink');
+    this.elm.progress.classList.add('is-hidden');
   }
   on() {
     // 各イベントの設定

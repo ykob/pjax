@@ -11,6 +11,8 @@ require("babel-polyfill");
 const ConsoleSignature = require('../common/ConsoleSignature').default;
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
+const sleep = require('js-util/sleep');
+
 const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
