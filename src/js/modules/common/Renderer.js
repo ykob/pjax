@@ -1,7 +1,10 @@
 export default class Renderer {
-  constructor(modules) {
-    this.modules = modules;
+  constructor() {
     this.isWorking = false;
+
+    this.renderPrev = null;
+    this.render = null;
+    this.renderNext = null;
   }
   start() {
     this.isWorking = true;
@@ -10,9 +13,14 @@ export default class Renderer {
   stop() {
     this.isWorking = false;
   }
+  off() {
+    this.renderPrev = null;
+    this.renderNext = null;
+  }
   renderLoop() {
-    // write original render events here.
-    this.modules.scrollManager.render();
+    if (this.renderPrev) this.renderPrev();
+    if (this.render) this.render();
+    if (this.renderNext) this.renderNext();
 
     // if working flag is on, loop to run render events.
     if (this.isWorking === false) return;
