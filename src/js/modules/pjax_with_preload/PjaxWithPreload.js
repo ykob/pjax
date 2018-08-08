@@ -68,7 +68,11 @@ export default class PjaxWithPreload {
     this.currentPage = getPage(this.elm.page.dataset.pageId, page);
   }
   send() {
-    // XMLHttpRequestの通信開始
+    // turn off each individual events.
+    this.modules.renderer.off();
+    this.modules.scrollManager.off();
+
+    // run axios.
     axios.get(this.href)
       .then((response) => {
         // succeed to post.
