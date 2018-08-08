@@ -1,3 +1,5 @@
+require("babel-polyfill");
+
 const viewportUnitsBuggyfill = require('viewport-units-buggyfill');
 const Pjax = require('./modules/pjax/Pjax').default;
 const ScrollManager = require('./modules/smooth_scroll_manager/SmoothScrollManager').default;
