@@ -52,16 +52,16 @@ export default class Pjax {
     // 初期ロード後の非同期遷移のイベント設定
     this.onPjaxLinks(document);
 
-    // 遷移演出の終了
+    // finish transition effects.
     this.transitEnd();
 
-    // ロード完了のフラグを立てる
+    // enable the flag that means finished page loading.
     this.isPageLoaded = true;
 
     return;
   }
   switchPage() {
-    // ページ固有の関数オブジェクトを選択
+    // get the individual function of the current page.
     this.currentPage = getPage(this.elm.page.dataset.pageId, page);
   }
   send() {
