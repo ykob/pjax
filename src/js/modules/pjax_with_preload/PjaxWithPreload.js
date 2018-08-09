@@ -105,7 +105,7 @@ export default class PjaxWithPreload {
     // ページのトップに戻る
     window.scrollTo(0, 0);
 
-    // ページ切替時の処理諸々
+    // Some processing when switch pages.
     this.switchPage();
 
     // ページごとの、遷移演出終了前に実行する初期化処理
@@ -115,7 +115,7 @@ export default class PjaxWithPreload {
     // 差し替えたページの本文に対しての非同期遷移のイベント設定
     this.onPjaxLinks(this.elm.contents);
 
-    // Scroll Managerの初期化
+    // Initialize Scroll Manager.
     await this.modules.scrollManager.start();
 
     // 遷移演出の終了
@@ -148,8 +148,9 @@ export default class PjaxWithPreload {
     this.elm.progress.classList.add('is-hidden');
   }
   on() {
-    // 各イベントの設定
-    // History API 関連の処理
+    // On several events.
+
+    // About History API.
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
       history.scrollRestoration = 'manual';

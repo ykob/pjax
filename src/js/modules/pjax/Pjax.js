@@ -179,8 +179,7 @@ export default class Pjax {
     this.elm.contents.classList.add(CLASSNAME_TRANSITION_LEAVED);
   }
   on() {
-    // 各イベントの設定
-    // History API 関連の処理
+    // on several events.
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
       history.scrollRestoration = 'manual';
