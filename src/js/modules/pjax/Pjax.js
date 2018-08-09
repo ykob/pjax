@@ -118,7 +118,7 @@ export default class Pjax {
     // Google Analytics の集計処理。
     if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
 
-    // ページ切替時の処理諸々
+    // Some processing when switch pages.
     this.switchPage();
 
     // 演出分のタイマーを回したあとで現在のページを削除
@@ -133,7 +133,7 @@ export default class Pjax {
     // 差し替えたページの本文に対しての非同期遷移のイベント設定
     this.onPjaxLinks(this.elm.contents);
 
-    // Scroll Managerの初期化
+    // Initialize Scroll Manager.
     await this.modules.scrollManager.start();
 
     this.transitEnd();
@@ -179,7 +179,9 @@ export default class Pjax {
     this.elm.contents.classList.add(CLASSNAME_TRANSITION_LEAVED);
   }
   on() {
-    // on several events.
+    // On several events.
+
+    // About History API.
     window.addEventListener('popstate', (event) => {
       event.preventDefault();
       history.scrollRestoration = 'manual';
