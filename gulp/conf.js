@@ -39,27 +39,40 @@ module.exports.serve = {
 };
 
 module.exports.scripts = {
-  common: '',
-  entryFiles: [
-    `./${DIR.SRC}/js/main.js`,
-    `./${DIR.SRC}/js/main_with_preload.js`,
+  src: [
+    `./${DIR.SRC}/**/*.js`,
   ],
-  browserifyOpts: {
-    transform: [
-      ['babelify', {
-        babelrc: false,
-        presets: [
-          ['env', {
-            targets: {
-              browsers: ['last 2 versions', 'ie >= 11']
-            }
-          }]
-        ]
-      }],
-      'envify'
-    ]
+  dest: {
+    development: `./${DIR.DEST}/js/`,
+    production: `./${DIR.BUILD}/js/`,
   },
-  dest: `${DIR.DEST}/js`
+  webpack: {
+    entry: [
+      ,
+      ,
+    ],
+    entry: {
+      main: `./${DIR.SRC}/js/main.js`,
+      main_with_preload: `./${DIR.SRC}/js/main_with_preload.js`,
+    },
+    output: {
+      filename: `[name].js`
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env']
+            }
+          },
+        }
+      ]
+    }
+  },
 };
 
 module.exports.pug = {

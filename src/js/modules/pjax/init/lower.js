@@ -1,5 +1,3 @@
-require("babel-polyfill");
-
 const loadContentImgs = require('../../common/loadContentImgs').default;
 
 module.exports = {
