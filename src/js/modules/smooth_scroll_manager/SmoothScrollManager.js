@@ -6,15 +6,16 @@
 * http://opensource.org/licenses/mit-license.php
 */
 
-const ConsoleSignature = require('../common/ConsoleSignature').default;
-const consoleSignature = new ConsoleSignature('this content is rendered with scroll-manager', 'https://github.com/ykob/scroll-manager');
+import UaParser from 'ua-parser-js';
+import debounce from 'js-util/debounce';
+import sleep from 'js-util/sleep';
+import Hookes from './Hookes';
+import ScrollItems from './ScrollItems';
+import ConsoleSignature from '../common/ConsoleSignature';
 
-const debounce = require('js-util/debounce');
-const isiOS = require('js-util/isiOS');
-const isAndroid = require('js-util/isAndroid');
-const sleep = require('js-util/sleep');
-const Hookes = require('./Hookes').default;
-const ScrollItems = require('./ScrollItems').default;
+const uaParser = new UaParser();
+const os = uaParser.getOS().name;
+const consoleSignature = new ConsoleSignature('this content is rendered with scroll-manager', 'https://github.com/ykob/scroll-manager');
 
 const CLASSNAME_DUMMY_SCROLL = 'js-dummy-scroll';
 const CLASSNAME_CONTENTS = 'js-contents';
@@ -256,7 +257,9 @@ export default class SmoothScrollManager {
   on() {
     // モバイルOSでは orientationchange でリサイズイベントを着火させる。
     // ステータスバーのtoggleでresizeは着火してしまうのを避ける目的。
-    const hookEventForResize = (isiOS() || isAndroid()) ? 'orientationchange' : 'resize';
+    const hookEventForResize = (os === 'iOS' || os === 'Android')
+      ? 'orientationchange'
+      : 'resize';
 
     // スクロール
     window.addEventListener('scroll', (event) => {
