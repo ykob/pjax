@@ -6,19 +6,18 @@
 * http://opensource.org/licenses/mit-license.php
 */
 
-const ConsoleSignature = require('../common/ConsoleSignature').default;
-const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
+import axios from 'axios';
+import sleep from 'js-util/sleep';
+import ConsoleSignature from '../common/ConsoleSignature';
+import page from './page';
+import getPage from './getPage';
 
-const axios = require('axios');
-const sleep = require('js-util/sleep');
+const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
 const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_LINK_MOMENT = 'js-pjax-link-moment';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
-
-const page = require('./page');
-const getPage = require('./getPage').default;
 
 export default class PjaxWithPreload {
   constructor() {
