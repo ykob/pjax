@@ -1,18 +1,24 @@
-const loadContentImgs = require('../../common/loadContentImgs').default;
+import loadContentImgs from '../../common/loadContentImgs';
 
-module.exports = {
-  // initBeforeTransit method: before scrollManager.resize run.
-  initBeforeTransit: async function(contents, modules) {
-  },
-  // initAfterTransit method: after scrollManager.resize run.
-  initAfterTransit: function(contents, modules) {
-    const title = contents.querySelector('.p-lower-header__title');
-    const excerpt = contents.querySelector('.p-lower-header__excerpt');
+// initBeforeTransit method: before scrollManager.resize run.
+const initBeforeTransit = async (contents, modules) => {
+};
 
-    title.classList.add('is-shown');
-    excerpt.classList.add('is-shown');
-  },
-  // clear any variables.
-  clear: function(modules) {
-  },
+// initAfterTransit method: after scrollManager.resize run.
+const initAfterTransit = (contents, modules) => {
+  const title = contents.querySelector('.p-lower-header__title');
+  const excerpt = contents.querySelector('.p-lower-header__excerpt');
+
+  title.classList.add('is-shown');
+  excerpt.classList.add('is-shown');
+};
+
+// clear any variables.
+const clear = (modules) => {
+};
+
+export {
+  initBeforeTransit,
+  initAfterTransit,
+  clear
 }
