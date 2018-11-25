@@ -1,13 +1,19 @@
-const loadContentImgs = require('../../common/loadContentImgs').default;
+import loadContentImgs from '../../common/loadContentImgs';
 
-module.exports = {
-  // initBeforeTransit method: before scrollManager.resize run.
-  initBeforeTransit: async function(contents, modules) {
-  },
-  // initAfterTransit method: after scrollManager.resize run.
-  initAfterTransit: function(contents, modules) {
-  },
-  // clear any variables.
-  clear: function(modules) {
-  },
+// initBeforeTransit method: before scrollManager.resize run.
+const initBeforeTransit = async (contents, modules) => {
+};
+
+// initAfterTransit method: after scrollManager.resize run.
+const initAfterTransit = (contents, modules) => {
+};
+
+// clear any variables.
+const clear = (modules) => {
+};
+
+export {
+  initBeforeTransit,
+  initAfterTransit,
+  clear
 }
