@@ -1,6 +1,5 @@
 require('@babel/polyfill');
 
-const viewportUnitsBuggyfill = require('viewport-units-buggyfill');
 const sleep = require('js-util/sleep');
 const Pjax = require('./modules/pjax/Pjax').default;
 const ScrollManager = require('./modules/smooth_scroll_manager/SmoothScrollManager').default;
@@ -24,9 +23,6 @@ const init = async () => {
   if (ua.indexOf('Edge') > -1 || ua.indexOf('Chrome') < 0) link.rel = 'stylesheet';
 
   await sleep(100);
-
-  // Making viewport units (vh|vw|vmin|vmax) work properly in Mobile Safari.
-  viewportUnitsBuggyfill.init();
 
   // add events.
   modules.renderer.render = () => {
