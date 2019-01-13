@@ -32,4 +32,8 @@
     transform: scale(1.1);
     transition-duration: 2s;
   }
+  &.is-shown {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

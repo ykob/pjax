@@ -10,8 +10,11 @@ html(lang="ja")
       .p-progress.js-pjax-progress
         .p-progress__marker
       .l-dummy-scroll.js-dummy-scroll
-      .l-contents.js-contents
-        .js-pjax-contents
-          block content
+      .js-pjax-contents-before
+        block contentFixedBefore
+      .l-contents.js-contents.js-pjax-contents
+        block contentStatic
+      .js-pjax-contents-after
+        block contentFixedAfter
     block script
     script(src="/pjax/js/main_with_preload.js" async)

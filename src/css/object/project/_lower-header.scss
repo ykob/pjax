@@ -30,6 +30,10 @@
       transition-duration: 1.2s;
       transition-delay: .2s;
     }
+    &.is-shown {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   &__excerpt {
     opacity: 0;
@@ -41,6 +45,10 @@
       transform: translateY(0);
       transition-duration: 1.2s;
       transition-delay: 0.3s;
+    }
+    &.is-shown {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 }

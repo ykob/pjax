@@ -4,12 +4,14 @@ block vars
   -
     var page = data.pages.withPreload.page02;
 
-block content
+block contentFixedBefore
+
+block contentStatic
   .p-lower-header
     .p-lower-header__in
-      h1.p-lower-header__title
+      h1.p-lower-header__title.is-shown
         |Page 02
-      p.p-lower-header__excerpt.js-smooth-item
+      p.p-lower-header__excerpt.js-smooth-item.is-shown
         |It's a utility JavaScript asset that manages asynchronous page transition on a website.
 
   .l-contents__in.l-contents__in--lower
@@ -25,3 +27,6 @@ block content
           |Back to Top
         span.c-button-border__line-v
         span.c-button-border__line-h
+
+block contentFixedAfter
+  .p-background-image.p-background-image--02.is-shown

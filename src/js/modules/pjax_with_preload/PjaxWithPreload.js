@@ -18,6 +18,8 @@ const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_LINK_MOMENT = 'js-pjax-link-moment';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
+const CLASSNAME_CONTENTS_BEFORE = 'js-pjax-contents-before';
+const CLASSNAME_CONTENTS_AFTER = 'js-pjax-contents-after';
 
 export default class PjaxWithPreload {
   constructor() {
@@ -25,6 +27,8 @@ export default class PjaxWithPreload {
     this.elm = {
       page: document.querySelector(`.${CLASSNAME_PAGE}`),
       contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
+      contentsBefore: document.querySelector(`.${CLASSNAME_CONTENTS_BEFORE}`),
+      contentsAfter: document.querySelector(`.${CLASSNAME_CONTENTS_AFTER}`),
       overlay: document.querySelector('.js-pjax-overlay'),
       progress: document.querySelector('.js-pjax-progress'),
     };
@@ -92,10 +96,14 @@ export default class PjaxWithPreload {
     responseHtml.innerHTML = response.data;
     const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
     const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
+    const responseContentsBefore = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_BEFORE}`);
+    const responseContentsAfter = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_AFTER}`);
 
     // ページの中身を差し替え
     this.elm.page.dataset.pageId = responsePage.dataset.pageId;
     this.elm.contents.innerHTML = responseContents.innerHTML;
+    this.elm.contentsBefore.innerHTML = responseContentsBefore.innerHTML;
+    this.elm.contentsAfter.innerHTML = responseContentsAfter.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
     // Google Analytics の集計処理。

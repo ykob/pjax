@@ -4,7 +4,9 @@ block vars
   -
     var page = data.pages.withPreload.index;
 
-block content
+block contentFixedBefore
+
+block contentStatic
   .p-index-header
     .p-index-header__in
       h1.p-index-header__title
@@ -65,3 +67,6 @@ block content
             |Learn More
           span.c-button-border__line-v
           span.c-button-border__line-h
+
+block contentFixedAfter
+  .p-background-image.p-background-image--00.is-shown
