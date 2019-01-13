@@ -6,19 +6,17 @@ const $ = require('../plugins');
 const conf = require('../conf').imagemin;
 
 gulp.task('imagemin', () => {
+  const dest = (require('yargs').argv.format === 'cms') ? conf.dest.cms : conf.dest.static;
   return gulp.src(conf.src)
     .pipe($.imagemin(
       [
-        pngquant(),
-        mozjpeg()
-      ],
-      {
-        progressive: true,
-        svgoPlugins: [{removeViewBox: false}]
-      }
+        pngquant(conf.opts.pngquant),
+        mozjpeg(conf.opts.mozjpeg),
+        $.imagemin.svgo(conf.opts.svgo),
+      ]
     ))
     .pipe($.rename(path => {
       path.dirname = path.dirname.replace('img', '.');
     }))
-    .pipe(gulp.dest(conf.dest));
+    .pipe(gulp.dest(dest));
 });
