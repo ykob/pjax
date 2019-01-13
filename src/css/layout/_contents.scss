@@ -41,6 +41,7 @@
     &.is-arrived-contents {
       opacity: 1;
       transition-duration: .6s;
+      transition-delay: .4s;
       transition-property: opacity;
     }
     &.is-leaved-contents {

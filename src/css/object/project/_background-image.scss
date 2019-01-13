@@ -20,11 +20,16 @@
   //
   opacity: 0;
   transform: scale(1.1);
-  transition-duration: 1s;
   transition-timing-function: $easeOutCubic;
   transition-property: transform, opacity;
-  &.is-scale {
+  .is-arrived-contents & {
     opacity: 1;
     transform: scale(1);
+    transition-duration: 2s;
+  }
+  .is-leaved-contents & {
+    opacity: 0;
+    transform: scale(1.1);
+    transition-duration: 2s;
   }
 }

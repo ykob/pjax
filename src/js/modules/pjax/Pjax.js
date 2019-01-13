@@ -17,9 +17,11 @@ const consoleSignature = new ConsoleSignature('page transition in this website w
 const CLASSNAME_LINK = 'js-pjax-link';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
+const CLASSNAME_CONTENTS_BEFORE = 'js-pjax-contents-before';
+const CLASSNAME_CONTENTS_AFTER = 'js-pjax-contents-after';
 const CLASSNAME_TRANSITION_ARRIVED = 'is-arrived-contents';
 const CLASSNAME_TRANSITION_LEAVED = 'is-leaved-contents';
-const TIME_REMOVE_PREV_CONTENTS = 1000;
+const TIME_REMOVE_PREV_CONTENTS = 2000;
 
 export default class Pjax {
   constructor() {
@@ -27,6 +29,8 @@ export default class Pjax {
     this.elm = {
       page: document.querySelector(`.${CLASSNAME_PAGE}`),
       contents: document.querySelector(`.${CLASSNAME_CONTENTS}`),
+      contentsBefore: document.querySelector(`.${CLASSNAME_CONTENTS_BEFORE}`),
+      contentsAfter: document.querySelector(`.${CLASSNAME_CONTENTS_AFTER}`),
     };
     this.href = location.pathname + location.search;
     this.currentPage = null;
@@ -89,6 +93,8 @@ export default class Pjax {
 
     // 現在のページの本文を取得
     const currentContents = this.elm.contents;
+    const currentContentsBefore = this.elm.contentsBefore;
+    const currentContentsAfter = this.elm.contentsAfter;
     currentContents.classList.remove('js-contents')
 
     // 次のページを取得
@@ -96,6 +102,8 @@ export default class Pjax {
     responseHtml.innerHTML = response.data;
     const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
     const responseContents = responseHtml.querySelector(`.${CLASSNAME_CONTENTS}`);
+    const responseContentsBefore = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_BEFORE}`);
+    const responseContentsAfter = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_AFTER}`);
 
     // 遷移時に前後のページ本文が重なるようにfixed配置に変更する
     if (this.modules.scrollManager.isValidSmooth() === false) {
@@ -108,7 +116,11 @@ export default class Pjax {
     // 次のページのDOMを追加
     this.elm.page.dataset.pageId = responsePage.dataset.pageId;
     this.elm.page.appendChild(responseContents);
+    this.elm.page.appendChild(responseContentsBefore);
+    this.elm.page.appendChild(responseContentsAfter);
     this.elm.contents = responseContents;
+    this.elm.contentsBefore = responseContentsBefore;
+    this.elm.contentsAfter = responseContentsAfter;
     document.title = responseHtml.querySelector('title').innerHTML;
 
     // スクロール値をトップに戻す
@@ -123,6 +135,8 @@ export default class Pjax {
     // 演出分のタイマーを回したあとで現在のページを削除
     setTimeout(() => {
       this.elm.page.removeChild(currentContents);
+      this.elm.page.removeChild(currentContentsBefore);
+      this.elm.page.removeChild(currentContentsAfter);
     }, TIME_REMOVE_PREV_CONTENTS);
 
     // ページごとの、遷移演出終了前に実行する初期化処理
@@ -170,12 +184,20 @@ export default class Pjax {
   arrive() {
     // toggle CSS classes for to add page transition effect to the content element that exists after the transition.
     this.elm.contents.classList.add(CLASSNAME_TRANSITION_ARRIVED);
+    this.elm.contentsBefore.classList.add(CLASSNAME_TRANSITION_ARRIVED);
+    this.elm.contentsAfter.classList.add(CLASSNAME_TRANSITION_ARRIVED);
     this.elm.contents.classList.remove(CLASSNAME_TRANSITION_LEAVED);
+    this.elm.contentsBefore.classList.remove(CLASSNAME_TRANSITION_LEAVED);
+    this.elm.contentsAfter.classList.remove(CLASSNAME_TRANSITION_LEAVED);
   }
   leave() {
     // toggle CSS classes for to add page transition effect to the content element that exists before the transition.
     this.elm.contents.classList.remove(CLASSNAME_TRANSITION_ARRIVED);
+    this.elm.contentsBefore.classList.remove(CLASSNAME_TRANSITION_ARRIVED);
+    this.elm.contentsAfter.classList.remove(CLASSNAME_TRANSITION_ARRIVED);
     this.elm.contents.classList.add(CLASSNAME_TRANSITION_LEAVED);
+    this.elm.contentsBefore.classList.add(CLASSNAME_TRANSITION_LEAVED);
+    this.elm.contentsAfter.classList.add(CLASSNAME_TRANSITION_LEAVED);
   }
   on() {
     // On several events.

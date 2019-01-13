@@ -7,7 +7,11 @@ html(lang="ja")
   body
     .l-page.js-pjax-page(data-page-id=page.id)
       .l-dummy-scroll.js-dummy-scroll
+      .js-pjax-contents-before
+        block contentFixedBefore
       .l-contents.l-contents--basic.js-contents.js-pjax-contents
-        block content
+        block contentStatic
+      .js-pjax-contents-after
+        block contentFixedAfter
     block script
     script(src="/pjax/js/main.js" async)

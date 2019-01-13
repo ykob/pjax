@@ -22,24 +22,25 @@
   &__title {
     opacity: 0;
     transform: translateY(20px);
-    transition-duration: 1.2s;
     transition-timing-function: $easeOutCirc;
     transition-property: opacity, transform;
-    &.is-shown {
+    .is-arrived-contents & {
       opacity: 1;
       transform: translateY(0);
+      transition-duration: 1.2s;
+      transition-delay: .2s;
     }
   }
   &__excerpt {
     opacity: 0;
     transform: translateY(20px);
-    transition-duration: 1.2s;
-    transition-delay: 0.1s;
     transition-timing-function: $easeOutCirc;
     transition-property: opacity, transform;
-    &.is-shown {
+    .is-arrived-contents & {
       opacity: 1;
       transform: translateY(0);
+      transition-duration: 1.2s;
+      transition-delay: 0.3s;
     }
   }
 }
