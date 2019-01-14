@@ -91,13 +91,13 @@ export default class Pjax {
     // 前ページの変数を空にするclear関数を実行
     this.currentPage.clear(this.modules);
 
-    // 現在のページの本文を取得
+    // Get contents of a current page.
     const currentContents = this.elm.contents;
     const currentContentsBefore = this.elm.contentsBefore;
     const currentContentsAfter = this.elm.contentsAfter;
     currentContents.classList.remove('js-contents')
 
-    // 次のページを取得
+    // Get next page elements.
     const responseHtml = document.createElement('div');
     responseHtml.innerHTML = response.data;
     const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);
@@ -113,7 +113,7 @@ export default class Pjax {
     responseContents.style.position = 'fixed';
     responseContents.style.top = '0';
 
-    // 次のページのDOMを追加
+    // Add DOM elements of a next page.
     this.elm.page.dataset.pageId = responsePage.dataset.pageId;
     this.elm.page.appendChild(responseContents);
     this.elm.page.appendChild(responseContentsBefore);
@@ -123,16 +123,17 @@ export default class Pjax {
     this.elm.contentsAfter = responseContentsAfter;
     document.title = responseHtml.querySelector('title').innerHTML;
 
-    // スクロール値をトップに戻す
+    // Back scrollTop value to zero.
     window.scrollTo(0, 0);
 
-    // Google Analytics の集計処理。
+    // Send log to Google Analytice。
     if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
 
     // Some processing when switch pages.
     this.switchPage();
 
     // 演出分のタイマーを回したあとで現在のページを削除
+    // Not use sleep() to not stop following processes.
     setTimeout(() => {
       this.elm.page.removeChild(currentContents);
       this.elm.page.removeChild(currentContentsBefore);
