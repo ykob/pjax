@@ -159,6 +159,7 @@ export default class Pjax {
     // Initialize Scroll Manager.
     await this.modules.scrollManager.start();
 
+    // Finish the transition effect.
     this.transitEnd();
   }
   transitStart() {
