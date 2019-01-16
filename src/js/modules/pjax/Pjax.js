@@ -46,8 +46,10 @@ export default class Pjax {
     this.switchPage();
 
     // ページごとの、遷移演出終了前に実行する初期化処理
-    page.common.initBeforeTransit(document, this.modules, this.isPageLoaded);
-    await this.currentPage.initBeforeTransit(this.elm.contents, this.modules);
+    page.common.initBeforeTransit([document], this.modules, this.isPageLoaded);
+    await this.currentPage.initBeforeTransit(
+      this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter, this.modules
+    );
 
     // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
     await this.modules.scrollManager.start();
@@ -141,11 +143,18 @@ export default class Pjax {
     }, TIME_REMOVE_PREV_CONTENTS);
 
     // ページごとの、遷移演出終了前に実行する初期化処理
-    page.common.initBeforeTransit(this.elm.contents, this.modules, this.isPageLoaded);
-    await this.currentPage.initBeforeTransit(this.elm.contents, this.modules);
+    page.common.initBeforeTransit(
+      [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter],
+      this.modules, this.isPageLoaded
+    );
+    await this.currentPage.initBeforeTransit(
+      this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter, this.modules
+    );
 
     // 差し替えたページの本文に対しての非同期遷移のイベント設定
     this.onPjaxLinks(this.elm.contents);
+    this.onPjaxLinks(this.elm.contentsBefore);
+    this.onPjaxLinks(this.elm.contentsAfter);
 
     // Initialize Scroll Manager.
     await this.modules.scrollManager.start();
@@ -179,8 +188,12 @@ export default class Pjax {
     }
 
     // ページごとの、遷移演出終了後に実行する初期化処理
-    page.common.initAfterTransit(this.elm.contents, this.modules);
-    this.currentPage.initAfterTransit(this.elm.contents, this.modules);
+    page.common.initAfterTransit(
+      [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter], this.modules
+    );
+    this.currentPage.initAfterTransit(
+      this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter, this.modules
+    );
   }
   arrive() {
     // toggle CSS classes for to add page transition effect to the content element that exists after the transition.
