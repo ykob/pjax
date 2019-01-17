@@ -18,11 +18,8 @@ gulp.task('scripts', () => {
       .on('error', webpackError)
       .pipe(gulp.dest(conf.dest[conf.webpack.mode]));
   } else {
-    const dest = (require('yargs').argv.format === 'cms')
-      ? conf.dest.production.cms
-      : conf.dest.production.static;
     return webpackStream(conf.webpack, webpack)
       .pipe($.rename({suffix: '.min'}))
-      .pipe(gulp.dest(dest));
+      .pipe(gulp.dest(conf.dest.production));
   }
 });

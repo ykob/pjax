@@ -31,7 +31,7 @@ module.exports.serve = {
       baseDir: DIR.BUILD,
       index: 'index.html',
       routes: {
-        [DIR.PATH]: `${DIR.BUILD}${DIR.PATH}/`
+        [DIR.PATH]: `${DIR.BUILD}/`
       }
     }
   }
@@ -43,10 +43,7 @@ module.exports.scripts = {
   ],
   dest: {
     development: `./${DIR.DEST}${DIR.PATH}/js`,
-    production: {
-      static: `./${DIR.BUILD}${DIR.PATH}/js`,
-      cms: `./${DIR.BUILD}${DIR.PATH}${DIR.CMS}/assets/js`,
-    },
+    production: `./${DIR.BUILD}/js`,
   },
   webpack: {
     entry: {
@@ -102,16 +99,13 @@ module.exports.replace = {
     src: [
       `${DIR.DEST}${DIR.PATH}/**/*.html`
     ],
-    dest: `${DIR.BUILD}${DIR.PATH}`,
+    dest: `${DIR.BUILD}`,
   }
 };
 
 module.exports.cleanCss = {
   src: `${DIR.DEST}${DIR.PATH}/css/main.css`,
-  dest: {
-    static: `${DIR.BUILD}${DIR.PATH}/css`,
-    cms: `${DIR.BUILD}${DIR.PATH}${DIR.CMS}`,
-  },
+  dest: `${DIR.BUILD}/css`,
 };
 
 module.exports.copy = {
@@ -133,36 +127,11 @@ module.exports.copy = {
       `${DIR.DEST}${DIR.PATH}/font/**/*.*`,
       `${DIR.DEST}${DIR.PATH}/json/**/*.*`,
     ],
-    dest: {
-      static: `${DIR.BUILD}${DIR.PATH}`,
-      cms: `${DIR.BUILD}${DIR.PATH}${DIR.CMS}/assets`,
-    },
+    dest: `${DIR.BUILD}`,
     opts: {
       base: `${DIR.DEST}${DIR.PATH}`
     }
   },
-  php: {
-    src: [
-      `${DIR.SRC}/html/**/*.php`,
-    ],
-    dest: {
-      static: `${DIR.BUILD}${DIR.PATH}`,
-      cms: `${DIR.BUILD}${DIR.PATH}${DIR.CMS}/assets/php`,
-    },
-    opts: {
-      base: `${DIR.SRC}/html/`
-    }
-  },
-  cms: {
-    src: [
-      `${DIR.SRC}/wp-theme/**/*.php`,
-      `${DIR.SRC}/wp-theme/**/screenshot.png`,
-    ],
-    dest: `${DIR.BUILD}${DIR.PATH}${DIR.CMS}`,
-    opts: {
-      base: `${DIR.SRC}/wp-theme/`
-    }
-  }
 };
 
 module.exports.imagemin = {
@@ -170,10 +139,7 @@ module.exports.imagemin = {
     `${DIR.DEST}${DIR.PATH}/**/*.{jpg,jpeg,png,gif,svg}`,
     `!${DIR.DEST}${DIR.PATH}/img/**/no_compress/*.*`,
   ],
-  dest: {
-    static: `${DIR.BUILD}${DIR.PATH}/img`,
-    cms: `${DIR.BUILD}${DIR.PATH}${DIR.CMS}/assets/img`,
-  },
+  dest: `${DIR.BUILD}/img`,
   opts: {
     pngquant: {
       quality: 80,

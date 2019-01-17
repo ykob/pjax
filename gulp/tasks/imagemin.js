@@ -6,7 +6,6 @@ const $ = require('../plugins');
 const conf = require('../conf').imagemin;
 
 gulp.task('imagemin', () => {
-  const dest = (require('yargs').argv.format === 'cms') ? conf.dest.cms : conf.dest.static;
   return gulp.src(conf.src)
     .pipe($.imagemin(
       [
@@ -18,5 +17,5 @@ gulp.task('imagemin', () => {
     .pipe($.rename(path => {
       path.dirname = path.dirname.replace('img', '.');
     }))
-    .pipe(gulp.dest(dest));
+    .pipe(gulp.dest(conf.dest));
 });
