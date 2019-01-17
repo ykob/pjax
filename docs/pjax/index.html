@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pjax</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="It's a utility JavaScript asset that manages asynchronous page transition on a website.">
+    <meta name="keywords" content="pjax">
+    <style>
+      body { background-color: #000; }
+      .l-page { visibility: hidden; }
+    </style>
+    <link rel="preload" as="style" href="/pjax/css/main.min.css" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="icon" href="/pjax/img/common/icon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/pjax/img/common/app_icon.png">
+    <meta name="msapplication-TileImage" content="/pjax/img/common/ms_tileimage.png">
+    <meta name="msapplication-TileColor" content="#111111">
+    <meta name="theme-color" content="#111111">
+    <meta property="og:title" content="Pjax">
+    <meta property="og:site_name" content="Pjax">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="It's a utility JavaScript asset that manages asynchronous page transition on a website.">
+    <meta property="og:url" content="https://ykob.github.io/pjax/">
+    <meta property="og:image" content="https://ykob.github.io/pjax/img/common/ogp.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pjax">
+    <meta name="twitter:description" content="It's a utility JavaScript asset that manages asynchronous page transition on a website.">
+    <meta name="twitter:image" content="https://ykob.github.io/pjax/img/common/ogp.jpg">
+  </head>
+  <body>
+    <div class="p-index-content">
+      <h1>Pjax</h1>
+      <p>It's a utility JavaScript asset that manages asynchronous page transition on a website.</p>
+      <h2>Variation</h2>
+      <ul>
+        <li><a href="./basic/">Pjax of basic</a></li>
+        <li><a href="./with_preload/">Pjax with preload</a></li>
+      </ul>
+      <h2>Source</h2>
+      <ul>
+        <li><a href="https://github.com/ykob/pjax" target="_blank">https://github.com/ykob/pjax</a></li>
+      </ul>
+      <script>
+        const ua = window.navigator.userAgent;
+        const link = document.querySelector('link[as=style]');
+        if (ua.indexOf('Chrome') < 0) link.rel = 'stylesheet';
+      </script>
+    </div>
+  </body>
+</html>
