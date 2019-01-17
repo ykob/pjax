@@ -1,5 +1,6 @@
 require('@babel/polyfill');
 
+import UaParser from 'ua-parser-js';
 const sleep = require('js-util/sleep');
 const Pjax = require('./modules/pjax/Pjax').default;
 const ScrollManager = require('./modules/smooth_scroll_manager/SmoothScrollManager').default;
@@ -10,7 +11,7 @@ const modules = {
   pjax: new Pjax(),
   scrollManager: new ScrollManager(),
 };
-const ua = window.navigator.userAgent;
+const uaParser = new UaParser();
 const link = document.querySelector('link[as=style]');
 
 // connect core modules each other.
@@ -20,7 +21,8 @@ modules.scrollManager.modules = modules;
 
 const init = async () => {
   // preload stylesheet other than Google Chrome browser.
-  if (ua.indexOf('Edge') > -1 || ua.indexOf('Chrome') < 0) link.rel = 'stylesheet';
+  const browser = uaParser.getBrowser().name;
+  if (browser !== 'Chrome' && browser !== 'Edge') link.rel = 'stylesheet';
 
   await sleep(100);
 
