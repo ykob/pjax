@@ -36,32 +36,33 @@ export default class Pjax {
     this.currentPage = null;
     this.isTransition = false;
     this.isPageLoaded = false;
-
-    this.on();
   }
   async onLoad() {
-    // ページが最初に読み込まれた際の処理
+    // The process when the page is loaded first.
 
-    // ページ切替時の処理諸々
+    // Switch pages before and after.
     this.switchPage();
 
-    // ページごとの、遷移演出終了前に実行する初期化処理
+    // The initialize function that should run before the transition effect.
     page.common.initBeforeTransit([document], this.modules, this.isPageLoaded);
     await this.currentPage.initBeforeTransit(
       this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter, this.modules
     );
 
-    // Pjaxの初期ロード処理を行ったのちにScroll Managerを開始
+    // Start Scroll Manager at finished Pjax initialize.
     await this.modules.scrollManager.start();
 
-    // 初期ロード後の非同期遷移のイベント設定
+    // Bind the transition event by Pjax after first initializing.
     this.onPjaxLinks(document);
 
-    // finish transition effects.
+    // Finish the transition effect.
     this.transitEnd();
 
-    // enable the flag that means finished page loading.
+    // Enable the flag that means finished page loading.
     this.isPageLoaded = true;
+
+    // Set each events.
+    this.on();
 
     return;
   }
