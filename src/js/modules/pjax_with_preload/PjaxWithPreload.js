@@ -108,13 +108,13 @@ export default class PjaxWithPreload {
     this.elm.contentsAfter.innerHTML = responseContentsAfter.innerHTML;
     document.title = responseHtml.querySelector('title').innerHTML;
 
-    // Google Analytics の集計処理。
-    if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
-
-    // ページのトップに戻る
+    // Back to the page top.
     window.scrollTo(0, 0);
 
-    // Some processing when switch pages.
+    // Send log to Google Analytice。
+    if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
+
+    // Run some functions when switch pages.
     this.switchPage();
 
     // ページごとの、遷移演出終了前に実行する初期化処理
@@ -138,7 +138,7 @@ export default class PjaxWithPreload {
     this.transitEnd();
   }
   transitStart(withAnime) {
-    // ページ切り替え前の演出
+    // The transition effect before to switch page.
     if (this.isAnimate) return;
     this.isAnimate = true;
     this.modules.scrollManager.isWorkingScroll = false;
@@ -156,7 +156,7 @@ export default class PjaxWithPreload {
     }
   }
   async transitEnd() {
-    // ページ切り替え後の演出
+    // The transition effect after to switch page.
     await sleep(100);
     this.elm.overlay.classList.remove('is-expand');
     this.elm.overlay.classList.remove('is-expand-moment');

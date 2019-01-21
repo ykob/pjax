@@ -126,13 +126,13 @@ export default class Pjax {
     this.elm.contentsAfter = responseContentsAfter;
     document.title = responseHtml.querySelector('title').innerHTML;
 
-    // Back scrollTop value to zero.
+    // Back to the page top.
     window.scrollTo(0, 0);
 
     // Send log to Google Analytice。
     if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
 
-    // Some processing when switch pages.
+    // Run some functions when switch pages.
     this.switchPage();
 
     // 演出分のタイマーを回したあとで現在のページを削除
@@ -164,7 +164,7 @@ export default class Pjax {
     this.transitEnd();
   }
   transitStart() {
-    // ページ切り替え前の処理
+    // The transition effect before to switch page.
     if (this.isTransition) return;
     this.isTransition = true;
     this.modules.scrollManager.isWorkingScroll = false;
@@ -172,7 +172,7 @@ export default class Pjax {
     this.send();
   }
   transitEnd() {
-    // fire the page transition effect.
+    // The transition effect after to switch page.
     this.arrive();
 
     // 遷移時に付与した遷移後の本文wrapperのsytle値をリセット
