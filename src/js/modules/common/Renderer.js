@@ -22,7 +22,7 @@ export default class Renderer {
     if (this.render) this.render();
     if (this.renderNext) this.renderNext();
 
-    // if working flag is on, loop to run render events.
+    // If working flag is on, loop to run each render events.
     if (this.isWorking === false) return;
     requestAnimationFrame(() => {
       this.renderLoop();
