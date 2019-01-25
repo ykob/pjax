@@ -69,7 +69,7 @@ export default class PjaxWithPreload {
     return;
   }
   switchPage() {
-    // ページ固有の関数オブジェクトを選択
+    // Get the individual function of the current page.
     this.currentPage = getPage(this.elm.page.dataset.pageId, page);
   }
   send() {
@@ -90,10 +90,10 @@ export default class PjaxWithPreload {
       });
   }
   async replaceContent(response) {
-    // 前ページの変数を空にするclear関数を実行
+    // Run the clear function that does to empty the previous page attributes.
     this.currentPage.clear(this.modules);
 
-    // 次のページを取得
+    // Get contents of a current page.
     const responseHtml = document.createElement('div');
     responseHtml.innerHTML = response.data;
     const responsePage = responseHtml.querySelector(`.${CLASSNAME_PAGE}`);

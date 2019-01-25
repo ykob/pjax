@@ -67,7 +67,7 @@ export default class Pjax {
     return;
   }
   switchPage() {
-    // get the individual function of the current page.
+    // Get the individual function of the current page.
     this.currentPage = getPage(this.elm.page.dataset.pageId, page);
   }
   send() {
@@ -91,7 +91,7 @@ export default class Pjax {
     this.leave();
   }
   async replaceContent(response) {
-    // 前ページの変数を空にするclear関数を実行
+    // Run the clear function that does to empty the previous page attributes.
     this.currentPage.clear(this.modules);
 
     // Get contents of a current page.
