@@ -86,7 +86,7 @@ export default class PjaxWithPreload {
       .catch((error) => {
         // failed to post.
         console.error(`A post by axios had an error : ${error.response.status} ${error.response.statusText}`);
-        if (error.response.status === 404) this.replaceContent();
+        if (error.response.status === 404) this.replaceContent(error.response);
       });
   }
   async replaceContent(response) {
