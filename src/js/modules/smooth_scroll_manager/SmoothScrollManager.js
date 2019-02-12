@@ -1,7 +1,7 @@
 /**
 * Smooth Scroll Manager
 *
-* Copyright (c) 2018 Yoichi Kobayashi
+* Copyright (c) 2019 Yoichi Kobayashi
 * Released under the MIT license
 * http://opensource.org/licenses/mit-license.php
 */
@@ -54,27 +54,27 @@ export default class SmoothScrollManager {
     this.on();
   }
   async start() {
-    // 動作用のフラグを一旦すべてオフ
+    // Temporary turn off flags that are to run Scroll Manager.
     this.isWorkingScroll = false;
     this.isWorkingRender = false;
     this.isWorkingTransform = false;
 
-    // スムーススクロールさせる対象のラッパーDOMを取得
+    // Get the DOM that is the target of the smooth scroll.
     this.elm.contents = document.querySelector(`.${CLASSNAME_CONTENTS}`);
 
     // It returns Promise with setTimeout to get a scroll top value accurately when a hash is included.
     await sleep(100);
 
-    // 初期スクロール値を取得する。(pjax遷移の際は不要)
+    // Get the initial scroll value. (it's unnecessary if it has Pjax)
     this.scrollTop = window.pageYOffset;
     this.resolution.x = window.innerWidth;
     this.resolution.y = window.innerHeight;
 
-    // Hookes と ScrollItems を初期化
+    // Initialize Hookes and ScrollItems.
     this.initHookes();
     this.scrollItems.init(this.elm.contents);
 
-    // hash があった場合は指定の箇所にスクロール位置を調整する
+    // If it has a hash in location, it adjusts the scroll position to the appropriate place.
     const { hash } = location;
     const target = (hash) ? document.querySelector(hash) : null;
     if (target) {
@@ -87,7 +87,8 @@ export default class SmoothScrollManager {
     }
     this.elm.contents.style.transform = `translate3D(0, ${this.hookes.contents.velocity[1]}px, 0)`;
 
-    // Scroll Manager の動作を開始する
+    // Turn off flags that are to run Scroll Manager.
+    this.isWorkingScroll = false;
     this.isWorkingScroll = true;
     this.isWorkingRender = true;
     this.isWorkingTransform = true;
@@ -97,37 +98,37 @@ export default class SmoothScrollManager {
     return;
   }
   pause() {
-    // if it is paused, this methods doesn't run.
+    // If it's paused, this methods doesn't run.
     if (this.isPaused === true) return;
 
-    // スムーススクロールの一時停止
+    // Pause smooth scroll.
     this.isWorkingScroll = false;
     this.isPaused = true;
 
-    // 一時停止時の位置を記憶
+    //  Memorize the position ran pause.
     this.scrollTopPause = this.scrollTop;
     window.scrollTo(0, this.scrollTop);
   }
   play() {
-    // if it is not paused, this methods doesn't run.
+    // If it is not paused, this methods doesn't run.
     if (this.isPaused === false) return;
 
-    // スムーススクロールの再生
+    // Run smooth scroll.
     this.isWorkingScroll = true;
     this.isPaused = false;
 
-    // 一時停止時の位置に移動（pause後に標準のスクロールがされても元の位置から動いていないように見せるため）
+    // Move to the position that paused.
     this.scrollTop = this.scrollTopPause;
     window.scrollTo(0, this.scrollTop);
   }
   initDummyScroll() {
-    // ダミースクロールの初期化
+    // Initialize dummy scroll.
     if (this.resolution.x > this.X_SWITCH_SMOOTH) {
-      // PCの場合
+      // In case of PC.
       this.elm.contents.classList.add('is-fixed');
       this.elm.dummyScroll.style.height = `${this.elm.contents.clientHeight}px`;
     } else {
-      // スマホの場合
+      // In case of Smartphone.
       this.elm.contents.style.transform = '';
       this.elm.contents.classList.remove('is-fixed');
       this.elm.dummyScroll.style.height = `0`;
@@ -135,7 +136,7 @@ export default class SmoothScrollManager {
     this.render();
   }
   initHookes() {
-    // Hookesオブジェクトの初期化
+    // Initialize Hookes object.
     this.hookes = {
       contents: new Hookes({ k: 0.625, d: 0.8 }),
       smooth:   new Hookes({ k: 0.2, d: 0.7 }),
@@ -143,67 +144,61 @@ export default class SmoothScrollManager {
     }
   }
   scrollBasis() {
-    // 基礎的なスクロールイベントはここに記述する。
-
-    // スクロール値を元に各Hookesオブジェクトを更新
+    // Update each Hookes instances based on scrollTop value.
     if (this.resolution.x > this.X_SWITCH_SMOOTH) {
       this.hookes.contents.anchor[1] = this.scrollTop * -1;
       this.hookes.smooth.velocity[1] += this.scrollFrame;
       this.hookes.parallax.anchor[1] = this.scrollTop + this.resolution.y * 0.5;
     }
 
-    // ScrollItems のスクロールメソッドを実行
+    // Run the scroll method of ScrollItems.
     this.scrollItems.scroll();
   }
   scroll(event) {
-    // スクロールイベントの一連の流れ
-
-    // フラグが立たない場合はスクロールイベント内の処理を実行しない。
+    // In the case of the flag to work smooth scroll is disabled, it doesn't run the processing in scroll event.
     if (this.isWorkingScroll === false) return;
 
-    // スクロール値の取得
+    // Get scroll top value.
     const pageYOffset = window.pageYOffset;
     this.scrollFrame = pageYOffset - this.scrollTop;
     this.scrollTop = pageYOffset;
 
-    // 個別のスクロールイベントを実行（標準のスクロール処理前）
+    // Run the individual scroll events. (Previous to the basic scroll event)
     if (this.scrollPrev) this.scrollPrev();
 
-    // 標準のスクロール処理を実行
+    // Run the basic scroll process.
     this.scrollBasis();
 
-    // 個別のスクロールイベントを実行（標準のスクロール処理後）
+    // Run the individual scroll events. (Next to the basic scroll event)
     if (this.scrollNext) this.scrollNext();
   }
   resizeBasis() {
-    // 基礎的なリサイズイベントはここに記述する。
-
-    // ScrollItems のリサイズメソッドを実行
+    // Run the resize method of ScrollItems.
     this.scrollItems.resize(this.isValidSmooth());
   }
   async resize() {
-    // リサイズイベントの一連の流れ
+    // Sequence of resize event.
 
-    // リサイズ中にスクロールイベントが勝手に叩かれるのをキャンセル
+    // Cancel the scroll event while resizing.
     this.isWorkingScroll = false;
 
-    // リサイズイベントに関する要素の一時リセット
+    // Reset elements related resize event temporary.
     if (this.resizeReset) this.resizeReset();
 
-    // 各値を取得
+    // Get each value.
     this.scrollTop = window.pageYOffset;
     this.resolution.x = window.innerWidth;
     this.resolution.y = window.innerHeight;
     this.bodyResolution.x = this.elm.contents.clientWidth;
     this.bodyResolution.y = this.elm.contents.clientHeight;
 
-    // window幅によってHookesオブジェクトの値を再設定する
+    // Reset the value of Hookes instance properties based on window width.
     if (this.resolution.x > this.X_SWITCH_SMOOTH) {
-      // PCの場合
+      // In case of PC.
       this.hookes.contents.velocity[1] = this.hookes.contents.anchor[1] = -this.scrollTop;
       this.hookes.parallax.velocity[1] = this.hookes.parallax.anchor[1] = this.scrollTop + this.resolution.y * 0.5;
     } else {
-      // スマホの場合
+      // In case of Smartphone.
       for (var key in this.hookes) {
         switch (key) {
           case 'contents':
@@ -216,23 +211,23 @@ export default class SmoothScrollManager {
       }
     }
 
-    // 個別のリサイズイベントを実行（ページの高さ変更前）
+    // Run unique resize event before page height is changed.
     if (this.resizePrev) this.resizePrev();
 
     await sleep(100);
 
-    // 本文やダミースクロールのレイアウトを再設定
+    // Reset the layout of the content and dummy scroll element.
     this.initDummyScroll();
     this.render();
     window.scrollTo(0, this.scrollTop);
 
-    // 標準のリサイズイベントを実行
+    // Run basic resize event.
     this.resizeBasis();
 
-    // 個別のリサイズイベントを実行（ページの高さ変更後）
+    // Run unique resize event after page height is changed.
     if (this.resizeNext) this.resizeNext();
 
-    // スクロールイベントを再開（一時停止中は再開しない）
+    // Restart the scroll events. (it doesn't restart during a pause.)
     if (this.isPaused === false) this.isWorkingScroll = true;
 
     return;
@@ -255,18 +250,18 @@ export default class SmoothScrollManager {
     this.scrollItems.render(this.isValidSmooth());
   }
   on() {
-    // モバイルOSでは orientationchange でリサイズイベントを着火させる。
-    // ステータスバーのtoggleでresizeは着火してしまうのを避ける目的。
+    // In the case of to browse with iOS or Android, running the resize event by orientationchange.
+    // It's a purpose of preventing to run the resize event when status bar toggles.
     const hookEventForResize = (os === 'iOS' || os === 'Android')
       ? 'orientationchange'
       : 'resize';
 
-    // スクロール
+    // Bind the scroll event
     window.addEventListener('scroll', (event) => {
       this.scroll(event);
     }, false);
 
-    // リサイズ（debounceで連発を防ぐ）
+    // Bind the esize event
     window.addEventListener(hookEventForResize, debounce((event) => {
       this.resize();
     }, 400), false);
