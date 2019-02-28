@@ -20,6 +20,7 @@ const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
 const CLASSNAME_CONTENTS_BEFORE = 'js-pjax-contents-before';
 const CLASSNAME_CONTENTS_AFTER = 'js-pjax-contents-after';
+const GA_TRACKING_ID = 'UA-xxxxxxxxx-1';
 
 export default class PjaxWithPreload {
   constructor() {
@@ -112,7 +113,13 @@ export default class PjaxWithPreload {
     window.scrollTo(0, 0);
 
     // Send log to Google Analytice。
-    if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
+    // if (window.ga) ga('send', 'pageview', window.location.pathname.replace(/^\/?/, '/') + window.location.search);
+    if (window.gtag) {
+      gtag('config', GA_TRACKING_ID, {
+        'page_title': document.title,
+        'page_path':  window.location.pathname.replace(/^\/?/, '/') + window.location.search
+      });
+    }
 
     // Run some functions when switch pages.
     this.switchPage();
