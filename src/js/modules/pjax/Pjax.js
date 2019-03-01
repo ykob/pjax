@@ -109,7 +109,7 @@ export default class Pjax {
     const responseContentsBefore = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_BEFORE}`);
     const responseContentsAfter = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_AFTER}`);
 
-    // 遷移時に前後のページ本文が重なるようにfixed配置に変更する
+    // Set the position fixed to pile up page contents both the previous and the next.
     if (this.modules.scrollManager.isValidSmooth() === false) {
       currentContents.style.position = 'fixed';
       currentContents.style.top = `${this.modules.scrollManager.scrollTop * -1}px`;
@@ -142,7 +142,7 @@ export default class Pjax {
     // Run some functions when switch pages.
     this.switchPage();
 
-    // 演出分のタイマーを回したあとで現在のページを削除
+    // After running the timer for the page transition effect, remove the current page.
     // Not use sleep() to not stop following processes.
     setTimeout(() => {
       this.elm.page.removeChild(currentContents);
