@@ -254,7 +254,7 @@ export default class Pjax {
         elm.classList.contains(CLASSNAME_LINK) // It has the class name to set Pjax transition.
         || (
           target !== '_blank' // It doesn't have "_blank" value in target attribute.
-          && href.indexOf('#') !== 0 // It doesn't link to an anchor on the same page.
+          && href.indexOf('#') !== 0 // It doesn't link to the current page anchor.
           && !(href.indexOf('http') > -1 && href.match(location.host) === null) // It doesn't have this website's hostname in the href attribute value.
         )
       ) {
