@@ -15,6 +15,7 @@ import getPage from './getPage';
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
 const CLASSNAME_LINK = 'js-pjax-link';
+const CLASSNAME_EXCLUDE = 'js-pjax-exclude';
 const CLASSNAME_PAGE = 'js-pjax-page';
 const CLASSNAME_CONTENTS = 'js-pjax-contents';
 const CLASSNAME_CONTENTS_BEFORE = 'js-pjax-contents-before';
@@ -253,7 +254,8 @@ export default class Pjax {
       if (
         elm.classList.contains(CLASSNAME_LINK) // It has the class name to set Pjax transition.
         || (
-          target !== '_blank' // It doesn't have "_blank" value in target attribute.
+          !elm.classList.contains(CLASSNAME_EXCLUDE) // It has the class name to exclude Pjax transition.
+          && target !== '_blank' // It doesn't have "_blank" value in target attribute.
           && href.indexOf('#') !== 0 // It doesn't link to an anchor on the same page.
           && !(href.indexOf('http') > -1 && href.match(location.host) === null) // It doesn't have this website's hostname in the href attribute value.
         )
