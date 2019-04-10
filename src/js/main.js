@@ -1,10 +1,10 @@
 require('@babel/polyfill');
 
 import UaParser from 'ua-parser-js';
-const sleep = require('js-util/sleep');
-const Pjax = require('./modules/pjax/Pjax').default;
-const ScrollManager = require('./modules/smooth_scroll_manager/SmoothScrollManager').default;
-const Renderer = require('./modules/common/Renderer').default;
+import sleep from 'js-util/sleep';
+import Pjax from './modules/pjax/Pjax';
+import ScrollManager from './modules/smooth_scroll_manager/SmoothScrollManager';
+import Renderer from './modules/common/Renderer';
 
 const modules = {
   renderer: new Renderer(),
