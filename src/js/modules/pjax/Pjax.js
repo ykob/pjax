@@ -151,7 +151,7 @@ export default class Pjax {
       this.elm.page.removeChild(currentContentsAfter);
     }, TIME_REMOVE_PREV_CONTENTS);
 
-    // ページごとの、遷移演出終了前に実行する初期化処理
+    // The initialize process that each page run after the page transition effect.
     page.common.initBeforeTransit(
       [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter],
       this.modules, this.isPageLoaded
@@ -187,7 +187,7 @@ export default class Pjax {
     this.elm.contents.style.position = '';
     this.elm.contents.style.top = '';
 
-    // ページ切り替え後のフラグ変更
+    // Change Working Scroll flag after the page transition.
     this.isTransition = false;
     this.modules.scrollManager.isWorkingScroll = true;
 

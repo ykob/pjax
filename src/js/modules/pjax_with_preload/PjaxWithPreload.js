@@ -152,7 +152,7 @@ export default class PjaxWithPreload {
     this.modules.scrollManager.isWorkingScroll = false;
     this.elm.overlay.classList.remove('is-shrink');
 
-    // オーバーレイのアニメを省略するか否かの判定
+    // Judge running the overlay animation or not.
     if (withAnime) {
       this.elm.overlay.classList.add('is-expand');
       this.elm.progress.classList.add('is-shown');
@@ -182,13 +182,14 @@ export default class PjaxWithPreload {
     });
 
     // 遷移演出の途中または終了時の処理
+    //
     this.elm.overlay.addEventListener('transitionend', () => {
       if (this.elm.overlay.classList.contains('is-expand')) {
-        // オーバーレイが展開したあとの処理
+        // The process after the overlay expands.
         this.href = location.pathname + location.search;
         this.send();
       } else {
-        // オーバーレイが収縮したあとの処理
+        // The process after the overlay shrinks.
         this.isAnimate = false;
         this.modules.scrollManager.isWorkingScroll = true;
         this.elm.progress.classList.remove('is-shown');
@@ -201,7 +202,7 @@ export default class PjaxWithPreload {
           return;
         }
 
-        // ページごとの、遷移演出終了後に実行する初期化処理
+        // The initialize process that each page run after the page transition effect.
         page.common.initAfterTransit(
           [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter], this.modules
         );
