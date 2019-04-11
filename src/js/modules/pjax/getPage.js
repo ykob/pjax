@@ -1,14 +1,18 @@
-export default function(pageId, page) {
+import blank from './init/blank';
+import index from './init/index';
+import lower from './init/lower';
+
+export default function(pageId) {
   switch (pageId) {
     case 'index':
-      return page.index;
+      return index;
       break;
     case 'page01':
     case 'page02':
     case 'page03':
-      return page.lower;
+      return lower;
       break;
     default:
-      return page.blank;
+      return blank;
   }
 }
