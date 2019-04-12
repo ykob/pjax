@@ -22,7 +22,7 @@ const initBeforeTransit = (contentsArr, modules, isPageLoaded) => {
 const initAfterTransit = (contentsArr, modules) => {
 };
 
-export {
+export default {
   initBeforeTransit,
   initAfterTransit,
 }

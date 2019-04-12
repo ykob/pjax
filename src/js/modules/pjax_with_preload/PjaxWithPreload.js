@@ -9,8 +9,8 @@
 import axios from 'axios';
 import sleep from 'js-util/sleep';
 import ConsoleSignature from '../common/ConsoleSignature';
-import page from './page';
 import getPage from './getPage';
+import common from './init/common';
 
 const consoleSignature = new ConsoleSignature('page transition in this website with original pjax module', 'https://github.com/ykob/pjax', '#497');
 
@@ -48,7 +48,7 @@ export default class PjaxWithPreload {
     this.switchPage();
 
     // The initialize function that should run before the transition effect.
-    page.common.initBeforeTransit([document], this.modules, this.isPageLoaded);
+    common.initBeforeTransit([document], this.modules, this.isPageLoaded);
     await this.currentPage.initBeforeTransit(
       this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter, this.modules
     );
@@ -72,7 +72,7 @@ export default class PjaxWithPreload {
   }
   switchPage() {
     // Get the individual function of the current page.
-    this.currentPage = getPage(this.elm.page.dataset.pageId, page);
+    this.currentPage = getPage(this.elm.page.dataset.pageId);
   }
   send() {
     // turn off each individual events.
@@ -126,7 +126,7 @@ export default class PjaxWithPreload {
     this.switchPage();
 
     // ページごとの、遷移演出終了前に実行する初期化処理
-    page.common.initBeforeTransit(
+    common.initBeforeTransit(
       [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter],
       this.modules, this.isPageLoaded
     );
@@ -203,7 +203,7 @@ export default class PjaxWithPreload {
         }
 
         // The initialize process that each page run after the page transition effect.
-        page.common.initAfterTransit(
+        common.initAfterTransit(
           [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter], this.modules
         );
         this.currentPage.initAfterTransit(

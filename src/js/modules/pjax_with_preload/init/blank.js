@@ -12,7 +12,7 @@ const initAfterTransit = (contents, modules) => {
 const clear = (modules) => {
 };
 
-export {
+export default {
   initBeforeTransit,
   initAfterTransit,
   clear
