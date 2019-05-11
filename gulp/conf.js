@@ -4,7 +4,6 @@
 const DOMAIN = module.exports.DOMAIN = 'https://ykob.github.io';
 const DIR = module.exports.DIR =  {
   PATH: '/pjax',
-  CMS: '/cms/wp-content/themes/xxx.com',
   SRC: 'src',
   DEST: 'dst',
   BUILD: 'docs'
