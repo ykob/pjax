@@ -2,7 +2,7 @@
 // 対象パスやオプションを指定
 
 const DOMAIN = module.exports.DOMAIN = 'https://ykob.github.io';
-const DIR = module.exports.DIR =  {
+const DIR = module.exports.DIR = {
   PATH: '/pjax',
   SRC: 'src',
   DEST: 'dst',
@@ -80,8 +80,6 @@ module.exports.pug = {
     pretty: true
   },
   json: `${DIR.SRC}/data.json`,
-  domain: `${DOMAIN}`,
-  path: `${DIR.PATH}`,
 };
 
 module.exports.sass = {
