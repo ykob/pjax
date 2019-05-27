@@ -183,7 +183,7 @@ export default class Pjax {
     // The transition effect after to switch page.
     this.arrive();
 
-    // 遷移時に付与した遷移後の本文wrapperのsytle値をリセット
+    // Reset the style value of the content wrapper that is added at stating the page transition.
     this.elm.contents.style.position = '';
     this.elm.contents.style.top = '';
 
@@ -197,7 +197,7 @@ export default class Pjax {
       return;
     }
 
-    // ページごとの、遷移演出終了後に実行する初期化処理
+    // It is an initialize process running after the end of each page's transition effect.
     common.initAfterTransit(
       [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter], this.modules
     );
