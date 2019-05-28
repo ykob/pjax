@@ -103,7 +103,7 @@ export default class PjaxWithPreload {
     const responseContentsBefore = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_BEFORE}`);
     const responseContentsAfter = responseHtml.querySelector(`.${CLASSNAME_CONTENTS_AFTER}`);
 
-    // ページの中身を差し替え
+    // Replace the page content.
     this.elm.page.dataset.pageId = responsePage.dataset.pageId;
     this.elm.contents.innerHTML = responseContents.innerHTML;
     this.elm.contentsBefore.innerHTML = responseContentsBefore.innerHTML;
@@ -125,7 +125,7 @@ export default class PjaxWithPreload {
     // Run some functions when switch pages.
     this.switchPage();
 
-    // ページごとの、遷移演出終了前に実行する初期化処理
+    // The initialize process that each page run after the page transition effect.
     common.initBeforeTransit(
       [this.elm.contents, this.elm.contentsBefore, this.elm.contentsAfter],
       this.modules, this.isPageLoaded
