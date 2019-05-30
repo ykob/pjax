@@ -243,11 +243,10 @@ export default class Pjax {
   }
   onPjaxLinks(content) {
     const self = this;
-
-    // 非同期遷移のイベント設定は頻発するため、処理を独立させた。
     const elms = content.getElementsByTagName('a');
 
-    // 事前に取得したアンカーリンク要素が非同期遷移の対象かどうかを判定し、イベントを付与する
+    // Judge whether the anchor links gotten beforehand are the target of the asynchronous transition.
+    // And add events.
     for (var i = 0; i < elms.length; i++) {
       const elm = elms[i];
       const href = elm.getAttribute('href');
