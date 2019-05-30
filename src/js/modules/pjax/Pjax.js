@@ -191,7 +191,8 @@ export default class Pjax {
     this.isTransition = false;
     this.modules.scrollManager.isWorkingScroll = true;
 
-    // history.back連打によって、読み込まれた本文とその瞬間に表示されているURIが異なる場合、自動的に再度読み込みを行う。
+    // If the loading content is different from the current location value by history.back event,
+    // Loading the page again.
     if (this.href !== location.pathname + location.search) {
       this.transitStart();
       return;
