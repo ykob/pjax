@@ -4,10 +4,9 @@ import Hover from 'js-util/Hover';
 const initBeforeTransit = (contentsArr, modules, isPageLoaded) => {
   contentsArr.map((contents) => {
     // Bind the class to run the hover effect.
-    const elmHover = contents.querySelectorAll('.js-hover');
-    for (var i = 0; i < elmHover.length; i++) {
-      new Hover(elmHover[i]);
-    }
+    [...contents.querySelectorAll('.js-hover')].map(elm => {
+      new Hover(elm);
+    });
   });
 
   // ページロード直後とページ遷移後の初期化を区別
