@@ -1,8 +1,8 @@
-import loadImgs from '../../common/loadImgs';
+import loadContentImgs from '../../common/loadContentImgs';
 
 // initBeforeTransit method: before scrollManager.resize run.
 const initBeforeTransit = async (contents, contentsBefore, contentsAfter, modules) => {
-  await loadImgs([
+  await loadContentImgs(contents, [
     '../img/index/bg.jpg',
   ]);
 };
