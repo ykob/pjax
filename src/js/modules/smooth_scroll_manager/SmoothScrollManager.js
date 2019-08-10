@@ -67,12 +67,20 @@ export default class SmoothScrollManager {
 
     // Get the initial scroll value. (it's unnecessary if it has Pjax)
     this.scrollTop = window.pageYOffset;
-    this.resolution.x = window.innerWidth;
+    this.resolution.x = document.body.clientWidth;
     this.resolution.y = window.innerHeight;
 
     // Initialize Hookes and ScrollItems.
     this.initHookes();
-    this.scrollItems.init(this.elm.contents);
+    this.scrollItems.start(this.elm.contents);
+
+    // Turn off flags that are to run Scroll Manager.
+    this.isWorkingScroll = false;
+    this.isWorkingScroll = true;
+    this.isWorkingRender = true;
+    this.isWorkingTransform = true;
+
+    await this.resize();
 
     // If it has a hash in location, it adjusts the scroll position to the appropriate place.
     const { hash } = location;
@@ -87,13 +95,6 @@ export default class SmoothScrollManager {
     }
     this.elm.contents.style.transform = `translate3D(0, ${this.hookes.contents.velocity[1]}px, 0)`;
 
-    // Turn off flags that are to run Scroll Manager.
-    this.isWorkingScroll = false;
-    this.isWorkingScroll = true;
-    this.isWorkingRender = true;
-    this.isWorkingTransform = true;
-
-    await this.resize();
     this.scroll();
     return;
   }
@@ -133,7 +134,7 @@ export default class SmoothScrollManager {
       this.elm.contents.classList.remove('is-fixed');
       this.elm.dummyScroll.style.height = `0`;
     }
-    this.render();
+    this.update();
   }
   initHookes() {
     // Initialize Hookes object.
@@ -187,7 +188,7 @@ export default class SmoothScrollManager {
 
     // Get each value.
     this.scrollTop = window.pageYOffset;
-    this.resolution.x = window.innerWidth;
+    this.resolution.x = document.body.clientWidth;
     this.resolution.y = window.innerHeight;
     this.bodyResolution.x = this.elm.contents.clientWidth;
     this.bodyResolution.y = this.elm.contents.clientHeight;
@@ -218,7 +219,7 @@ export default class SmoothScrollManager {
 
     // Reset the layout of the content and dummy scroll element.
     this.initDummyScroll();
-    this.render();
+    this.update();
     window.scrollTo(0, this.scrollTop);
 
     // Run basic resize event.
@@ -232,7 +233,7 @@ export default class SmoothScrollManager {
 
     return;
   }
-  render() {
+  update() {
     if (this.isWorkingRender === false) return;
 
     // render the content wrapper.
@@ -243,11 +244,11 @@ export default class SmoothScrollManager {
 
     // render Hookes objects.
     for (var key in this.hookes) {
-      this.hookes[key].render();
+      this.hookes[key].update();
     }
 
     // render Scroll Items.
-    this.scrollItems.render(this.isValidSmooth());
+    this.scrollItems.update(this.isValidSmooth());
   }
   on() {
     // In the case of to browse with iOS or Android, running the resize event by orientationchange.

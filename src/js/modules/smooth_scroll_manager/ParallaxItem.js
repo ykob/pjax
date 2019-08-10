@@ -11,9 +11,9 @@ export default class ParallaxItem {
     this.rangeX = (opt && opt.rangeX) ? opt.rangeX : 10000;
     this.ratioX = (opt && opt.ratioX) ? opt.ratioX : 0;
     this.unitX = (opt && opt.unitX) ? opt.unitX : 'px';
-    this.rangeY = (opt && opt.rangeY) ? opt.rangeY : 10;
-    this.ratioY = (opt && opt.ratioY) ? opt.ratioY : 0.012;
-    this.unitY = (opt && opt.unitY) ? opt.unitY : '%';
+    this.rangeY = (opt && opt.rangeY) ? opt.rangeY : 200;
+    this.ratioY = (opt && opt.ratioY) ? opt.ratioY : 0.1;
+    this.unitY = (opt && opt.unitY) ? opt.unitY : 'px';
   }
   init(scrollTop, iwWorking) {
     this.elm.style.transform = '';
@@ -23,9 +23,9 @@ export default class ParallaxItem {
       this.top = scrollTop + rect.top;
       this.elm.style.backfaceVisibility = 'hidden';
     }
-    this.render();
+    this.update();
   }
-  render(iwWorking) {
+  update(iwWorking) {
     if (iwWorking === false) return;
     const x = MathEx.clamp(
       this.hookes.velocity[0] * this.ratioX,
