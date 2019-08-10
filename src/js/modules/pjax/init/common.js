@@ -9,11 +9,12 @@ const initBeforeTransit = (contentsArr, modules, isPageLoaded) => {
     });
   });
 
-  // ページロード直後とページ遷移後の初期化を区別
+  // It distinguishes the initialize processes
+  // immediately after the page loading and after the page transition.
   if (!isPageLoaded) {
-    // ページロード直後の初期化
+    // the initializing immediately after loading the page.
   } else {
-    // ページ遷移後の初期化
+    // the initializing after the page transition.
   }
 };
 
